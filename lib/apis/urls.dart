@@ -1,0 +1,1 @@
+const baseUrl="https://solas.dbzapps.com/api/";

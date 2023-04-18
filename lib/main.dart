@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: backgroundColor,
           textTheme: GoogleFonts.poppinsTextTheme()),
       getPages: AppPages.routes,
-      initialRoute: Routes.Language,
+      initialRoute: Routes.Onboarding,
       useInheritedMediaQuery: true,
       debugShowCheckedModeBanner: false,
     );

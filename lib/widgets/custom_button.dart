@@ -14,7 +14,7 @@ class CustomButton extends StatelessWidget {
   CustomButton({
     Key? key,
     this.width,
-    this.height=50,
+    this.height=55,
     this.margin,
     this.borderRadius=24,
     this.border,

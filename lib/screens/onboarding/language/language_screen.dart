@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
-import 'package:profixer_admin/widgets/custom_appbar.dart';
-import 'package:profixer_admin/widgets/custom_button.dart';
-import 'package:profixer_admin/widgets/custom_edittext.dart';
+
+import '../../../routes/app_routes.dart';
 
 class LanguageScreen extends StatefulWidget {
   const LanguageScreen({Key? key}) : super(key: key);
@@ -16,8 +15,6 @@ class _LanguageScreenState extends State<LanguageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -49,33 +46,9 @@ class _LanguageScreenState extends State<LanguageScreen> {
             ),
             _buildLanguageButton('English'),
             const SizedBox(
-              height: 24,
+              height: 16,
             ),
             _buildLanguageButton('Arabic'),
-            const SizedBox(
-              height: 64,
-            ),
-            CustomEditText(hintText: 'Email/Mobile Number', controller: TextEditingController()),
-            const SizedBox(height: 32,),
-            Row(
-              children: [
-                Expanded(
-                    child: CustomButton(
-                  text: 'SKIP',
-                  onTap: () {},
-                  borderRadius: 24,
-                  border: Border.all(color: Colors.black),
-                  btnColor: Colors.white,
-                  textColor: Colors.black,
-                )),
-                const SizedBox(width: 16,),
-                Expanded(
-                    child: CustomButton(
-                  text: 'GET STARTED',
-                  onTap: () {},
-                )),
-              ],
-            ),
           ],
         ),
       ),
@@ -84,14 +57,16 @@ class _LanguageScreenState extends State<LanguageScreen> {
 
   _buildLanguageButton(String title) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Get.toNamed(Routes.login);
+      },
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: 55,
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(24),
-            border: Border.all(color: Colors.grey.shade300),
+            border: Border.all(color: Colors.grey.shade100),
             boxShadow: [
               BoxShadow(
                   color: Colors.grey.shade100,

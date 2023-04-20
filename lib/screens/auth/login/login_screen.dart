@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
-import 'package:profixer_admin/screens/login/login_controller.dart';
-import 'package:profixer_admin/widgets/custom_appbar.dart';
+import 'package:profixer_admin/screens/auth/login/login_controller.dart';
 import 'package:profixer_admin/widgets/custom_edittext.dart';
 
-import '../../widgets/custom_button.dart';
+import '../../../widgets/custom_button.dart';
 
 class LoginScreen extends GetView<LoginController> {
+  @override
   final controller = Get.put(LoginController());
 
   LoginScreen({Key? key}) : super(key: key);
@@ -22,28 +21,24 @@ class LoginScreen extends GetView<LoginController> {
       },
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.only(
-            top: 80,
-            left: 16,
-            right: 16,
-            bottom: 30
-          ),
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 64,),
               const Text(
-                "Sign In",
+                "Login",
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: primaryColor,
                 ),
               ),
               const SizedBox(
-                height: 10,
+                height: 12,
               ),
               const Text(
-                "Amet minim mollit non deserunt ullamcoei sitaliqua dolor do amet sintelit officia.",
+                "Amet minim mollit non deserunt ullamcoei sitaliqua dolor do amet sintelit officia.",
                 maxLines: 2,
                 style: TextStyle(
                   fontSize: 14,
@@ -51,13 +46,13 @@ class LoginScreen extends GetView<LoginController> {
                 ),
               ),
               const SizedBox(
-                height: 20,
+                height: 32,
               ),
               CustomEditText(
                   hintText: "Username / Mobile Number",
                   controller: controller.mobNoController),
               const SizedBox(
-                height: 30,
+                height: 32,
               ),
               Obx(
                 () => CustomEditText(
@@ -75,19 +70,18 @@ class LoginScreen extends GetView<LoginController> {
                       controller.isVisible.value
                           ? Icons.remove_red_eye_rounded
                           : Icons.remove_red_eye_outlined,
-                      color: primaryColor,
                     ),
                   ),
                 ),
               ),
               const SizedBox(
-                height: 50,
+                height: 56,
               ),
               CustomButton(text: "LOGIN", onTap: () {
-                Get.toNamed(Routes.Home);
+                Get.toNamed(Routes.main);
               }),
               const SizedBox(
-                height: 20,
+                height: 24,
               ),
               Text.rich(TextSpan(
                 text: "Forgot password?",
@@ -106,26 +100,14 @@ class LoginScreen extends GetView<LoginController> {
                   )
                 ],
               )),
-              const SizedBox(
-                height: 30,
-              ),
               const Spacer(),
-              Center(
-                child: const Text(
-                  "Don’t have an account?",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: textColor,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              CustomButton(
-                  btnColor: blackColor,
-                  text: "Create an account",
-                  onTap: () {}),
+              CustomButton(text: "Login with mobile number",
+                  btnColor: Colors.black,
+                  textColor: Colors.white,
+                  onTap: () {
+                Get.toNamed(Routes.mobileLogin);
+              }),
+
             ],
           ),
         ),

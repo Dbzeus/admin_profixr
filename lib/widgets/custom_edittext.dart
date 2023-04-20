@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:profixer_admin/helpers/custom_colors.dart';
 
 class CustomEditText extends StatelessWidget {
   String hintText;
@@ -33,7 +34,10 @@ class CustomEditText extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(hintText),
+        Text(hintText,style: const TextStyle(
+          color: hintColor,
+          fontSize: 12
+        ),),
         TextFormField(
           onChanged: onChanged,
           keyboardType: keyboardType,
@@ -42,7 +46,7 @@ class CustomEditText extends StatelessWidget {
           controller: controller,
           readOnly: readOnly,
           onTap: onTab,
-          cursorColor: Colors.black,
+          // cursorColor: Colors.black,
           cursorHeight: 28,
           style: const TextStyle(fontSize: 16),
           inputFormatters: inputFormatters ?? [],
@@ -54,8 +58,8 @@ class CustomEditText extends StatelessWidget {
               counterText: '',
             focusColor: Colors.black,
             contentPadding: const EdgeInsets.symmetric(horizontal: 8,vertical: 12),
-            border: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
-            focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+            // border: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+            // focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
              ),
         ),
       ],

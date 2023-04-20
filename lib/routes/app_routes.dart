@@ -1,7 +1,8 @@
 abstract class Routes {
-  static const Language = "/language";
-  static const Onboarding = "/Onboarding";
-  static const Login = "/Login";
-  static const Home = "/Home";
+  static const language = "/language";
+  static const login = "/login";
+  static const mobileLogin = "/mobileLogin";
+  static const verification = "/verification";
+  static const main = "/main";
 
 }

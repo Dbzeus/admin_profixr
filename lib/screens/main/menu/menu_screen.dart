@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:profixer_admin/routes/app_routes.dart';
 
 import '../../../helpers/custom_colors.dart';
 
@@ -35,37 +37,44 @@ class MenuScreen extends StatelessWidget {
   }
 
   _buildMenu() {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-          color: cardBgColor,
-          border: Border.all(color: Colors.grey.shade100),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.grey.shade100,
-                spreadRadius: 1,
-                blurRadius: 3,
-                offset: const Offset(0, 2))
-          ],
-          borderRadius: BorderRadius.circular(16)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Services",
-            style: TextStyle(
-                fontSize: 16, fontWeight: FontWeight.bold, color: primaryColor),
-          ),
-          const Spacer(),
-          Align(
-            alignment: Alignment.centerRight,
-            child: SvgPicture.asset(
-              'assets/icon/service.svg',
-              height: 40,
-              width: 25,
+    return GestureDetector(
+      onTap: (){
+        Get.toNamed(
+          Routes.service,
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+            color: cardBgColor,
+            border: Border.all(color: Colors.grey.shade100),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.shade100,
+                  spreadRadius: 1,
+                  blurRadius: 3,
+                  offset: const Offset(0, 2))
+            ],
+            borderRadius: BorderRadius.circular(16)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "Services",
+              style: TextStyle(
+                  fontSize: 16, fontWeight: FontWeight.bold, color: primaryColor),
             ),
-          ),
-        ],
+            const Spacer(),
+            Align(
+              alignment: Alignment.centerRight,
+              child: SvgPicture.asset(
+                'assets/icon/service.svg',
+                height: 40,
+                width: 25,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

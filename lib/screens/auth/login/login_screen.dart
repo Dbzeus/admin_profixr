@@ -20,6 +20,7 @@ class LoginScreen extends GetView<LoginController> {
         Get.focusScope!.unfocus();
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(

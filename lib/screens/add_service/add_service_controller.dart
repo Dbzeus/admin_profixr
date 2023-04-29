@@ -5,7 +5,7 @@ class AddServiceController extends GetxController{
   TextEditingController serviceNameController = TextEditingController();
   TextEditingController serviceCategoryController = TextEditingController();
   TextEditingController serviceAmountController = TextEditingController();
-  TextEditingController serviceDescriptioncontroller = TextEditingController();
+  TextEditingController serviceDescriptionController = TextEditingController();
 
   RxString dropDownValue = "SAR".obs;
   var items = [

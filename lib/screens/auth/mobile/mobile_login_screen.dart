@@ -30,9 +30,14 @@ class MobileLoginScreen extends GetView<MobileLoginController> {
               const SizedBox(
                 height: 52,
               ),
-              Align(
-                  alignment: Alignment.centerLeft,
-                  child: SvgPicture.asset('assets/icon/back.svg')),
+              GestureDetector(
+                onTap:  (){
+                  Get.back();
+                },
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: SvgPicture.asset('assets/icon/back.svg')),
+              ),
               const SizedBox(
                 height: 32,
               ),
@@ -60,6 +65,27 @@ class MobileLoginScreen extends GetView<MobileLoginController> {
               ),
               CustomEditText(
                   hintText: "Mobile Number",
+                  keyboardType: TextInputType.number,
+                  prefixIcon: Obx(
+                        () => DropdownButton(
+                        value: controller.dropDownValue.value,
+                        style: const TextStyle(color: primaryColor, fontSize: 16),
+                        underline: const SizedBox(),
+                        icon: const Icon(
+                          Icons.keyboard_arrow_down,
+                          color: primaryColor,
+                          size: 16,
+                        ),
+                        items: controller.items.map((String items) {
+                          return DropdownMenuItem(
+                            value: items,
+                            child: Text(items),
+                          );
+                        }).toList(),
+                        onChanged: (val) {
+                          controller.dropDownValue(val.toString());
+                        }),
+                  ),
                   controller: controller.mobNoController),
 
               const Spacer(),

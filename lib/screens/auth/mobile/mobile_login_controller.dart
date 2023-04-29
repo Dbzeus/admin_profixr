@@ -9,4 +9,12 @@ class MobileLoginController extends GetxController{
   TextEditingController passwordController = TextEditingController();
 
   RxBool isVisible= true.obs;
+  RxString dropDownValue = "+966".obs;
+  var items = [
+    '+966',
+    '+967',
+    '+968',
+    '+969',
+
+  ];
 }

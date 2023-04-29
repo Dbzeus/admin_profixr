@@ -4,11 +4,14 @@ import 'package:profixer_admin/screens/add_category/add_category_screen.dart';
 import 'package:profixer_admin/screens/add_service/add_service_screen.dart';
 import 'package:profixer_admin/screens/auth/mobile/mobile_login_screen.dart';
 import 'package:profixer_admin/screens/auth/verification/verification_screen.dart';
-import 'package:profixer_admin/screens/category/category_screen.dart';
+
+import 'package:profixer_admin/screens/category_menu/category_Menu_screen.dart';
 
 import 'package:profixer_admin/screens/main/main_screen.dart';
 import 'package:profixer_admin/screens/onboarding/language/language_screen.dart';
-import 'package:profixer_admin/screens/service/service_screen.dart';
+
+import 'package:profixer_admin/screens/service_menu/service_menu_screen.dart';
+import 'package:profixer_admin/screens/ticket/ticket_screen.dart';
 
 
 import '../screens/auth/login/login_screen.dart';
@@ -41,16 +44,19 @@ class AppPages {
       page: () =>  AddServiceScreen(),
     ),
     GetPage(
-      name: Routes.service,
-      page: () =>  ServiceScreen(),
+      name: Routes.serviceMenu,
+      page: () =>  ServiceMenuScreen(),
     ),
     GetPage(
-      name: Routes.category,
-      page: () =>  CategoryScreen(),
+      name: Routes.categoryMenu,
+      page: () =>  CategoryMenuScreen(),
     ),
     GetPage(
       name: Routes.addCategory,
       page: () =>  AddCategoryScreen(),
+    ), GetPage(
+      name: Routes.newTicket,
+      page: () =>  TicketScreen(),
     ),
   ];
 }

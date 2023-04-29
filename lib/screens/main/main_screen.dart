@@ -25,15 +25,15 @@ class MainScreen extends StatelessWidget {
           elevation: 12,
           selectedFontSize: 12,
           unselectedFontSize: 12,
-          showUnselectedLabels: true,
-          selectedItemColor: primaryColor,
+          showUnselectedLabels: false,
+          selectedItemColor: blackColor,
           unselectedItemColor: hintColor,
-          backgroundColor: Colors.white,
+          backgroundColor: primaryColor,
           onTap: (i)=>index(i),
           items: [
-        BottomNavigationBarItem(icon: SvgPicture.asset('assets/icon/menu/home.svg',width: 20,height: 20,color: primaryColor,),label: "Home"),
-        BottomNavigationBarItem(icon: SvgPicture.asset('assets/icon/menu/shop.svg',width: 20,height: 20,color: primaryColor,),label: "Job"),
-        BottomNavigationBarItem(icon: SvgPicture.asset('assets/icon/menu/profile.svg',width: 20,height: 20,color: primaryColor,),label: "Profile"),
+        BottomNavigationBarItem(icon: SvgPicture.asset('assets/icon/menu/home.svg',width: 20,height: 20,),label: "Home"),
+        BottomNavigationBarItem(icon: SvgPicture.asset('assets/icon/menu/shop.svg',width: 20,height: 20,),label: "Job"),
+        BottomNavigationBarItem(icon: SvgPicture.asset('assets/icon/menu/profile.svg',width: 20,height: 20,),label: "Profile"),
       ]),
     );
   }

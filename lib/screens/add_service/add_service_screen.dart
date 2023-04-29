@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:profixer_admin/helpers/constant_widgets.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/screens/add_service/add_service_controller.dart';
@@ -89,7 +90,7 @@ class AddServiceScreen extends GetView<AddServiceController> {
               ),
               CustomEditText(
                 hintText: "Service Description",
-                controller: controller.serviceDescriptioncontroller,
+                controller: controller.serviceDescriptionController,
                 maxLines: 6,
               ),
               const SizedBox(
@@ -106,8 +107,8 @@ class AddServiceScreen extends GetView<AddServiceController> {
               const Spacer(),
               CustomButton(
                   text: "Add",
-                  onTap: () {
-                    Get.toNamed(Routes.addCategory);
+                  onTap: () async{
+
                   })
             ],
           ),

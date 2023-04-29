@@ -6,7 +6,25 @@ import 'package:profixer_admin/routes/app_routes.dart';
 import '../../../helpers/custom_colors.dart';
 
 class MenuScreen extends StatelessWidget {
-  const MenuScreen({Key? key}) : super(key: key);
+   MenuScreen({Key? key}) : super(key: key);
+
+List menu = [
+  {"title" : "Services",
+  "imagePath" : 'assets/icon/menu/serviceicon.png',
+  },
+  {"title" : "Category",
+    "imagePath" : 'assets/icon/menu/serviceicon.png',
+  },
+  {"title" : "New Ticket",
+    "imagePath" : 'assets/icon/menu/serviceicon.png',
+  },
+  {"title" : "Technician",
+    "imagePath" : 'assets/icon/menu/serviceicon.png',
+  },
+  {"title" : "Customer",
+    "imagePath" : 'assets/icon/menu/serviceicon.png',
+  },
+];
 
   @override
   Widget build(BuildContext context) {
@@ -14,14 +32,14 @@ class MenuScreen extends StatelessWidget {
       body: Column(
         children: [
           const SizedBox(height: 40,),
-          Text(
+          const Text(
             'Menu',
             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
           ),
           const SizedBox(height: 12,),
           GridView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-              itemCount: 4,
+              itemCount: menu.length,
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               physics: const BouncingScrollPhysics(),
@@ -30,18 +48,19 @@ class MenuScreen extends StatelessWidget {
                   crossAxisSpacing: 10,
                   childAspectRatio: 1.5,
                   mainAxisSpacing: 10),
-              itemBuilder: (_, index) => _buildMenu()),
+              itemBuilder: (_, index) => _buildMenu(menu[index])),
+
         ],
       ),
     );
   }
 
-  _buildMenu() {
+  _buildMenu(menu) {
     return GestureDetector(
       onTap: (){
-        Get.toNamed(
-          Routes.service,
-        );
+
+        pageRoute(menu);
+
       },
       child: Container(
         padding: const EdgeInsets.all(12),
@@ -60,22 +79,47 @@ class MenuScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Services",
-              style: TextStyle(
+              menu["title"],
+              style: const TextStyle(
                   fontSize: 16, fontWeight: FontWeight.bold, color: primaryColor),
             ),
             const Spacer(),
             Align(
               alignment: Alignment.centerRight,
-              child: SvgPicture.asset(
-                'assets/icon/service.svg',
-                height: 40,
-                width: 25,
+              child: Image.asset(
+               menu["imagePath"] ,
+
+                height: 65,
+                width: 50,
               ),
             ),
+            // Align(
+            //   alignment: Alignment.centerRight,
+            //   child: SvgPicture.asset(
+            //     'assets/icon/service.svg',
+            //     height: 40,
+            //     width: 25,
+            //   ),
+            // ),
           ],
         ),
       ),
     );
+  }
+
+  pageRoute(menu) {
+    if(menu["title"] == "Services"){
+      Get.toNamed(
+        Routes.serviceMenu,
+      );
+    }else if(menu["title"] == "Category"){
+      Get.toNamed(
+        Routes.categoryMenu,
+      );
+    }else if(menu["title"] == "New Ticket"){
+      Get.toNamed(
+        Routes.newTicket,
+      );
+    }
   }
 }

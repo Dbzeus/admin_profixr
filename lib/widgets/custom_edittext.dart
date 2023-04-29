@@ -5,10 +5,11 @@ import 'package:profixer_admin/helpers/custom_colors.dart';
 class CustomEditText extends StatelessWidget {
   String hintText;
   Widget? suffixIcon, prefixIcon;
-  bool isDense, obscureText,readOnly;
+  bool isDense, obscureText,readOnly,showCursor;
   double? borderRadius;
   TextInputType? keyboardType;
   int? maxLength,maxLines;
+  TextAlign? textAlign;
   Function(String)? onChanged;
   Function()? onTab;
   TextEditingController? controller;
@@ -23,9 +24,12 @@ class CustomEditText extends StatelessWidget {
         this.isDense = true,
         this.obscureText = false,
         this.readOnly = false,
+        this.showCursor = true,
         this.borderRadius,
         this.keyboardType,
         this.onTab,
+        this.onChanged,
+        this.textAlign,
         this.inputFormatters,
         Key? key,})
       : super(key: key);
@@ -42,12 +46,14 @@ class CustomEditText extends StatelessWidget {
         TextFormField(
           onChanged: onChanged,
           maxLines: maxLines,
+          textAlign: textAlign ?? TextAlign.start,
           keyboardType: keyboardType,
           maxLength: maxLength,
           obscureText: obscureText,
           controller: controller,
           readOnly: readOnly,
           onTap: onTab,
+          showCursor: showCursor,
           // cursorColor: Colors.black,
           cursorHeight: 28,
           style: const TextStyle(fontSize: 16),
@@ -57,6 +63,7 @@ class CustomEditText extends StatelessWidget {
               isDense: isDense,
               suffixIcon: suffixIcon,
               prefixIcon: prefixIcon,
+
               counter: null,
               counterText: '',
             focusColor: Colors.black,

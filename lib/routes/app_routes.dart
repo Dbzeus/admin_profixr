@@ -5,8 +5,9 @@ abstract class Routes {
   static const verification = "/verification";
   static const main = "/main";
   static const addService = "/addService";
-  static const service = "/service";
-  static const category = "/category";
+  static const serviceMenu = "/serviceMenu";
+  static const categoryMenu = "/categoryMenu";
   static const addCategory = "/addCategory";
+  static const newTicket = "/newTicket";
 
 }

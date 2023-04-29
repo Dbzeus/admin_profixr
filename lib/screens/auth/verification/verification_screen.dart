@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
 import 'package:profixer_admin/screens/auth/verification/verification_controller.dart';
 import 'package:profixer_admin/widgets/custom_button.dart';
+import 'package:profixer_admin/widgets/custom_edittext.dart';
 
 import '../../../helpers/custom_colors.dart';
 
@@ -16,6 +17,7 @@ class VerificationScreen extends GetView<VerificationController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Padding(
@@ -54,6 +56,43 @@ class VerificationScreen extends GetView<VerificationController> {
                 'OTP Code Was sent in to +966 12******257 Mobile Number',
                 textAlign: TextAlign.center,
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const SizedBox(
+                    width: 40,
+                  ),
+                  _customOTPField(
+                      first: true,
+                      last: false,
+                      controller: controller.fieldOne),
+                  const SizedBox(
+                    width: 45,
+                  ),
+                  _customOTPField(
+                      first: false,
+                      last: false,
+                      controller: controller.fieldTwo),
+                  const SizedBox(
+                    width: 45,
+                  ),
+                  _customOTPField(
+                      first: false,
+                      last: false,
+                      controller: controller.fieldThree),
+                  const SizedBox(
+                    width: 45,
+                  ),
+                  _customOTPField(
+                      first: false,
+                      last: false,
+                      controller: controller.fieldFour),
+                  const SizedBox(
+                    width: 40,
+                  ),
+
+                ],
+              ),
               const Spacer(),
               CustomButton(
                 text: 'VERIFY',
@@ -66,6 +105,30 @@ class VerificationScreen extends GetView<VerificationController> {
             ],
           ),
         ),
+      ),
+    );
+  }
+  _customOTPField({bool? first, last, TextEditingController? controller}) {
+    return Expanded(
+      child: CustomEditText(
+        controller: controller,
+        hintText: '',
+        textAlign: TextAlign.center,
+        keyboardType: TextInputType.number,
+        maxLength: 1,
+        showCursor: false,
+        /*style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 25,
+        ),*/
+        onChanged: (value) {
+          if (value.length == 1 && last == false) {
+            Get.focusScope?.nextFocus();
+          }
+          if (value.isEmpty && first == false) {
+            Get.focusScope?.previousFocus();
+          }
+        },
       ),
     );
   }

@@ -32,7 +32,7 @@ class CategoryMenuScreen extends GetView<CategoryMenuController> {
       ),
       body: GridView.builder(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-          itemCount: 4,
+          itemCount: controller.menu.length,
           shrinkWrap: true,
           scrollDirection: Axis.vertical,
           physics: const BouncingScrollPhysics(),
@@ -41,14 +41,17 @@ class CategoryMenuScreen extends GetView<CategoryMenuController> {
               crossAxisSpacing: 10,
               childAspectRatio: 1.5,
               mainAxisSpacing: 10),
-          itemBuilder: (_, index) => _buildMenu()),
+          itemBuilder: (_, index) => _buildMenu(controller.menu[index])),
     );
   }
 
-  _buildMenu() {
+  _buildMenu(menu) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.addCategory);
+        if(menu["title"] == "Add Categories"){
+          Get.toNamed(Routes.addCategory);
+        }
+
       },
       child: Container(
         padding: const EdgeInsets.all(12),
@@ -66,26 +69,15 @@ class CategoryMenuScreen extends GetView<CategoryMenuController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              height: 50,
-              width: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color:const  Color.fromRGBO(255, 200, 144, 1),
-
-        ),
-              child: const Center(
-                child: Icon(
-                  Icons.add,
-                  color: blackColor,
-                )
-              ),
-            ),
-
+        SvgPicture.asset(
+              menu["imagePath"],
+            height: 50,
+           width: 50,
+             ),
             const Spacer(),
-            const Text(
-              "Add categories",
-              style: TextStyle(
+             Text(
+              menu["title"],
+              style: const TextStyle(
                   fontSize: 16, color: blackColor),
             ),
           ],

@@ -200,6 +200,7 @@ class TicketScreen extends GetView<TicketController> {
             ),
             CustomEditText(
               hintText: "Service Date",
+              showCursor: false,
               keyboardType: TextInputType.none,
               controller: controller.serviceDateController,
               suffixIcon: const Icon(
@@ -230,6 +231,7 @@ class TicketScreen extends GetView<TicketController> {
             CustomEditText(
               hintText: "Service Time Slot",
               controller: controller.serviceTimeController,
+              showCursor: false,
               keyboardType: TextInputType.none,
               suffixIcon: const Icon(
                 Icons.keyboard_arrow_down,

@@ -8,10 +8,13 @@ import 'package:profixer_admin/screens/auth/verification/verification_screen.dar
 import 'package:profixer_admin/screens/category_menu/category_Menu_screen.dart';
 
 import 'package:profixer_admin/screens/main/main_screen.dart';
+import 'package:profixer_admin/screens/new_ticket/new_ticket_screen.dart';
 import 'package:profixer_admin/screens/onboarding/language/language_screen.dart';
 
 import 'package:profixer_admin/screens/service_menu/service_menu_screen.dart';
 import 'package:profixer_admin/screens/ticket/ticket_screen.dart';
+import 'package:profixer_admin/screens/ticket_history/ticket_history_screen.dart';
+
 
 
 import '../screens/auth/login/login_screen.dart';
@@ -54,9 +57,18 @@ class AppPages {
     GetPage(
       name: Routes.addCategory,
       page: () =>  AddCategoryScreen(),
-    ), GetPage(
+    ),
+    GetPage(
       name: Routes.newTicket,
+      page: () =>  NewTicketScreen(),
+    ),
+    GetPage(
+      name: Routes.ticket,
       page: () =>  TicketScreen(),
+    ),
+    GetPage(
+      name: Routes.ticketHistory,
+      page: () =>  TicketHistoryScreen(),
     ),
   ];
 }

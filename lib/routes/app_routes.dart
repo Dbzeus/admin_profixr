@@ -9,5 +9,7 @@ abstract class Routes {
   static const categoryMenu = "/categoryMenu";
   static const addCategory = "/addCategory";
   static const newTicket = "/newTicket";
+  static const ticket = "/ticket";
+  static const ticketHistory = "/ticketHistory";
 
 }

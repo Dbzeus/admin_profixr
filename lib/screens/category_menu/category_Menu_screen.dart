@@ -1,12 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
-
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 
-import '../../routes/app_routes.dart';
 import 'category_Menu_controller.dart';
 
 class CategoryMenuScreen extends GetView<CategoryMenuController> {
@@ -18,14 +15,26 @@ class CategoryMenuScreen extends GetView<CategoryMenuController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        widget: const Padding(
-          padding: EdgeInsets.only(bottom: 8.0),
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Text(
-              "Categories",
-              style: TextStyle(
-                  color: whiteColor, fontSize: 18, fontWeight: FontWeight.bold),
+        widget: Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8,vertical: 6),
+            child: Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: whiteColor,
+                    )),
+                Text(
+                  "Categories",
+                  style: TextStyle(
+                      color: whiteColor, fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
           ),
         ),
@@ -39,7 +48,7 @@ class CategoryMenuScreen extends GetView<CategoryMenuController> {
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               crossAxisSpacing: 10,
-              childAspectRatio: 1.5,
+              childAspectRatio: 1.4,
               mainAxisSpacing: 10),
           itemBuilder: (_, index) => _buildMenu(controller.menu[index])),
     );
@@ -48,8 +57,8 @@ class CategoryMenuScreen extends GetView<CategoryMenuController> {
   _buildMenu(menu) {
     return GestureDetector(
       onTap: () {
-        if(menu["title"] == "Add Categories"){
-          Get.toNamed(Routes.addCategory);
+        if(menu["path"]!=null){
+          Get.toNamed(menu['path']);
         }
 
       },
@@ -78,7 +87,7 @@ class CategoryMenuScreen extends GetView<CategoryMenuController> {
              Text(
               menu["title"],
               style: const TextStyle(
-                  fontSize: 16, color: blackColor),
+                  fontSize: 14, color: blackColor,fontWeight: FontWeight.bold),
             ),
           ],
         ),

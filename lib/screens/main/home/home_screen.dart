@@ -19,58 +19,34 @@ class HomeScreen extends GetView<HomeController> {
     return Scaffold(
       appBar: CustomAppBar(
           height: 100,
-          widget: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end ,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const CircleAvatar(
-                  backgroundImage: CachedNetworkImageProvider('https://lh3.googleusercontent.com/ogw/AOLn63FrRz1Sj7YR6k9tIBht1Hp_Xbr2osMhWRMybXZDRg=s32-c-mo'),
-                  backgroundColor: Colors.white,
-                  radius: 20,
-                ),
-                SvgPicture.asset('assets/icon/full_logo.svg'),
-                /*Row(
-                  crossAxisAlignment: CrossAxisAlignment.end ,
+          bgColor: Colors.white,
+          showShadow: true,
+          widget: Column(
+            children: [
+              const Spacer(),
+              Padding(
+                padding: const EdgeInsets.only(left: 16,top: 16,bottom: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const CircleAvatar(
                       backgroundImage: CachedNetworkImageProvider('https://lh3.googleusercontent.com/ogw/AOLn63FrRz1Sj7YR6k9tIBht1Hp_Xbr2osMhWRMybXZDRg=s32-c-mo'),
                       backgroundColor: Colors.white,
-                      radius: 20,
+                      radius: 18,
                     ),
-                    const SizedBox(
-                      width: 16,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        const Text(
-                          "Mohamed",
-                          style: TextStyle(fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: whiteColor),
-                        ),
-                        const Text(
-                          "Admin",
-                          style:
-                          const TextStyle(fontSize: 11, color: whiteColor),
-                        ),
-                      ],
-                    ),
+                    Expanded(child: Image.asset('assets/icon/logo.png')),
+                    IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.notifications_rounded,
+                          size: 22,
+                          color: Colors.black,
+                        ))
                   ],
-                ),*/
-                IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.notifications_rounded,
-                      size: 20,
-                      color: Colors.white,
-                    ))
-              ],
-            ),
+                ),
 
+              ),
+            ],
           ),
 
       ),
@@ -79,26 +55,25 @@ class HomeScreen extends GetView<HomeController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 16),
               child: Text('OverView',style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
-
               ),),
             ),
             GridView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 16),
-                itemCount: 4,
+                padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 0),
+                itemCount: controller.dashboard.length,
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
                 physics: const BouncingScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing: 10,
-                    childAspectRatio: 1.1,
+                    childAspectRatio: 0.8,
                     mainAxisSpacing: 15),
                 itemBuilder: (_,index){
-                  return _buildDashboard();
+                  return _buildDashboard(controller.dashboard[index]);
             }),
             const SizedBox(height: 16,),
           ],
@@ -106,7 +81,115 @@ class HomeScreen extends GetView<HomeController> {
       ),
     );
   }
-  _buildDashboard(){
+
+  _buildDashboard(Map<String, String> dashboard){
+    return GestureDetector(
+      onTap: (){
+        Get.toNamed(Routes.ticket,arguments: dashboard['title']);
+      },
+      child: Container(
+        margin: const EdgeInsets.only(top: 12),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: Colors.grey.shade100),
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.grey.shade100,
+                  spreadRadius: 1,
+                  blurRadius: 3,
+                  offset: const Offset(0, 2))
+            ],
+            borderRadius: BorderRadius.circular(16)),
+        child: Stack(
+          children: [
+            Positioned(
+                top: -20,
+                right: -10,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Color.fromRGBO(245, 190, 134, 1),
+                      shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.grey.shade100,
+                          spreadRadius: 1,
+                          blurRadius: 3,
+                          offset: const Offset(0, 2))
+                    ],
+                  ),
+                  width: 50,
+                  height: 50,
+                )),
+            Positioned(
+                top: 8,
+                right: -15,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(255, 227, 200, 1),
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.grey.shade100,
+                          spreadRadius: 1,
+                          blurRadius: 3,
+                          offset: const Offset(0, 2))
+                    ],
+                  ),
+                  width: 40,
+                  height: 40,
+                )),
+            Positioned(
+                bottom: 0,
+                right: 0,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: primaryColor,
+                      borderRadius: BorderRadius.only(bottomRight: Radius.circular(16),topLeft: Radius.circular(8))
+                  ),
+                  width: 30,
+                  height: 30,
+                  child: Center(
+                    child: SvgPicture.asset('assets/icon/arrow.svg'),
+                  ),
+                )),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12,horizontal: 12),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SvgPicture.asset(
+                    dashboard['icon']!,
+                    height: 15,
+                    width: 15,
+                  ),
+                  const Spacer(),
+                  Text(
+                    "${dashboard['count']}",
+                    style: TextStyle(fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: primaryColor),
+                  ),
+                  Text(
+                    "${dashboard['title']}",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style:
+                    TextStyle(fontSize: 12, color: blackColor, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8,),
+                ],
+              ),
+            ),
+
+          ],
+        ),
+      ),
+    );
+  }
+
+
+  /*_buildDashboard(){
     return GestureDetector(
       onTap: (){
         Get.toNamed(Routes.ticket);
@@ -174,5 +257,5 @@ class HomeScreen extends GetView<HomeController> {
           ),],
       ),
     );
-  }
+  }*/
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:profixer_admin/widgets/custom_appbar.dart';
 
 import '../../helpers/custom_colors.dart';
 

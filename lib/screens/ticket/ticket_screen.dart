@@ -16,10 +16,10 @@ class TicketScreen extends GetView<TicketController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        widget: Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
-          child: Align(
-            alignment: Alignment.bottomCenter,
+        widget: Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8,vertical: 6),
             child: Row(
               children: [
                 IconButton(
@@ -30,6 +30,7 @@ class TicketScreen extends GetView<TicketController> {
                       Icons.arrow_back,
                       color: whiteColor,
                     )),
+                const SizedBox(width: 12,),
                 const Text(
                   "Tickets",
                   style: TextStyle(

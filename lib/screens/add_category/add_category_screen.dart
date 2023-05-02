@@ -4,13 +4,13 @@ import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/constant_widgets.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/screens/add_category/add_category_controller.dart';
-
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 import 'package:profixer_admin/widgets/custom_button.dart';
 import 'package:profixer_admin/widgets/custom_edittext.dart';
 
 class AddCategoryScreen extends GetView<AddCategroyController> {
 
+  @override
   final controller = Get.put(AddCategroyController());
    AddCategoryScreen({Key? key}) : super(key: key);
 
@@ -18,14 +18,27 @@ class AddCategoryScreen extends GetView<AddCategroyController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        widget: const Align(
+        widget: Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
-            padding: EdgeInsets.only(bottom: 16.0),
-            child: Text(
-              "Add Category",
-              style: TextStyle(
-                  color: whiteColor, fontSize: 18, fontWeight: FontWeight.bold),
+            padding: EdgeInsets.symmetric(horizontal: 8,vertical: 6),
+            child: Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: whiteColor,
+                    )),
+                const SizedBox(width: 12,),
+                Text(
+                  "Add Category",
+                  style: TextStyle(
+                      color: whiteColor, fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
           ),
         ),

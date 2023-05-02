@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
 
@@ -11,18 +10,22 @@ class MenuScreen extends StatelessWidget {
 List menu = [
   {"title" : "Services",
   "imagePath" : 'assets/icon/menu/serviceicon.png',
+    "path":Routes.serviceMenu,
   },
   {"title" : "Category",
-    "imagePath" : 'assets/icon/menu/serviceicon.png',
-  },
-  {"title" : "New Ticket",
-    "imagePath" : 'assets/icon/menu/serviceicon.png',
+    "imagePath" : 'assets/icon/menu/category.png',
+    "path":Routes.categoryMenu,
   },
   {"title" : "Technician",
-    "imagePath" : 'assets/icon/menu/serviceicon.png',
+    "imagePath" : 'assets/icon/menu/technician.png',
   },
   {"title" : "Customer",
-    "imagePath" : 'assets/icon/menu/serviceicon.png',
+    "imagePath" : 'assets/icon/menu/customer.png',
+  },
+  {"title" : "New Ticket",
+    "imagePath" : 'assets/icon/menu/new_ticket.png',
+    "path":Routes.newTicket,
+
   },
 ];
 
@@ -46,7 +49,7 @@ List menu = [
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 10,
-                  childAspectRatio: 1.5,
+                  childAspectRatio: 1.3,
                   mainAxisSpacing: 10),
               itemBuilder: (_, index) => _buildMenu(menu[index])),
 
@@ -58,9 +61,7 @@ List menu = [
   _buildMenu(menu) {
     return GestureDetector(
       onTap: (){
-
         pageRoute(menu);
-
       },
       child: Container(
         padding: const EdgeInsets.all(12),
@@ -88,7 +89,6 @@ List menu = [
               alignment: Alignment.centerRight,
               child: Image.asset(
                menu["imagePath"] ,
-
                 height: 65,
                 width: 50,
               ),
@@ -108,17 +108,9 @@ List menu = [
   }
 
   pageRoute(menu) {
-    if(menu["title"] == "Services"){
+    if(menu["path"] != null){
       Get.toNamed(
-        Routes.serviceMenu,
-      );
-    }else if(menu["title"] == "Category"){
-      Get.toNamed(
-        Routes.categoryMenu,
-      );
-    }else if(menu["title"] == "New Ticket"){
-      Get.toNamed(
-        Routes.newTicket,
+        menu["path"],
       );
     }
   }

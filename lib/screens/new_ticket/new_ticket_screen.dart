@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:profixer_admin/screens/new_ticket/new_ticket_controller.dart';
-
-import 'package:profixer_admin/widgets/custom_edittext.dart';
 import 'package:intl/intl.dart';
+import 'package:profixer_admin/screens/new_ticket/new_ticket_controller.dart';
+import 'package:profixer_admin/widgets/custom_edittext.dart';
 
 import '../../helpers/custom_colors.dart';
-
 import '../../widgets/custom_appbar.dart';
 import '../../widgets/custom_button.dart';
 
@@ -19,14 +17,27 @@ class NewTicketScreen extends GetView<NewTicketController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        widget: const Align(
+        widget:  Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
-            padding: EdgeInsets.only(bottom: 16.0),
-            child: Text(
-              "New Ticket",
-              style: TextStyle(
-                  color: whiteColor, fontSize: 18, fontWeight: FontWeight.bold),
+            padding: EdgeInsets.symmetric(horizontal: 8,vertical: 6),
+            child: Row(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: whiteColor,
+                    )),
+                const SizedBox(width: 12,),
+                Text(
+                  "New Ticket",
+                  style: TextStyle(
+                      color: whiteColor, fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
           ),
         ),

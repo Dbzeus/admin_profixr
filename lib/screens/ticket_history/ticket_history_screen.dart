@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+
+
 import '../../helpers/custom_colors.dart';
+import 'tab_screen/tab_ticket_details/tab_ticket_details_screen.dart';
+import 'tab_screen/tab_ticket_history/tab_ticket_history_screen.dart';
 
 class TicketHistoryScreen extends StatelessWidget {
   const TicketHistoryScreen({Key? key}) : super(key: key);
@@ -41,8 +45,8 @@ class TicketHistoryScreen extends StatelessWidget {
         ),
 body: TabBarView(
   children: [
-    Icon(Icons.flight, size: 350),
-    Icon(Icons.directions_transit, size: 350),
+    TabTicketDetailsScreen(),
+    TabTicketHistoryScreen(),
 
   ],
 ),

@@ -1,17 +1,6 @@
-
-
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
-class TicketController extends GetxController{
-  TextEditingController searchController = TextEditingController();
-
-  RxString dropDownValue = "InProgress".obs;
-  var items = [
-  'InProgress',
-    'Cancelled',
-  ];
-
+class TabTicketHistoryController extends GetxController {
   var ticketList= [
     {
       "no" : "#1224678299399",
@@ -33,7 +22,7 @@ class TicketController extends GetxController{
       "cusNo" : "6789012435",
       "issue" : "Tap Fixing",
       "date" : "25/04/2023 12.00 ",
-    "ticket" : "closed",
+      "ticket" : "closed",
     },
     {
       "no" : "#567890235678",
@@ -55,7 +44,7 @@ class TicketController extends GetxController{
       "cusNo" : "8892992999",
       "issue" : "Borewell service",
       "date" : "01/05/2023 09.00 ",
-    "ticket" : "open",
+      "ticket" : "open",
     },
     {
       "no" : "#1535378393933",

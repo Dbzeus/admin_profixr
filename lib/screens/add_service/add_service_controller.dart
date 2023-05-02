@@ -15,4 +15,10 @@ class AddServiceController extends GetxController{
     'VAR',
 
   ];
+  RxString categoryDropDownValue = "Plumbing".obs;
+  var categoryItems = [
+    'Plumbing',
+    'Electrician',
+    'Technician',
+  ];
 }

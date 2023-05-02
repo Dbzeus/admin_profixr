@@ -63,10 +63,27 @@ class AddServiceScreen extends GetView<AddServiceController> {
               CustomEditText(
                 hintText: "Service Category",
                 controller: controller.serviceCategoryController,
-                suffixIcon: const Icon(
-                  Icons.keyboard_arrow_down,
-                  color: blackColor,
-                  size: 22,
+                suffixIcon: Obx(
+                      () =>
+                      DropdownButton(
+                          value: controller.categoryDropDownValue.value,
+                          style: const TextStyle(color: blackColor, fontSize: 16),
+                          underline: const SizedBox(),
+                          isExpanded: true,
+                          icon: const Icon(
+                            Icons.keyboard_arrow_down,
+                            color: blackColor,
+                            size: 22,
+                          ),
+                          items: controller.categoryItems.map((String items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: Text(items),
+                            );
+                          }).toList(),
+                          onChanged: (val) {
+                            controller.categoryDropDownValue(val.toString());
+                          }),
                 ),
               ),
               const SizedBox(

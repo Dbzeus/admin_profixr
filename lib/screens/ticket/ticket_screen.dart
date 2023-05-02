@@ -112,11 +112,11 @@ class TicketScreen extends GetView<TicketController> {
             ),
             Expanded(
               child: ListView.builder(
-                  itemCount: 6,
+                  itemCount: controller.ticketList.length,
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   itemBuilder: (_, index) {
-                    return _buildTickets();
+                    return _buildTickets(controller.ticketList[index]);
                   }),
             ),
           ],
@@ -125,7 +125,7 @@ class TicketScreen extends GetView<TicketController> {
     );
   }
 
-  _buildTickets() {
+  _buildTickets(ticketList) {
     return GestureDetector(
       onTap: () {
         Get.toNamed(Routes.ticketHistory);
@@ -154,15 +154,15 @@ class TicketScreen extends GetView<TicketController> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        "Ticket Number, ",
+                       Text(
+                        ticketList["no"].toString(),
                         style: TextStyle(
                             color: blackColor,
                             fontSize: 16,
                             fontWeight: FontWeight.w600),
                       ),
-                      const Text(
-                        "Place ",
+                       Text(
+                        ticketList["place"].toString(),
                         style: TextStyle(
                             color: blackColor,
                             fontSize: 16,
@@ -176,21 +176,21 @@ class TicketScreen extends GetView<TicketController> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        "Technician Name",
-                        overflow: TextOverflow.ellipsis,
+                       Text(
+                        ticketList["techName"].toString(),
+                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: TextStyle(
-                          fontSize: 10,
+                          fontSize: 12,
                           color: blackColor,
                         ),
                       ),
-                      const Text(
-                        "Technician Role",
+                       Text(
+                        ticketList["role"].toString(),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: TextStyle(
-                          fontSize: 10,
+                          fontSize: 12,
                           color: blackColor,
                         ),
                       ),
@@ -199,28 +199,91 @@ class TicketScreen extends GetView<TicketController> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        "Customer Name",
+                       Text(
+                         "Customer: "+ ticketList["cusName"].toString(),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: TextStyle(
-                          fontSize: 10,
+                          fontSize: 12,
                           color: blackColor,
                         ),
                       ),
-                      const Text(
-                        "12345678901",
+                      Text(
+                        ticketList["cusNo"].toString(),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                         style: TextStyle(
-                          fontSize: 10,
+                          fontSize: 12,
                           color: blackColor,
                         ),
                       ),
                     ],
                   ),
-                  const Text(
-                    "Issue ",
+                   const SizedBox(
+                     height: 4,
+                   ),
+                   Row(
+
+                     children: [
+                       Container(
+                         color: primaryColor,
+                         padding: const EdgeInsets.all(4),
+                         child: Text("External",style: TextStyle(
+                           color: whiteColor
+                         ),),
+                       ),
+                       const SizedBox(
+                         width: 8,
+                       ),
+                       Container(
+                         color: cardStackColor,
+                         padding: const EdgeInsets.all(4),
+                         child: Text("Medium",style: TextStyle(
+                           color: whiteColor
+                         ),),
+                       ),
+                       const SizedBox(
+                         width: 8,
+                       ),
+                       Container(
+                         color: cardBgColor,
+                         padding: const EdgeInsets.all(4),
+                         child: Text("None",style: TextStyle(
+                           color: blackColor,
+                         ),),
+                       ),
+                       const SizedBox(
+                         width: 8,
+                       ),
+                       ticketList["ticket"] == "open" ?
+                         Container(
+                           color: Colors.green.shade400,
+                           padding: const EdgeInsets.all(4),
+                           child: Text(ticketList["ticket"].toString(),style: TextStyle(
+                             color: blackColor,
+                           ),),
+                         ) : ticketList["ticket"] == "Assign" ? Container(
+                         color: Colors.yellow,
+                         padding: const EdgeInsets.all(4),
+                         child: Text(ticketList["ticket"].toString(),style: TextStyle(
+                           color: blackColor,
+                         ),),
+                       ) : Container(
+                         color: Colors.red,
+                         padding: const EdgeInsets.all(4),
+                         child: Text(ticketList["ticket"].toString(),style: TextStyle(
+                           color: blackColor,
+                         ),),
+                       ),
+
+
+                     ],
+                   ),
+                   const SizedBox(
+                     height: 6,
+                   ),
+                   Text(
+                     "Issue: "+  ticketList["issue"].toString(),
                     style: TextStyle(
                         color: blackColor,
                         fontSize: 16,
@@ -231,8 +294,8 @@ class TicketScreen extends GetView<TicketController> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    "Date and Time",
+                   Text(
+                    ticketList["date"].toString(),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
                     style: TextStyle(
@@ -240,15 +303,22 @@ class TicketScreen extends GetView<TicketController> {
                       color: blackColor,
                     ),
                   ),
-                  IconButton(
-                      onPressed: () {
-                        showDropDown();
-                        debugPrint("Icon");
-                      },
-                      icon: const Icon(
+                  PopupMenuButton(
+
+                      child: Icon(
                         Icons.more_vert,
                         color: textColor,
-                      ))
+                      ),
+
+                      itemBuilder: (_){
+                        return List.generate(
+                            controller.items.length,
+                                (index) {
+                              return PopupMenuItem(
+                                child: showDropDown(controller.items[index]),
+                              );
+                            });
+                      }),
                 ],
               ),
             ],
@@ -256,25 +326,14 @@ class TicketScreen extends GetView<TicketController> {
     );
   }
 
-  Widget showDropDown() {
-
-        return DropdownButton(
-        value: controller.dropDownValue.value,
-        style: const TextStyle(color: primaryColor, fontSize: 16),
-        underline: const SizedBox(),
-        icon: const Icon(
-          Icons.keyboard_arrow_down,
-          color: primaryColor,
-          size: 16,
-        ),
-        items: controller.items.map((String items) {
-          return DropdownMenuItem(
-            value: items,
-            child: Text(items),
-          );
-        }).toList(),
-        onChanged: (val) {
-          controller.dropDownValue(val.toString());
-        });
+  Widget showDropDown(String item) {
+    return Row(
+      children: [
+        Icon(Icons.downloading,
+          color: primaryColor,),
+        const SizedBox(width: 8),
+        Text(item),
+      ],
+    );
   }
 }

@@ -20,13 +20,14 @@ class TabTicketDetailsScreen extends GetView<TabTicketDetailsController> {
 
       child: Column(
         children: [
-          ListView.builder(
+          ListView.separated(
               itemCount: controller.ticketList1.length,
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               itemBuilder: (_,index){
             return buildList(controller.ticketList1[index], controller.ticketList2[index]);
-          }
+          }, separatorBuilder: (BuildContext context, int index) =>
+                const SizedBox(height: 12,),
           ),
         ],
       )

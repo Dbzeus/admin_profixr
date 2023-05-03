@@ -49,10 +49,10 @@ class TabTicketHistoryScreen extends GetView<TabTicketHistoryController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Assign to Techinician ${ticketList["techName"].toString()}",
+                    "${ticketList["techName"].toString()}",
                     style: TextStyle(
                         color: blackColor,
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.w600),
                   ),
                   const SizedBox(
@@ -86,8 +86,8 @@ class TabTicketHistoryScreen extends GetView<TabTicketHistoryController> {
                       Container(
                         padding: EdgeInsets.all(4),
                         color: primaryColor,
-                        child: const Text(
-                          "Assign",
+                        child: Text(
+                          "${ticketList['ticket']}",
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                           style: TextStyle(

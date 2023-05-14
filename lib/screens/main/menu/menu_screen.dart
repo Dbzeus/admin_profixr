@@ -27,8 +27,10 @@ List menu = [
     "imagePath" : 'assets/icon/menu/serviceprovider.png',
 
   },
-  {"title" : "Technician",
+  {
+    "title" : "Technician",
     "imagePath" : 'assets/icon/menu/technician.png',
+    "path":Routes.technicianDetails,
   },
 
 ];
@@ -97,7 +99,8 @@ List menu = [
               child: Image.asset(
                menu["imagePath"] ,
                 height: 75,
-                width: 50,
+                width: 70,
+                fit: BoxFit.cover,
 
               ),
             ),

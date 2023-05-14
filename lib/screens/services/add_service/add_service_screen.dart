@@ -18,8 +18,12 @@ class AddServiceScreen extends GetView<AddServiceController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
+    return GestureDetector(
+      onTap: (){
+        Get.focusScope!.unfocus();
+      },
+      child:Scaffold(
+resizeToAvoidBottomInset: false,      appBar: CustomAppBar(
         title: controller.title.value,
       ),
       body: SingleChildScrollView(
@@ -173,10 +177,10 @@ class AddServiceScreen extends GetView<AddServiceController> {
                 height: 64,
               ),
               Obx(
-                () => CustomButton(
+                  () => CustomButton(
                     text: controller.buttonTitle.value, onTap: () async {}),
               )
-            ],
+            ],),
           ),
         ),
       ),

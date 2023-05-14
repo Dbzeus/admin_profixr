@@ -1,17 +1,21 @@
 
 import 'package:get/get.dart';
-import 'package:profixer_admin/bank_details/bank_details_screen.dart';
+
 
 
 
 import 'package:profixer_admin/screens/auth/mobile/mobile_login_screen.dart';
 import 'package:profixer_admin/screens/auth/verification/verification_screen.dart';
+import 'package:profixer_admin/screens/bank_details/bank_details_screen.dart';
 import 'package:profixer_admin/screens/category/add_category/add_category_screen.dart';
 import 'package:profixer_admin/screens/category/category_menu/category_Menu_screen.dart';
 
 
 
 import 'package:profixer_admin/screens/main/main_screen.dart';
+import 'package:profixer_admin/screens/main/profile/change_details/change_details_screen.dart';
+
+import 'package:profixer_admin/screens/main/profile/change_password/change_password_screen.dart';
 
 import 'package:profixer_admin/screens/onboarding/language/language_screen.dart';
 import 'package:profixer_admin/screens/onboarding/login_selection/login_selection_screen.dart';
@@ -91,6 +95,13 @@ class AppPages {
       name: Routes.bankDetails,
       page: () =>  BankDetailsScreen(),
     ),
-
+    GetPage(
+      name: Routes.changePassword,
+      page: () =>  ChangePasswordScreen(),
+    ),
+    GetPage(
+      name: Routes.changeDetails,
+      page: () =>  ChangeDetailsScreen(),
+    ),
   ];
 }

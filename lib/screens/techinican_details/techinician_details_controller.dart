@@ -18,6 +18,7 @@ class TechnicianDetailsController extends GetxController{
 
 
   RxBool checkValue = false.obs;
+
   RxString mobileNoDropDownValue = "+966".obs;
   var mobileItems = [
     '+966',

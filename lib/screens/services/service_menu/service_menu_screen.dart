@@ -15,96 +15,101 @@ class ServiceMenuScreen extends GetView<ServiceMenuController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: CustomAppBar(
         title: "Services",
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(
-          top: 16.0,
-          right: 16.0,
-          left: 16.0,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.grey.shade100),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.grey.shade100,
-                              spreadRadius: 1,
-                              blurRadius: 3,
-                              offset: const Offset(0, 2))
-                        ]),
-                    child: TextFormField(
-                      controller: controller.searchController,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: textColor,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: 'Search',
-                        border: InputBorder.none,
-                        prefixIcon: const Icon(
-                          Icons.search,
+      body: GestureDetector(
+        onTap: ()=>Get.focusScope?.unfocus(),
+        child: Padding(
+          padding: const EdgeInsets.only(
+            top: 16.0,
+            right: 16.0,
+            left: 16.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 50,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: Colors.grey.shade100),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey.shade100,
+                                spreadRadius: 1,
+                                blurRadius: 3,
+                                offset: const Offset(0, 2))
+                          ]),
+                      child: TextFormField(
+                        controller: controller.searchController,
+                        style: const TextStyle(
+                          fontSize: 16,
                           color: textColor,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'Search',
+                          border: InputBorder.none,
+                          prefixIcon: const Icon(
+                            Icons.search,
+                            color: textColor,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  height: 50,
-                  width: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: primaryColor,
+                  const SizedBox(
+                    width: 10,
                   ),
-                  child: Center(
-                    child: SvgPicture.asset(
-                      'assets/icon/filter.svg',
-                      height: 12,
-                      width: 12,
+                  Container(
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: primaryColor,
                     ),
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            const Text(
-              "Plumbing",
-              style: TextStyle(
-                  color: Color.fromRGBO(0, 169, 206, 1),
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: 6,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (_, index) {
-                    return _buildServices();
-                  }),
-            ),
-          ],
+                    child: Center(
+                      child: SvgPicture.asset(
+                        'assets/icon/filter.svg',
+                        height: 12,
+                        width: 12,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              const Text(
+                "Plumbing",
+                style: TextStyle(
+                    color: Color.fromRGBO(0, 169, 206, 1),
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Expanded(
+                child: ListView.builder(
+                    itemCount: 6,
+                    padding: EdgeInsets.only(bottom: 72),
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemBuilder: (_, index) {
+                      return _buildServices();
+                    }),
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -132,7 +137,7 @@ class ServiceMenuScreen extends GetView<ServiceMenuController> {
   _buildServices() {
     return GestureDetector(
       onTap: () {
-
+        Get.focusScope?.unfocus();
         Get.toNamed(Routes.addService,arguments: {
           "title": "Edit Services",
           "buttonTitle" : "Save Changes"

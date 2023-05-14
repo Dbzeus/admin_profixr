@@ -13,6 +13,8 @@ class NewTicketController extends GetxController{
   TextEditingController serviceDateController = TextEditingController();
   TextEditingController serviceTimeController = TextEditingController();
 
+  RxString imagePath=''.obs;
+
   String dateFormat ="MM/dd/yyyy";
   String timeFormat = 'hh:mm a';
 

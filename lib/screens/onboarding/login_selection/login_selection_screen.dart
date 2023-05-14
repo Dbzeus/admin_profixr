@@ -16,7 +16,7 @@ class LoginSelectionScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset("assets/animation.gif",
-            fit: BoxFit.cover
+            fit: BoxFit.cover,
             ),
             const SizedBox(
               height: 20,
@@ -47,7 +47,7 @@ class LoginSelectionScreen extends StatelessWidget {
               height: 20,
             ),
             CustomButton(
-                text: "LOGIN",
+                text: "Login",
                 onTap: () {
                   Get.toNamed(Routes.login);
                 }),
@@ -56,7 +56,6 @@ class LoginSelectionScreen extends StatelessWidget {
             ),
             CustomButton(
                 text: "Login with mobile number",
-
                 onTap: () {
                   Get.toNamed(Routes.mobileLogin);
                 }),

@@ -42,11 +42,10 @@ List menu = [
         textColor: blackColor,
         iconColor: blackColor,
         showShadow: true,
+        isHaveLeading: false,
       ),
       body: Column(
         children: [
-
-
           const SizedBox(height: 12,),
           GridView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),

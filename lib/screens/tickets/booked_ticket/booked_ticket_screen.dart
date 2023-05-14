@@ -18,87 +18,110 @@ class BookedTicketScreen extends GetView<BookedTicketController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: CustomAppBar(
-        title: "Booked",
+        title: controller.title,
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(
-          top: 16.0,
-          right: 16.0,
-          left: 16.0,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.grey.shade100),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.grey.shade100,
-                              spreadRadius: 1,
-                              blurRadius: 3,
-                              offset: const Offset(0, 2))
-                        ]),
-                    child: TextFormField(
-                      controller: controller.searchController,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: textColor,
-                      ),
-                      decoration: const InputDecoration(
-                        hintText: 'Search',
-                        border: InputBorder.none,
-                        prefixIcon: Icon(
-                          Icons.search,
+      body: GestureDetector(
+        onTap: ()=>Get.focusScope?.unfocus(),
+        child: Padding(
+          padding: const EdgeInsets.only(
+            top: 16.0,
+            right: 16.0,
+            left: 16.0,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 50,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: Colors.grey.shade100),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey.shade100,
+                                spreadRadius: 1,
+                                blurRadius: 3,
+                                offset: const Offset(0, 2))
+                          ]),
+                      child: TextFormField(
+                        controller: controller.searchController,
+                        style: const TextStyle(
+                          fontSize: 16,
                           color: textColor,
+                        ),
+                        decoration: const InputDecoration(
+                          hintText: 'Search',
+                          border: InputBorder.none,
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: textColor,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  height: 50,
-                  width: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: primaryColor,
+                  const SizedBox(
+                    width: 10,
                   ),
-                  child: Center(
-                    child: SvgPicture.asset(
-                      'assets/icon/filter.svg',
-                      height: 12,
-                      width: 12,
+                  Container(
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: primaryColor,
                     ),
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-            Expanded(
-              child: ListView.builder(
-                  itemCount: controller.ticketList.length,
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemBuilder: (_, index) {
-                    return _buildTickets2(controller.ticketList[index]);
-                  }),
-            ),
-          ],
+                    child: Center(
+                      child: SvgPicture.asset(
+                        'assets/icon/filter.svg',
+                        height: 12,
+                        width: 12,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              Expanded(
+                child: ListView.builder(
+                  padding: EdgeInsets.only(bottom: 70),
+                    itemCount: controller.ticketList.length,
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemBuilder: (_, index) {
+                      return _buildTickets2(controller.ticketList[index]);
+                    }),
+              ),
+
+            ],
+          ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: (){
+            Get.focusScope?.unfocus();
+            Get.toNamed(Routes.newTicket);
+          },
+          elevation: 4,
+          backgroundColor: primaryColor,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+                Radius.circular(8)
+            ),
+          ),
+          child: const Icon(
+            Icons.add,
+            color: whiteColor,
+          )
       ),
     );
   }
@@ -131,8 +154,8 @@ class BookedTicketScreen extends GetView<BookedTicketController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  height: 55,
-                  width: 50,
+                  height: 45,
+                  width: 40,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
                     color: const Color.fromRGBO(0, 169, 206, 1),
@@ -140,8 +163,8 @@ class BookedTicketScreen extends GetView<BookedTicketController> {
                   child: Center(
                     child: SvgPicture.asset(
                       'assets/icon/waterdrop.svg',
-                      height: 30,
-                      width: 30,
+                      height: 25,
+                      width: 25,
                     ),
                   ),
                 ),
@@ -236,11 +259,15 @@ class BookedTicketScreen extends GetView<BookedTicketController> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            "1/3, North Street, North Town, Arabia - 03",
-                            style: const TextStyle(
-                              color: blackColor,
-                              fontSize: 10,
+                          Expanded(
+                            child: Text(
+                              "1/3, North Street, North Town, Arabia - 03",
+                              style: const TextStyle(
+                                color: blackColor,
+                                fontSize: 10,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           Text(
@@ -277,9 +304,7 @@ class BookedTicketScreen extends GetView<BookedTicketController> {
                   ),
                   TextSpan(text: " SAR"),
                 ])),
-            const SizedBox(
-              height: 10,
-            ),
+            const Divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [

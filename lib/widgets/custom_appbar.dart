@@ -11,12 +11,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.textColor = whiteColor,
     this.iconColor = whiteColor,
     this.showShadow=false,
+    this.isHaveLeading=true,
     Key? key}) : super(key: key);
 
   Color bgColor,textColor,iconColor;
   bool showShadow;
   double height;
   String title;
+  bool isHaveLeading;
 
 
   @override
@@ -38,10 +40,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               bottomRight: Radius.circular(20),
               bottomLeft: Radius.circular(20),
             )),
-        child: Align(
+        child: isHaveLeading ? Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 8,vertical:6),
             child: Row(
               children: [
                 IconButton(
@@ -60,6 +62,17 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                       color: textColor, fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ],
+            ),
+          ),
+        ) : Center(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 20),
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              style:
+              TextStyle(
+                  color: textColor, fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
         ),

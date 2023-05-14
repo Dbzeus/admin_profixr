@@ -116,7 +116,9 @@ class HomeScreen extends GetView<HomeController> {
   _buildDashboard(Map<String, String> dashboard){
     return GestureDetector(
       onTap: (){
-        Get.toNamed(Routes.bookedTicket,arguments: dashboard['title']);
+        Get.toNamed(Routes.bookedTicket,arguments: {
+          "title":"${dashboard['title']}"
+        });
       },
       child: Container(
         margin: const EdgeInsets.only(top: 12),

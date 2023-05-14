@@ -6,6 +6,8 @@ class AddCategroyController extends GetxController{
   RxString buttonTitle = "".obs;
 TextEditingController categoryNameController = TextEditingController();
 
+RxString imagePath="".obs;
+
 @override
   void onInit() {
   title (Get.arguments["title"]);

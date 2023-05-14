@@ -21,6 +21,7 @@ dependencies:
   intl: ^0.18.1
   image_picker:
   flutter_native_splash:
+#  timelineview:
 
 flutter_native_splash:
   android: true
@@ -54,6 +55,7 @@ flutter:
     - assets/icon/
     - assets/icon/menu/
     - assets/icon/dashboard/
+    - assets/icon/language/
 
 flutter_icons:
   android: "launcher_icon"

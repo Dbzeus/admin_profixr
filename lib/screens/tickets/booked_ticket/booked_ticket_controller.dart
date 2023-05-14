@@ -8,6 +8,7 @@ class BookedTicketController extends GetxController{
 
   RxString dropDownValue = "InProgress".obs;
 
+  String title=Get.arguments['title'] ?? 'Tickets';
 
   var ticketList= [
     {

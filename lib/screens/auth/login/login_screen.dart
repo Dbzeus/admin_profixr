@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
@@ -26,7 +27,18 @@ class LoginScreen extends GetView<LoginController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 64,),
+              const SizedBox(height: 52,),
+              GestureDetector(
+                onTap:  (){
+                  Get.back();
+                },
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: SvgPicture.asset('assets/icon/back.svg')),
+              ),
+              const SizedBox(
+                height: 32,
+              ),
               const Text(
                 "Login",
                 style: TextStyle(

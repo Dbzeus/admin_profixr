@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -5,9 +7,9 @@ import 'package:profixer_admin/helpers/constant_widgets.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/screens/tickets/new_ticket/new_ticket_controller.dart';
 import 'package:profixer_admin/widgets/custom_appbar.dart';
-import 'package:profixer_admin/widgets/custom_button.dart';
-
 import 'package:profixer_admin/widgets/custom_edittext.dart';
+
+import '../../../helpers/custom_dialog.dart';
 
 class NewTicketScreen extends GetView<NewTicketController> {
   final controller = Get.put(NewTicketController());
@@ -262,7 +264,51 @@ class NewTicketScreen extends GetView<NewTicketController> {
                   const SizedBox(
                     height: 20,
                   ),
-                  uploadButton(),
+                  Obx(() => controller.imagePath.value.isNotEmpty
+                      ? Container(
+                          height: 150,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(image: FileImage(File(controller.imagePath.value)),fit: BoxFit.cover),
+                            borderRadius: BorderRadius.circular(8),
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.transparent,
+                                Colors.black12,
+                                Colors.black54,
+                                Colors.black87
+                              ],
+                            ),
+                          ),
+                    padding: EdgeInsets.symmetric(horizontal: 8,vertical: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        GestureDetector(
+                            onTap: () {
+                              controller.imagePath("");
+                            },
+                            child: Icon(Icons.close,color: Colors.white,)),
+                        const Spacer(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Icon(Icons.remove_red_eye_outlined,size: 14,color: Colors.white,),
+                            const SizedBox(width: 4,),
+                            Text('Preview',style: TextStyle(color: Colors.white,fontSize: 12),)
+                          ],
+                        )
+                      ],
+                    ),
+                        )
+                      : const SizedBox()),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  uploadButton(() async {
+                    controller.imagePath(await getImageFromGallery() ?? controller.imagePath.value);
+                  }),
                   const SizedBox(
                     height: 20,
                   ),
@@ -304,33 +350,42 @@ class NewTicketScreen extends GetView<NewTicketController> {
                       ),
                       TextSpan(text: " SAR"),
                     ])),
-                Container(
-                  height: 55,
-                  width: 155,
-                  decoration: BoxDecoration(
-                    color: blackColor,
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: Center(
-                    child: Row(
-
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                         Text("BOOK",
-                        style: TextStyle(
-                          color: whiteColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),),
-                        Icon(Icons.arrow_right_rounded,
-                        size: 50,
-                        color: whiteColor,)
-                      ],
+                GestureDetector(
+                  onTap: () => customDialog(Get.context, () {
+                    Get.back();
+                  }),
+                  child: Container(
+                    height: 55,
+                    width: 155,
+                    decoration: BoxDecoration(
+                      color: blackColor,
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          const SizedBox(
+                            width: 12,
+                          ),
+                          Text(
+                            "BOOK",
+                            style: TextStyle(
+                              color: whiteColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Icon(
+                            Icons.arrow_right_rounded,
+                            size: 50,
+                            color: whiteColor,
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
-
-
               ],
             ),
           )

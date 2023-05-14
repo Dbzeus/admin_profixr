@@ -38,7 +38,7 @@ class TicketDetailsScreen extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            const SizedBox(
+                            SizedBox(
                               width: 90,
                               height: 40,
                             ),
@@ -289,7 +289,11 @@ class TicketDetailsScreen extends StatelessWidget {
                                   TextSpan(text: " SAR"),
                                 ])),
                         const SizedBox(
-                          height: 10,
+                          height: 12,
+                        ),
+                        const Divider(),
+                        const SizedBox(
+                          height: 12,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -371,11 +375,43 @@ class TicketDetailsScreen extends StatelessWidget {
                       color: primaryColor,
                       borderRadius: BorderRadius.circular(4),
                     ),
+                    child: Image.asset('assets/icon/profixer.png',width: 80,height: 30,),
                   ),
                 ),
-      ],
+              ],
             ),
-
+            Container(
+              width: MediaQuery.of(Get.context!).size.width,
+              padding: const EdgeInsets.all(12),
+              margin: const EdgeInsets.symmetric(vertical: 15),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.grey.shade100),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.grey.shade100,
+                        spreadRadius: 1,
+                        blurRadius: 3,
+                        offset: const Offset(0, 2))
+                  ]),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text('Ticket Detail',style: TextStyle(
+                        color: primaryColor,
+                        fontWeight: FontWeight.w700
+                      ),),
+                      Icon(Icons.download)
+                    ],
+                  ),
+                  const Divider(),
+                ],
+              ),
+            )
           ],
         ),
       ),

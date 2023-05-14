@@ -12,5 +12,7 @@ abstract class Routes {
   static const newTicket = "/newTicket";
   static const bookedTicket = "/bookedTicket";
   static const ticketDetails = "/ticketDetails";
+  static const technicianDetails = "/technicianDetails";
+  static const bankDetails = "/bankDetails";
 
 }

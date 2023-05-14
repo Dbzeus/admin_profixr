@@ -17,43 +17,49 @@ class AddCategoryScreen extends GetView<AddCategroyController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: controller.title.value
+    return GestureDetector(
+      onTap: (){
+        Get.focusScope!.unfocus();
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: CustomAppBar(
+          title: controller.title.value
 
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.868,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 10,
-              ),
-              CustomEditText(
-                  hintText: "Category Name",
-                  controller: controller.categoryNameController),
+        ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height * 0.868,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                CustomEditText(
+                    hintText: "Category Name",
+                    controller: controller.categoryNameController),
 
-              const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                "Category Logo",
-                style: TextStyle(color: hintColor, fontSize: 12),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              uploadButton(),
-              const Spacer(),
-              Obx(()=>
-                 CustomButton(text: controller.buttonTitle.value, onTap: (){
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text(
+                  "Category Logo",
+                  style: TextStyle(color: hintColor, fontSize: 12),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                uploadButton(),
+                const Spacer(),
+                Obx(()=>
+                   CustomButton(text: controller.buttonTitle.value, onTap: (){
 
-                }),
-              )
-            ],
+                  }),
+                )
+              ],
+            ),
           ),
         ),
       ),

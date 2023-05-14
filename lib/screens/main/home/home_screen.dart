@@ -17,11 +17,24 @@ class HomeScreen extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-          height: 100,
-          bgColor: Colors.white,
-          showShadow: true,
-          widget: Column(
+      appBar:  PreferredSize(
+        preferredSize: Size.fromHeight(MediaQuery.of(context).size.height * 0.14),
+        child: Container(
+          height:  100,
+          decoration: BoxDecoration(
+              color: whiteColor,
+              boxShadow:  [
+                BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10,
+                    offset: Offset(0.0, 0.75)
+                )
+              ] ,
+              borderRadius: const BorderRadius.only(
+                bottomRight: Radius.circular(16),
+                bottomLeft: Radius.circular(16),
+              )),
+          child:  Column(
             children: [
               const Spacer(),
               Padding(
@@ -48,8 +61,10 @@ class HomeScreen extends GetView<HomeController> {
               ),
             ],
           ),
+        ),
 
       ),
+
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,13 +94,29 @@ class HomeScreen extends GetView<HomeController> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          Get.toNamed(Routes.newTicket);
+        },
+        elevation: 4,
+        backgroundColor: primaryColor,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(8)
+          ),
+        ),
+        child: const Icon(
+          Icons.add,
+          color: whiteColor,
+        )
+      ),
     );
   }
 
   _buildDashboard(Map<String, String> dashboard){
     return GestureDetector(
       onTap: (){
-        Get.toNamed(Routes.ticket,arguments: dashboard['title']);
+        Get.toNamed(Routes.bookedTicket,arguments: dashboard['title']);
       },
       child: Container(
         margin: const EdgeInsets.only(top: 12),
@@ -143,7 +174,7 @@ class HomeScreen extends GetView<HomeController> {
                 right: 0,
                 child: Container(
                   decoration: BoxDecoration(
-                      color: primaryColor,
+                      color: blackColor,
                       borderRadius: BorderRadius.only(bottomRight: Radius.circular(16),topLeft: Radius.circular(8))
                   ),
                   width: 30,

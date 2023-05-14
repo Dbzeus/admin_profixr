@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
+import 'package:profixer_admin/widgets/custom_appbar.dart';
 
 import '../../../helpers/custom_colors.dart';
 
@@ -16,29 +17,36 @@ List menu = [
     "imagePath" : 'assets/icon/menu/category.png',
     "path":Routes.categoryMenu,
   },
-  {"title" : "Technician",
-    "imagePath" : 'assets/icon/menu/technician.png',
-  },
+  {"title" : "Profixers",
+    "imagePath" : 'assets/icon/menu/profixer.png',
+  },  
   {"title" : "Customer",
     "imagePath" : 'assets/icon/menu/customer.png',
   },
-  {"title" : "New Ticket",
-    "imagePath" : 'assets/icon/menu/new_ticket.png',
-    "path":Routes.newTicket,
+  {"title" : "Service Provider",
+    "imagePath" : 'assets/icon/menu/serviceprovider.png',
 
   },
+  {"title" : "Technician",
+    "imagePath" : 'assets/icon/menu/technician.png',
+  },
+
 ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(
+        title: "Menu",
+        bgColor: whiteColor,
+        textColor: blackColor,
+        iconColor: blackColor,
+        showShadow: true,
+      ),
       body: Column(
         children: [
-          const SizedBox(height: 40,),
-          const Text(
-            'Menu',
-            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
-          ),
+
+
           const SizedBox(height: 12,),
           GridView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
@@ -89,8 +97,9 @@ List menu = [
               alignment: Alignment.centerRight,
               child: Image.asset(
                menu["imagePath"] ,
-                height: 65,
+                height: 75,
                 width: 50,
+
               ),
             ),
             // Align(

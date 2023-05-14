@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:profixer_admin/helpers/custom_colors.dart';
+import 'package:profixer_admin/widgets/custom_appbar.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -6,16 +8,16 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(
+        title: "Profile",
+        bgColor: whiteColor,
+        textColor: blackColor,
+        iconColor: blackColor,
+        showShadow: true,
+      ),
       body: Column(
         children: [
-          const SizedBox(height: 40,),
-          Center(
-            child: const Text(
-              'Profile',
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
-            ),
-          ),
-          const SizedBox(height: 12,),
+
         ],
       ),
     );

@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.profixer.admin.profixer_admin">
+    package="com.dbzeus.profixadmin">
     <uses-permission
         android:name="android.permission.INTERNET"/>
     <application

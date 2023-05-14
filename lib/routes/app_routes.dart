@@ -1,5 +1,6 @@
 abstract class Routes {
   static const language = "/language";
+  static const loginSelection = "/loginSelection";
   static const login = "/login";
   static const mobileLogin = "/mobileLogin";
   static const verification = "/verification";
@@ -9,7 +10,7 @@ abstract class Routes {
   static const categoryMenu = "/categoryMenu";
   static const addCategory = "/addCategory";
   static const newTicket = "/newTicket";
-  static const ticket = "/ticket";
-  static const ticketHistory = "/ticketHistory";
+  static const bookedTicket = "/bookedTicket";
+  static const ticketDetails = "/ticketDetails";
 
 }

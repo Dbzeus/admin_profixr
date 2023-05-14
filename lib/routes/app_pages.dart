@@ -1,19 +1,27 @@
-import 'package:flutter/foundation.dart';
+
 import 'package:get/get.dart';
-import 'package:profixer_admin/screens/add_category/add_category_screen.dart';
-import 'package:profixer_admin/screens/add_service/add_service_screen.dart';
+
+
+
 import 'package:profixer_admin/screens/auth/mobile/mobile_login_screen.dart';
 import 'package:profixer_admin/screens/auth/verification/verification_screen.dart';
+import 'package:profixer_admin/screens/category/add_category/add_category_screen.dart';
+import 'package:profixer_admin/screens/category/category_menu/category_Menu_screen.dart';
 
-import 'package:profixer_admin/screens/category_menu/category_Menu_screen.dart';
+
 
 import 'package:profixer_admin/screens/main/main_screen.dart';
-import 'package:profixer_admin/screens/new_ticket/new_ticket_screen.dart';
-import 'package:profixer_admin/screens/onboarding/language/language_screen.dart';
 
-import 'package:profixer_admin/screens/service_menu/service_menu_screen.dart';
-import 'package:profixer_admin/screens/ticket/ticket_screen.dart';
-import 'package:profixer_admin/screens/ticket_history/ticket_history_screen.dart';
+import 'package:profixer_admin/screens/onboarding/language/language_screen.dart';
+import 'package:profixer_admin/screens/onboarding/login_selection/login_selection_screen.dart';
+import 'package:profixer_admin/screens/services/add_service/add_service_screen.dart';
+import 'package:profixer_admin/screens/services/service_menu/service_menu_screen.dart';
+import 'package:profixer_admin/screens/tickets/booked_ticket/booked_ticket_screen.dart';
+import 'package:profixer_admin/screens/tickets/new_ticket/new_ticket_screen.dart';
+import 'package:profixer_admin/screens/tickets/ticket_details/ticket_details_screen.dart';
+
+
+
 
 
 
@@ -25,6 +33,9 @@ class AppPages {
     GetPage(
       name: Routes.language,
       page: () => const LanguageScreen(),
+    ),GetPage(
+      name: Routes.loginSelection,
+      page: () => const LoginSelectionScreen(),
     ),
     GetPage(
       name: Routes.login,
@@ -63,12 +74,13 @@ class AppPages {
       page: () =>  NewTicketScreen(),
     ),
     GetPage(
-      name: Routes.ticket,
-      page: () =>  TicketScreen(),
+      name: Routes.bookedTicket,
+      page: () =>  BookedTicketScreen(),
     ),
     GetPage(
-      name: Routes.ticketHistory,
-      page: () =>  TicketHistoryScreen(),
+      name: Routes.ticketDetails,
+      page: () =>  TicketDetailsScreen(),
     ),
+
   ];
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
 
@@ -44,21 +45,21 @@ class _LanguageScreenState extends State<LanguageScreen> {
             const SizedBox(
               height: 64,
             ),
-            _buildLanguageButton('English'),
+            _buildLanguageButton('English',"assets/icon/language/english.svg",),
             const SizedBox(
               height: 16,
             ),
-            _buildLanguageButton('Arabic'),
+            _buildLanguageButton('Arabic',"assets/icon/language/arabic.svg",),
           ],
         ),
       ),
     );
   }
 
-  _buildLanguageButton(String title) {
+  _buildLanguageButton(String title, String icon) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.login);
+        Get.toNamed(Routes.loginSelection);
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -75,10 +76,23 @@ class _LanguageScreenState extends State<LanguageScreen> {
                   offset: const Offset(0, 2))
             ]),
         child: Center(
-            child: Text(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(icon,
+                width: 13,
+                  height: 13,
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                Text(
           title,
-          style: const TextStyle(color: primaryColor, fontSize: 15),
-        )),
+          style: const TextStyle(color: primaryColor, fontSize: 15,),
+        ),
+              ],
+            )),
       ),
     );
   }

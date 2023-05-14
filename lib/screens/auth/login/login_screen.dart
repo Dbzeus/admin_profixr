@@ -101,13 +101,13 @@ class LoginScreen extends GetView<LoginController> {
                   )
                 ],
               )),
-              const Spacer(),
+              /*const Spacer(),
               CustomButton(text: "Login with mobile number",
                   btnColor: Colors.black,
                   textColor: Colors.white,
                   onTap: () {
                 Get.toNamed(Routes.mobileLogin);
-              }),
+              }),*/
 
             ],
           ),

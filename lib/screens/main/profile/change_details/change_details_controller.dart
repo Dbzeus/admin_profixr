@@ -16,10 +16,10 @@ class ChangeDetailsController extends GetxController{
     '+969',
   ];
 
-  RxString designationDropDownValue = "Male".obs;
+  RxString designationDropDownValue = "Admin".obs;
   var designationItems = [
-    'Male',
-    'Female',
-    'Other',
+    'Admin',
+    'Techinician',
+    'Customer',
   ];
 }

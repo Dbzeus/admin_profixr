@@ -25,15 +25,15 @@ class ProfileScreen extends StatelessWidget {
           children: [
             const SizedBox(height: 24,),
             CircleAvatar(
-              backgroundColor: primaryColor.withAlpha(30),
+              backgroundColor: cardBgColor,
               radius: 70,
               child: CircleAvatar(
-                backgroundColor: primaryColor.withAlpha(60),
+                backgroundColor: cardStackColor.withAlpha(60),
                 radius: 60,
-                child: CircleAvatar(
-                  backgroundImage: CachedNetworkImageProvider(
+                child: const CircleAvatar(
+                  backgroundImage: AssetImage("assets/icon/menu/profixer.png",),/*CachedNetworkImageProvider(
                     'https://lh3.googleusercontent.com/ogw/AOLn63FrRz1Sj7YR6k9tIBht1Hp_Xbr2osMhWRMybXZDRg=s32-c-mo'
-                  ),
+                  ),*/
                   radius: 50,
                 ),
               ),
@@ -76,15 +76,15 @@ class ProfileScreen extends StatelessWidget {
               ),
               child: Column(
                 children: [
-                  _buildMenu('assets/icon/menu/category.png','Change Account Details',(){
+                  _buildMenu(Icons.person,'Change Account Details',(){
                     Get.toNamed(Routes.changeDetails);
                   }),
                   const Divider(),
-                  _buildMenu('assets/icon/menu/category.png','Change Password',(){
+                  _buildMenu(Icons.lock_person_rounded,'Change Password',(){
                     Get.toNamed(Routes.changePassword);
                   }),
                   const Divider(),
-                  _buildMenu('assets/icon/menu/category.png','Privacy Policy',(){}),
+                  _buildMenu(Icons.info_outline_rounded,'Privacy Policy',(){}),
                 ],
               ),
             ),
@@ -110,7 +110,13 @@ class ProfileScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset('assets/icon/menu/category.png',width: 20,height: 20,),
+                    Icon(
+                      Icons.logout_outlined ,
+                      size: 25,
+                        color: Colors.red
+                    ),
+
+                   
                     const SizedBox(width: 8,),
                     Text('Logout',style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -126,14 +132,28 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  _buildMenu(String imagePath,String title,Function onTab){
+  _buildMenu(IconData icon,String title,  Function()? onTap,){
     return GestureDetector(
-      onTap: ()=>onTab,
+      onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
-            Image.asset(imagePath,width: 20,height: 20,),
+            Container(
+              width: 30,
+              height: 30,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: cardStackColor,
+              ),
+              child: Center(
+                child: Icon(
+                 icon ,
+                  size: 20,
+                  color: whiteColor,
+                )
+              ),
+            ),
             const SizedBox(width: 8,),
             Expanded(child: Text(title,style: TextStyle(
               fontWeight: FontWeight.bold

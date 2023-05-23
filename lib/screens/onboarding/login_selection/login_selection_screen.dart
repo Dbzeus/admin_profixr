@@ -16,7 +16,8 @@ class LoginSelectionScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset("assets/animation.gif",
-            fit: BoxFit.cover,
+           //ss width: MediaQuery.of(context).size.width,
+            fit: BoxFit.fitWidth,
             ),
             const SizedBox(
               height: 20,

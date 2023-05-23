@@ -74,12 +74,12 @@ class LoginScreen extends GetView<LoginController> {
                   obscureText: controller.isVisible.value,
                   keyboardType: TextInputType.visiblePassword,
                   suffixIcon: IconButton(
-                    splashRadius: 20,
+                    splashRadius: 18,
                     onPressed: () {
                       controller.isVisible(!controller.isVisible.value);
                     },
                     icon: Icon(
-                      size: 22,
+                      size: 16,
                       controller.isVisible.value
                           ? Icons.remove_red_eye_rounded
                           : Icons.remove_red_eye_outlined,

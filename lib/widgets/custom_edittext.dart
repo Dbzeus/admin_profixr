@@ -8,7 +8,7 @@ class CustomEditText extends StatelessWidget {
   bool isDense, obscureText,readOnly,showCursor;
   double? borderRadius;
   TextInputType? keyboardType;
-  int? maxLength,maxLines;
+  int? maxLength,maxLines,minLines;
   TextAlign? textAlign;
   Function(String)? onChanged;
   Function()? onTab;
@@ -18,6 +18,7 @@ class CustomEditText extends StatelessWidget {
       {required this.hintText,
         this.maxLength,
         this.maxLines = 1,
+        this.minLines = 1,
         required this.controller,
         this.suffixIcon,
         this.prefixIcon,
@@ -46,6 +47,7 @@ class CustomEditText extends StatelessWidget {
         TextFormField(
           onChanged: onChanged,
           maxLines: maxLines,
+          minLines: minLines,
           textAlign: textAlign ?? TextAlign.start,
           keyboardType: keyboardType,
           maxLength: maxLength,
@@ -58,16 +60,14 @@ class CustomEditText extends StatelessWidget {
           cursorHeight: 28,
           style: const TextStyle(fontSize: 16),
           inputFormatters: inputFormatters ?? [],
-
           decoration: InputDecoration(
               isDense: isDense,
               suffixIcon: suffixIcon,
               prefixIcon: prefixIcon,
-
               counter: null,
               counterText: '',
             focusColor: Colors.black,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 8,vertical: 12),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 8,vertical: 2),
             // border: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
             // focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
              ),

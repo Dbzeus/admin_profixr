@@ -23,9 +23,15 @@ class ApiCall {
   }
 
   //Login
-  Future<dynamic> checkLogin(String userName, String password, String mobileToken,String webToken) async {
+  Future<dynamic> checkLogin(String userName, String password,
+      String mobileToken, String webToken) async {
     try {
-      var params = {"UserName": userName, "Password": password, "MobileToken": mobileToken, "WebToken": webToken};
+      var params = {
+        "UserName": userName,
+        "Password": password,
+        "MobileToken": mobileToken,
+        "WebToken": webToken
+      };
 
       log(jsonEncode(params));
 
@@ -44,11 +50,14 @@ class ApiCall {
     return null;
   }
 
-
   //sendLoginOTP
   Future<dynamic> sendOTP(String mobileNo, String signature, int otp) async {
     try {
-      var params = {"MobileNo": mobileNo, "Signature": signature, "OTP": otp, };
+      var params = {
+        "MobileNo": mobileNo,
+        "Signature": signature,
+        "OTP": otp,
+      };
 
       log(jsonEncode(params));
 
@@ -68,9 +77,14 @@ class ApiCall {
   }
 
   //check Log in by mobileNumber verify otp.(this api is used for get the user details using mobile number)
-  Future<dynamic> loginDetailsByMobile(String mobileNo, String mobileToken,String webToken) async {
+  Future<dynamic> loginDetailsByMobile(
+      String mobileNo, String mobileToken, String webToken) async {
     try {
-      var params = {"MobileNo": mobileNo, "MobileToken": mobileToken, "WebToken": webToken, };
+      var params = {
+        "MobileNo": mobileNo,
+        "MobileToken": mobileToken,
+        "WebToken": webToken,
+      };
 
       log(jsonEncode(params));
 
@@ -84,22 +98,20 @@ class ApiCall {
       toast(e.message);
     } catch (e) {
       log(e.toString());
-      toast(null) ;
+      toast(null);
     }
     return null;
   }
 
   Future<dynamic> getMenu(int userId) async {
     try {
-
       var params = {
         "RoleID": userId,
-
       };
       final response = await _dio.get(getMenuUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
-     return response.data;
+      return response.data;
     } on DioError catch (e) {
       log(e.message);
       toast(e.message);
@@ -110,5 +122,600 @@ class ApiCall {
     return null;
   }
 
+  /*master apis*/
+  Future<dynamic> getCountry({int countryId = 0}) async {
+    try {
+      var params = {
+        "CountryID": countryId,
+      };
+      final response = await _dio.get(getCountryUrl, queryParameters: params);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> getCity({int countryId = 0, int cityId = 0}) async {
+    try {
+      var params = {
+        "CountryID": countryId,
+        "CityID": cityId,
+      };
+      final response = await _dio.get(getCityUrl, queryParameters: params);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> insertCity(var body) async {
+    try {
+      /*
+      * {
+          "CityID": 0,
+          "CityName": "string",
+          "CountryID": 0,
+          "IsActive": true,
+          "CUID": 0
+        }
+      * */
+
+      final response = await _dio.post(insertCityUrl, data: body);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> getArea({int cityId = 0, int areaId = 0}) async {
+    try {
+      var params = {
+        "AreaID": areaId,
+        "CityID": cityId,
+      };
+      final response = await _dio.get(getAreaUrl, queryParameters: params);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> insertArea(var body) async {
+    try {
+      /*
+      * {
+        "AreaID": 0,
+        "AreaName": "string",
+        "PinCode": "string",
+        "CityID": 0,
+        "IsActive": true,
+        "CUID": 0
+      }
+      * */
+
+      final response = await _dio.post(insertAreaUrl, data: body);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> getService({int serviceId = 0}) async {
+    try {
+      var params = {
+        "ServiceID": serviceId,
+      };
+      final response = await _dio.get(getServiceUrl, queryParameters: params);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> insertService(var body) async {
+    try {
+      /*
+      *
+        {
+  "ServiceID": 0,
+  "ServiceName": "string",
+  "ServiceImg": "string",
+  "Remarks": "string",
+  "IsActive": true,
+  "CUID": 0
+}
+      * */
+
+      final response = await _dio.post(insertServiceUrl, data: body);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> getComplaintNature(
+      {int serviceId = 0, int complaintNatureId = 0}) async {
+    try {
+      var params = {
+        "ServiceID": serviceId,
+        "ComplaintNatureID": complaintNatureId,
+      };
+      final response =
+          await _dio.get(getComplaintNatureUrl, queryParameters: params);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> insertComplaintNature(var body) async {
+    try {
+      /*
+      *
+        {
+  "ComplaintNatureID": 0,
+  "ServiceID": 0,
+  "ComplaintNatureName": "string",
+  "ComplaintNatureImg": "string",
+  "Remarks": "string",
+  "IsActive": true,
+  "CUID": 0
+}
+      * */
+
+      final response = await _dio.post(insertComplaintNatureUrl, data: body);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> getProfixerUser({int userId = 0}) async {
+    try {
+      var params = {
+        "UserID": userId,
+      };
+      final response =
+          await _dio.get(getProfixerUserUrl, queryParameters: params);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> insertProfixerUser(var body) async {
+    try {
+      /*
+      *
+       {
+  "UserID": 0,
+  "FirstName": "string",
+  "LastName": "string",
+  "Desigination": "string",
+  "DOB": "2023-05-24T16:16:05.411Z",
+  "DOJ": "2023-05-24T16:16:05.411Z",
+  "MobileNo": "string",
+  "CurrentAddress": "string",
+  "PermanentAddress": "string",
+  "IsRelived": true,
+  "RelivedDate": "2023-05-24T16:16:05.411Z",
+  "RelivedReason": "string",
+  "UserName": "string",
+  "Password": "string",
+  "IsActive": true,
+  "CUID": 0
+}
+      * */
+
+      final response = await _dio.post(insertProfixerUrl, data: body);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> getServiceProvider({int providerId = 0}) async {
+    try {
+      var params = {
+        "ServiceProviderID": providerId,
+      };
+      final response =
+          await _dio.get(getServiceProviderUrl, queryParameters: params);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> insertServiceProvider(var body) async {
+    try {
+      /*
+      *
+       {
+  "ServiceProviderID": 0,
+  "ServiceProviderName": "string",
+  "ContactPerson": "string",
+  "ContactNumber": "string",
+  "ContactMailID": "string",
+  "ContactAddress": "string",
+  "TaxDetails": "string",
+  "BankDetails": "string",
+  "ServiceIDs": "string",
+  "AreaIDs": "string",
+  "ContractStartDate": "2023-05-24T16:16:05.417Z",
+  "ContractEndDate": "2023-05-24T16:16:05.417Z",
+  "IsActive": true,
+  "CUID": 0
+}
+      * */
+
+      final response = await _dio.post(insertServiceProviderUrl, data: body);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> getServiceProviderService({int providerId = 0}) async {
+    try {
+      var params = {
+        "ServiceProviderID": providerId,
+      };
+      final response =
+          await _dio.get(getServiceProviderServiceUrl, queryParameters: params);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> getServiceProviderArea({int providerId = 0}) async {
+    try {
+      var params = {
+        "ServiceProviderID": providerId,
+      };
+      final response =
+          await _dio.get(getServiceProviderAreaUrl, queryParameters: params);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> insertServiceProviderUser(var body) async {
+    try {
+      /*
+      *
+      {
+  "ServiceProviderUserID": 0,
+  "UserID": 0,
+  "ServiceProviderID": 0,
+  "FirstName": "string",
+  "LastName": "string",
+  "MobileNumber": "string",
+  "MailID": "string",
+  "ContactAddress": "string",
+  "PermanentAddress": "string",
+  "DOB": "2023-05-24T16:16:05.424Z",
+  "DOJ": "2023-05-24T16:16:05.424Z",
+  "Username": "string",
+  "Password": "string",
+  "IsActive": true,
+  "CUID": 0
+}
+      * */
+
+      final response =
+          await _dio.post(insertServiceProviderUserUrl, data: body);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> getServiceProviderUser(
+      {int providerId = 0, int userId = 0}) async {
+    try {
+      var params = {
+        "ServiceProviderID": providerId,
+        "UserID": userId,
+      };
+      final response =
+          await _dio.get(getServiceProviderUserUrl, queryParameters: params);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> getServiceProviderTechnician(
+      {int providerId = 0, int userId = 0}) async {
+    try {
+      var params = {
+        "ServiceProviderID": providerId,
+        "UserID": userId,
+      };
+      final response = await _dio.get(getServiceProviderTechnicianUrl,
+          queryParameters: params);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> insertServiceProviderTechnician(var body) async {
+    try {
+      /*
+      *
+{
+  "TechnicianID": 0,
+  "UserID": 0,
+  "ServiceProviderID": 0,
+  "FirstName": "string",
+  "LastName": "string",
+  "MobileNumber": "string",
+  "MailID": "string",
+  "ContactAddress": "string",
+  "PermanentAddress": "string",
+  "DOB": "2023-05-24T16:16:05.429Z",
+  "DOJ": "2023-05-24T16:16:05.429Z",
+  "ServiceIDs": "string",
+  "AreaIDs": "string",
+  "Username": "string",
+  "Password": "string",
+  "IsActive": true,
+  "CUID": 0
+}
+      * */
+
+      final response =
+          await _dio.post(insertServiceProviderTechnicianUrl, data: body);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> getProfixerCustomer({int userId = 0}) async {
+    try {
+      var params = {
+        "UserID": userId,
+      };
+      final response = await _dio.get(getCustomerUrl, queryParameters: params);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> insertProfixerCustomer(var body) async {
+    try {
+      /*
+      *
+{
+  "CustomerID": 0,
+  "UserID": 0,
+  "FirstName": "string",
+  "LastName": "string",
+  "MobileNumber": "string",
+  "EMailID": "string",
+  "CurrentAddress": "string",
+  "DOB": "2023-05-24T16:16:05.435Z",
+  "Remarks": "string",
+  "Username": "string",
+  "Password": "string",
+  "IsActive": true,
+  "CUID": 0
+}
+      * */
+
+      final response = await _dio.post(insertCustomerUrl, data: body);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> getCustomerAddress({int customerId = 0}) async {
+    try {
+      var params = {
+        "CustomerID": customerId,
+      };
+      final response =
+          await _dio.get(getCustomerAddressUrl, queryParameters: params);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> insertCustomerAddress(var body) async {
+    try {
+      /*
+      *
+{
+  "AddressID": 0,
+  "CustomerID": 0,
+  "AddressTitle": "string",
+  "DoorNo": "string",
+  "StreetName": "string",
+  "CityID": 0,
+  "AreaID": 0,
+  "LandMark": "string",
+  "Latitude": "string",
+  "Longitude": "string",
+  "IsActive": true,
+  "CUID": 0
+}
+      * */
+
+      final response = await _dio.post(insertCustomerAddressUrl, data: body);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+/*end master apis*/
 }

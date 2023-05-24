@@ -5,7 +5,9 @@ import 'package:profixer_admin/widgets/custom_appbar.dart';
 
 import '../../../helpers/custom_colors.dart';
 
-class MenuScreen extends StatelessWidget {
+class MenuScreen extends GetView<MenuController> {
+
+  final controller = Get.put(MenuController());
    MenuScreen({Key? key}) : super(key: key);
 
 List menu = [

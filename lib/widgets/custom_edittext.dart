@@ -67,7 +67,7 @@ class CustomEditText extends StatelessWidget {
               counter: null,
               counterText: '',
             focusColor: Colors.black,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 8,vertical: 2),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 8,vertical: 16),
             // border: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
             // focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: Colors.black)),
              ),

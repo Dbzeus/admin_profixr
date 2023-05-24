@@ -13,9 +13,11 @@ dependencies:
 
   google_fonts:
   get:
+  connectivity_plus:
   get_storage:
   alice:
   dio:
+  fluttertoast:
   flutter_svg:
   cached_network_image:
   intl: ^0.18.1

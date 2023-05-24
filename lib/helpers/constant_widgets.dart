@@ -3,11 +3,15 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'custom_colors.dart';
+
+
 
 uploadButton(Function onTab) {
   return GestureDetector(
@@ -44,6 +48,30 @@ getImageFromGallery() async{
   }
 
 }
+
+var connectivity = Connectivity();
+isNetConnected() async {
+  var result = await connectivity.checkConnectivity();
+  bool res = result != ConnectivityResult.none;
+  if (!res) {
+    toast(
+      "Check Your Internet Connection",
+    );
+  }
+  return res;
+}
+
+
+toast(String? msg) {
+  debugPrint(msg ?? "Something went wrong");
+  Fluttertoast.showToast(
+    gravity: ToastGravity.CENTER,
+    backgroundColor: primaryColor,
+    msg: (msg?.isEmpty ?? true) ? "Something went wrong" : msg!,
+    textColor: whiteColor
+  );
+}
+
 
 
 

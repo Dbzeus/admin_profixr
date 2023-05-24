@@ -1,3 +1,4 @@
+import 'package:alice/alice.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -6,15 +7,29 @@ import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/routes/app_pages.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
 
+import 'helpers/utils.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //check session
   await GetStorage.init();
-  runApp(const MyApp());
+  String route =  Routes.language;
+  var box = GetStorage();
+  if (box.read(Session.isLogin) ?? false) {
+      route = Routes.main;
+  }
+  runApp( MyApp(route));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  static Alice alice = Alice(
+  showNotification: true,
+  showInspectorOnShake: true,
+  );
+
+  MyApp(this.initialRoute, {super.key});
+
+  final initialRoute;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +55,8 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: backgroundColor,
           textTheme: GoogleFonts.poppinsTextTheme()),
       getPages: AppPages.routes,
-      initialRoute: Routes.language,
+      initialRoute: initialRoute,
+      navigatorKey: alice.getNavigatorKey(),
       useInheritedMediaQuery: true,
       debugShowCheckedModeBanner: false,
     );

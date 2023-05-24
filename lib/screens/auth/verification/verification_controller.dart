@@ -4,6 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:profixer_admin/apis/api_call.dart';
 import 'package:profixer_admin/helpers/constant_widgets.dart';
 import 'package:profixer_admin/helpers/utils.dart';
+import 'package:profixer_admin/model/userResponse.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
 
 class VerificationController extends GetxController {
@@ -40,16 +41,16 @@ class VerificationController extends GetxController {
       Get.focusScope?.unfocus();
       if (enteredOtp.isEqual(int.parse(otp))) {
         if (await isNetConnected()) {
-          var loginResponse =
+          UserDataResponse? loginResponse =
           await ApiCall().loginDetailsByMobile(mobileNo.value, " ", " ");
           if (loginResponse != null) {
-            if (loginResponse["RtnStatus"]) {
-              toast(loginResponse["RtnMsg"]);
+            if (loginResponse.rtnStatus) {
+              toast(loginResponse.rtnMsg);
               _box.write(Session.isLogin, true);
               Get.offAllNamed(Routes.main,
-                  arguments: {"userData": loginResponse["RtnData"]});
+                  arguments: {"userData": loginResponse.rtnData});
             } else {
-              toast(loginResponse["RtnMsg"]);
+              toast(loginResponse.rtnMsg);
             }
           }
         } else {

@@ -99,23 +99,30 @@ class LoginScreen extends GetView<LoginController> {
                   const SizedBox(
                     height: 24,
                   ),
-                  Text.rich(TextSpan(
-                    text: "Forgot password?",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: textColor,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: "  Reset here",
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: primaryColor,
-                        ),
-                      )
-                    ],
-                  )),
+                  GestureDetector(
+                    onTap: (){
+                      controller.forgetMobNoController.clear();
+                      showCustomBottomSheet();
+
+                    },
+                    child: const Text.rich(TextSpan(
+                      text: "Forgot password?",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: textColor,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: "  Reset here",
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: primaryColor,
+                          ),
+                        )
+                      ],
+                    )),
+                  ),
                   /*const Spacer(),
                   CustomButton(text: "Login with mobile number",
                       btnColor: Colors.black,
@@ -137,4 +144,55 @@ class LoginScreen extends GetView<LoginController> {
       ),
     );
   }
+
+   showCustomBottomSheet() {
+     return Get.bottomSheet(
+         isScrollControlled: true,
+         GestureDetector(
+           onTap: () {
+
+             Get.focusScope!.unfocus();
+           },
+           child: Container(
+             height: Get.height * 0.32,
+             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+             margin: EdgeInsets.only(top: Get.statusBarHeight + 30),
+             decoration: const BoxDecoration(
+               color: Colors.white,
+               borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+             ),
+             child: Column(
+               crossAxisAlignment: CrossAxisAlignment.start,
+               children: [
+                 Padding(
+                   padding: const EdgeInsets.all(8),
+                   child: Text(
+                       "Forgot Password",
+                       style: const TextStyle(
+                         fontSize: 16,
+                         fontWeight: FontWeight.bold,
+                       )),
+                 ),
+//                 const Divider(),
+               const SizedBox(
+                 height:12,
+               ),
+                 CustomEditText(
+                   controller: controller.forgetMobNoController,
+                    keyboardType: TextInputType.number,
+                   maxLength: 10,
+                   hintText: "Enter Mobile Number",
+                 ),
+                 const Spacer(),
+                 CustomButton(text: "Submit", onTap: (){
+                   controller.forgetPassword();
+                 }),
+                 const SizedBox(
+                   height:16,
+                 ),
+               ],
+             ),
+           ),
+         ));
+   }
 }

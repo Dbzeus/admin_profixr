@@ -12,7 +12,7 @@ class MainScreen extends StatelessWidget {
 
   var pages=[
     HomeScreen(),
-    MenuScreen(),
+    ProfixrMenuScreen(),
     ProfileScreen(),
   ];
 

@@ -4,24 +4,24 @@
 /// OtherMsg : null
 /// ID : null
 
-class UserData {
-  UserData(
+class UserDataResponse {
+  UserDataResponse(
       this.rtnStatus, 
       this.rtnMsg, 
       this.rtnData, 
       this.otherMsg, 
       this.id,);
 
-  UserData.fromJson(dynamic json) {
+  UserDataResponse.fromJson(dynamic json) {
     rtnStatus = json['RtnStatus'];
     rtnMsg = json['RtnMsg'];
-    rtnData = (json['RtnData'] != null ? RtnData.fromJson(json['RtnData']) : null)!;
+    rtnData = (json['RtnData'] != null ? UserData.fromJson(json['RtnData']) : null)!;
     otherMsg = json['OtherMsg'];
     id = json['ID'];
   }
   late bool rtnStatus;
   late String rtnMsg;
-  late RtnData rtnData;
+  late UserData rtnData;
   late dynamic otherMsg;
   late dynamic id;
 
@@ -61,8 +61,8 @@ class UserData {
 /// IsActive : true
 /// CUID : 0
 
-class RtnData {
-  RtnData(
+class UserData {
+  UserData(
       this.userID, 
       this.firstName, 
       this.lastName, 
@@ -85,7 +85,7 @@ class RtnData {
       this.isActive, 
       this.cuid,);
 
-  RtnData.fromJson(dynamic json) {
+  UserData.fromJson(dynamic json) {
     userID = json['UserID'];
     firstName = json['FirstName'];
     lastName = json['LastName'];
@@ -108,7 +108,7 @@ class RtnData {
     isActive = json['IsActive'];
     cuid = json['CUID'];
   }
- late  int userID;
+  late int userID;
  late  String firstName;
  late  String lastName;
  late  String userName;

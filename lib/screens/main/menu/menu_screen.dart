@@ -1,41 +1,45 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
 import 'package:profixer_admin/widgets/custom_appbar.dart';
-
+import '../menu/menu_controller.dart';
 import '../../../helpers/custom_colors.dart';
 
-class MenuScreen extends GetView<MenuController> {
+class ProfixrMenuScreen extends GetView<ProfixrMenuController> {
+  final controller = Get.put(ProfixrMenuController());
 
-  final controller = Get.put(MenuController());
-   MenuScreen({Key? key}) : super(key: key);
+  ProfixrMenuScreen({Key? key}) : super(key: key);
 
-List menu = [
-  {"title" : "Services",
-  "imagePath" : 'assets/icon/menu/serviceicon.png',
-    "path":Routes.serviceMenu,
-  },
-  {"title" : "Category",
-    "imagePath" : 'assets/icon/menu/category.png',
-    "path":Routes.categoryMenu,
-  },
-  {"title" : "Profixers",
-    "imagePath" : 'assets/icon/menu/profixer.png',
-  },  
-  {"title" : "Customer",
-    "imagePath" : 'assets/icon/menu/customer.png',
-  },
-  {"title" : "Service Provider",
-    "imagePath" : 'assets/icon/menu/serviceprovider.png',
-
-  },
-  {
-    "title" : "Technician",
-    "imagePath" : 'assets/icon/menu/technician.png',
-    "path":Routes.technicianDetails,
-  },
-
-];
+  List menu = [
+    {
+      "title": "Services",
+      "imagePath": 'assets/icon/menu/serviceicon.png',
+      "path": Routes.serviceMenu,
+    },
+    {
+      "title": "Category",
+      "imagePath": 'assets/icon/menu/category.png',
+      "path": Routes.categoryMenu,
+    },
+    {
+      "title": "Profixers",
+      "imagePath": 'assets/icon/menu/profixer.png',
+    },
+    {
+      "title": "Customer",
+      "imagePath": 'assets/icon/menu/customer.png',
+    },
+    {
+      "title": "Service Provider",
+      "imagePath": 'assets/icon/menu/serviceprovider.png',
+    },
+    {
+      "title": "Technician",
+      "imagePath": 'assets/icon/menu/technician.png',
+      "path": Routes.technicianDetails,
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -50,28 +54,63 @@ List menu = [
       ),
       body: Column(
         children: [
-          const SizedBox(height: 12,),
+          const SizedBox(
+            height: 12,
+          ),
           GridView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-              itemCount: menu.length,
+              itemCount: controller.menuData.length,
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               physics: const BouncingScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
+                  crossAxisCount: 3,
                   crossAxisSpacing: 10,
                   childAspectRatio: 1.3,
                   mainAxisSpacing: 10),
-              itemBuilder: (_, index) => _buildMenu(menu[index])),
+              itemBuilder: (_, index) => _buildMenu(controller.menuData)),
 
         ],
       ),
     );
   }
 
+
+  _buildMenu2(){
+    return GestureDetector(
+      onTap: (){},
+      child: Container(
+
+        width: 110,
+        color: Colors.blue,
+        child: Column(
+          children: [
+            const CircleAvatar(
+              backgroundImage: CachedNetworkImageProvider('https://lh3.googleusercontent.com/ogw/AOLn63FrRz1Sj7YR6k9tIBht1Hp_Xbr2osMhWRMybXZDRg=s32-c-mo'),
+              backgroundColor: Colors.white,
+              radius: 50,
+
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              "Demo",
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: primaryColor),
+            ),
+          ],
+        ),
+      ),
+    );
+
+  }
+
   _buildMenu(menu) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         pageRoute(menu);
       },
       child: Container(
@@ -93,17 +132,18 @@ List menu = [
             Text(
               menu["title"],
               style: const TextStyle(
-                  fontSize: 16, fontWeight: FontWeight.bold, color: primaryColor),
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: primaryColor),
             ),
             const Spacer(),
             Align(
               alignment: Alignment.centerRight,
               child: Image.asset(
-               menu["imagePath"] ,
+                menu["imagePath"],
                 height: 75,
                 width: 70,
                 fit: BoxFit.cover,
-
               ),
             ),
             // Align(
@@ -121,7 +161,7 @@ List menu = [
   }
 
   pageRoute(menu) {
-    if(menu["path"] != null){
+    if (menu["path"] != null) {
       Get.toNamed(
         menu["path"],
       );

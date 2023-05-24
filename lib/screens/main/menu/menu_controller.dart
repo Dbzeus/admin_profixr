@@ -1,19 +1,29 @@
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:profixer_admin/apis/api_call.dart';
 import 'package:profixer_admin/helpers/constant_widgets.dart';
+import 'package:profixer_admin/helpers/utils.dart';
+import 'package:profixer_admin/model/MenuResponse.dart';
 
-class MenuController extends GetxController{
+import 'package:profixer_admin/model/userResponse.dart';
+
+class ProfixrMenuController extends GetxController{
 
 
   RxBool isLoading = false.obs;
-
+  final _box = GetStorage();
+  late  UserData userData;
+  RxList<MenuData> menuData=RxList();
   @override
   void onInit() {
-    getMenu();
-    debugPrint("oninti");
     super.onInit();
+    userData = UserData.fromJson(_box.read(Session.userData));
+    menuData((jsonDecode(_box.read(Session.menuData))).map((element) { MenuData.fromJson(element);}).toList());
+    getMenu();
 
   }
 
@@ -21,13 +31,11 @@ class MenuController extends GetxController{
     debugPrint("MENU");
     if (await isNetConnected()) {
       isLoading(true);
-      var menuResponse =  await ApiCall().getMenu(1);
+      MenuResponse? menuResponse =  await ApiCall().getMenu(userData.userID);
       isLoading(false);
       if (menuResponse != null) {
-        if (menuResponse["RtnStatus"]) {
-          toast(menuResponse["RtnMsg"]);
-        } else {
-          toast(menuResponse["RtnMsg"]);
+        if (menuResponse.rtnStatus) {
+          _box.write(Session.menuData, jsonEncode(menuResponse.rtnData.map((e) => e.toJson()).toList().toString()));
         }
       }
     }

@@ -4,6 +4,8 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:profixer_admin/apis/urls.dart';
+import 'package:profixer_admin/model/MenuResponse.dart';
+import 'package:profixer_admin/model/userResponse.dart';
 
 import '../helpers/constant_widgets.dart';
 
@@ -23,7 +25,7 @@ class ApiCall {
   }
 
   //Login
-  Future<dynamic> checkLogin(String userName, String password,
+  Future<UserDataResponse?> checkLogin(String userName, String password,
       String mobileToken, String webToken) async {
     try {
       var params = {
@@ -39,7 +41,7 @@ class ApiCall {
 
       log('response code ${response.requestOptions.path} ${response.statusCode} $params ${response.data}');
 
-      return response.data;
+      return UserDataResponse.fromJson(response.data);
     } on DioError catch (e) {
       debugPrint(e.message);
       toast(e.message);
@@ -77,7 +79,7 @@ class ApiCall {
   }
 
   //check Log in by mobileNumber verify otp.(this api is used for get the user details using mobile number)
-  Future<dynamic> loginDetailsByMobile(
+  Future<UserDataResponse?> loginDetailsByMobile(
       String mobileNo, String mobileToken, String webToken) async {
     try {
       var params = {
@@ -92,7 +94,7 @@ class ApiCall {
 
       log('response code ${response.requestOptions.path} ${response.statusCode} $params ${response.data}');
 
-      return response.data;
+      return UserDataResponse.fromJson(response.data);
     } on DioError catch (e) {
       debugPrint(e.message);
       toast(e.message);
@@ -103,7 +105,7 @@ class ApiCall {
     return null;
   }
 
-  Future<dynamic> getMenu(int userId) async {
+  Future<MenuResponse?> getMenu(int userId) async {
     try {
       var params = {
         "RoleID": userId,
@@ -476,7 +478,7 @@ class ApiCall {
           await _dio.get(getServiceProviderAreaUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
-      return response.data;
+     return MenuResponse.fromJson(response.data);
     } on DioError catch (e) {
       log(e.message);
       toast(e.message);
@@ -486,81 +488,20 @@ class ApiCall {
     }
     return null;
   }
-
-  Future<dynamic> insertServiceProviderUser(var body) async {
+  //Forget Password
+  Future<dynamic> forgetPassword(String mobileNo, ) async {
     try {
-      /*
-      *
-      {
-  "ServiceProviderUserID": 0,
-  "UserID": 0,
-  "ServiceProviderID": 0,
-  "FirstName": "string",
-  "LastName": "string",
-  "MobileNumber": "string",
-  "MailID": "string",
-  "ContactAddress": "string",
-  "PermanentAddress": "string",
-  "DOB": "2023-05-24T16:16:05.424Z",
-  "DOJ": "2023-05-24T16:16:05.424Z",
-  "Username": "string",
-  "Password": "string",
-  "IsActive": true,
-  "CUID": 0
-}
-      * */
+      var params = {"MobileNo": mobileNo,};
 
-      final response =
-          await _dio.post(insertServiceProviderUserUrl, data: body);
-      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+      log(jsonEncode(params));
+
+      final response = await _dio.post(forgetPasswordUrl, queryParameters: params);
+
+      log('response code ${response.requestOptions.path} ${response.statusCode} $params ${response.data}');
 
       return response.data;
     } on DioError catch (e) {
-      log(e.message);
-      toast(e.message);
-    } catch (e) {
-      log(e.toString());
-      toast(null);
-    }
-    return null;
-  }
-
-  Future<dynamic> getServiceProviderUser(
-      {int providerId = 0, int userId = 0}) async {
-    try {
-      var params = {
-        "ServiceProviderID": providerId,
-        "UserID": userId,
-      };
-      final response =
-          await _dio.get(getServiceProviderUserUrl, queryParameters: params);
-      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
-
-      return response.data;
-    } on DioError catch (e) {
-      log(e.message);
-      toast(e.message);
-    } catch (e) {
-      log(e.toString());
-      toast(null);
-    }
-    return null;
-  }
-
-  Future<dynamic> getServiceProviderTechnician(
-      {int providerId = 0, int userId = 0}) async {
-    try {
-      var params = {
-        "ServiceProviderID": providerId,
-        "UserID": userId,
-      };
-      final response = await _dio.get(getServiceProviderTechnicianUrl,
-          queryParameters: params);
-      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
-
-      return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+      debugPrint(e.message);
       toast(e.message);
     } catch (e) {
       log(e.toString());

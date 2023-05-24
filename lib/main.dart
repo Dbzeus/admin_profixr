@@ -15,6 +15,7 @@ void main() async {
   await GetStorage.init();
   String route =  Routes.language;
   var box = GetStorage();
+
   if (box.read(Session.isLogin) ?? false) {
       route = Routes.main;
   }

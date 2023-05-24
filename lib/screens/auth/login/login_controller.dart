@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:profixer_admin/apis/api_call.dart';
 import 'package:profixer_admin/helpers/utils.dart';
+import 'package:profixer_admin/model/userResponse.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
 
 import '../../../helpers/constant_widgets.dart';
@@ -10,6 +11,9 @@ import '../../../helpers/constant_widgets.dart';
 class LoginController extends GetxController {
   TextEditingController mobNoController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController forgetMobNoController = TextEditingController();
+
+
 
   RxBool isVisible = true.obs;
 
@@ -26,17 +30,39 @@ class LoginController extends GetxController {
       isLoading(true);
       Get.focusScope?.unfocus();
       if (await isNetConnected()) {
-        var loginResponse = await ApiCall().checkLogin(
+        UserDataResponse? loginResponse = await ApiCall().checkLogin(
             mobNoController.text, passwordController.text, " ", " ");
         isLoading(false);
         if (loginResponse != null) {
-          if (loginResponse["RtnStatus"]) {
-            toast(loginResponse["RtnMsg"]);
+          if (loginResponse.rtnStatus) {
+            toast(loginResponse.rtnMsg);
             _box.write(Session.isLogin, true);
-            Get.offAllNamed(Routes.main,
-                arguments: {"userData": loginResponse["RtnData"]});
+            _box.write(Session.userData, loginResponse.rtnData.toJson());
+            Get.offAllNamed(Routes.main,);
           } else {
-            toast(loginResponse["RtnMsg"]);
+            toast(loginResponse.rtnMsg);
+          }
+        }
+      }
+    }
+  }
+
+  forgetPassword() async {
+    if (forgetMobNoController.text.isEmpty) {
+      toast("Please Enter Mobile Number");
+    } else {
+      Get.back();
+      isLoading(true);
+      Get.focusScope?.unfocus();
+      if (await isNetConnected()) {
+        var forgetPasswordResponse = await ApiCall().forgetPassword(forgetMobNoController.text);
+        isLoading(false);
+        if (forgetPasswordResponse != null) {
+          if (forgetPasswordResponse["RtnStatus"]) {
+            toast(forgetPasswordResponse["RtnMsg"]);
+
+          } else {
+            toast(forgetPasswordResponse["RtnMsg"]);
           }
         }
       }

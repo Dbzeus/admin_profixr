@@ -16,5 +16,8 @@ abstract class Routes {
   static const bankDetails = "/bankDetails";
   static const changePassword = "/changePassword";
   static const changeDetails = "/changeDetails";
+  //city
+  static const cityList = "/city/list";
+  static const addCity = "/city/add";
 
 }

@@ -11,8 +11,8 @@ import '../../model/userResponse.dart';
 
 class MainController extends GetxController {
 
-  final _box = GetStorage();
-  late  UserData userData;
+  final box = GetStorage();
+  late UserData userData;
 
 
   var dashboard = [
@@ -70,8 +70,11 @@ class MainController extends GetxController {
 
   @override
   void onInit() {
-    userData = UserData.fromJson(_box.read(Session.userData));
-    menuData((jsonDecode(_box.read(Session.menuData))).map((element) { MenuData.fromJson(element);}).toList());
+    userData = UserData.fromJson(box.read(Session.userData));
+    var menus=jsonDecode(box.read(Session.menuData) ?? "[]");
+    menus.forEach((v) {
+      menuData.value.add(MenuData.fromJson(v));
+    });
     super.onInit();
     getMenu();
   }
@@ -79,14 +82,11 @@ class MainController extends GetxController {
 
   getMenu()async{
     if (await isNetConnected()) {
-      MenuResponse? menuResponse =  await ApiCall().getMenu(_box.read(Session.userId));
+      MenuResponse? menuResponse =  await ApiCall().getMenu(box.read(Session.userId));
       if (menuResponse != null) {
         if (menuResponse.rtnStatus) {
           if(menuData.value != menuResponse.rtnData) {
-            _box.write(Session.menuData, jsonEncode(
-                menuResponse.rtnData.map((e) => e.toJson())
-                    .toList()
-                    .toString()));
+            box.write(Session.menuData, jsonEncode(menuResponse.rtnData));
             menuData(menuResponse.rtnData);
           }
         }

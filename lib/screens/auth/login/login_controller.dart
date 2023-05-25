@@ -27,9 +27,9 @@ class LoginController extends GetxController {
     } else if (passwordController.text.isEmpty) {
       toast("Enter your Password");
     } else {
-      isLoading(true);
       Get.focusScope?.unfocus();
       if (await isNetConnected()) {
+        isLoading(true);
         UserDataResponse? loginResponse = await ApiCall().checkLogin(
             mobNoController.text, passwordController.text, " ", " ");
         isLoading(false);

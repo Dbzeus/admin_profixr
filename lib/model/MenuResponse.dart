@@ -66,6 +66,7 @@ class MenuData {
       this.menuOrder, 
       this.subMenuOrder, 
       this.isActive, 
+      this.icon,
       this.faIcons,);
 
   MenuData.fromJson(dynamic json) {
@@ -79,6 +80,7 @@ class MenuData {
     subMenuOrder = json['SubMenuOrder'];
     isActive = json['IsActive'];
     faIcons = json['FaIcons'];
+    icon = json['Icon'];
   }
 
   late int subMenuID;
@@ -91,6 +93,7 @@ class MenuData {
   late int subMenuOrder;
   late bool isActive;
   late String faIcons;
+  late String icon;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -104,6 +107,7 @@ class MenuData {
     map['SubMenuOrder'] = subMenuOrder;
     map['IsActive'] = isActive;
     map['FaIcons'] = faIcons;
+    map['Icon'] = icon;
     return map;
   }
 

@@ -93,7 +93,7 @@ class UserData {
     password = json['Password'];
     mobileNo = json['MobileNo'];
     mailID = json['MailID'];
-    imagePath = json['ImagePath'];
+    imagePath = json['ImagePath'] ?? "";
     roleID = json['RoleID'];
     roleName = json['RoleName'];
     designation = json['Designation'];
@@ -115,7 +115,7 @@ class UserData {
  late  String password;
  late  String mobileNo;
  late  String mailID;
- late  dynamic imagePath;
+ late  String imagePath;
  late  int roleID;
  late  String roleName;
  late  String designation;

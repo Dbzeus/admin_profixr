@@ -1,8 +1,4 @@
 
-
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -65,8 +61,7 @@ isNetConnected() async {
 toast(String? msg) {
   debugPrint(msg ?? "Something went wrong");
   Fluttertoast.showToast(
-    gravity: ToastGravity.CENTER,
-    backgroundColor: primaryColor,
+    // backgroundColor: primaryColor,
     msg: (msg?.isEmpty ?? true) ? "Something went wrong" : msg!,
     textColor: whiteColor
   );

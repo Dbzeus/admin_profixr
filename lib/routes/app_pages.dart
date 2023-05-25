@@ -9,6 +9,8 @@ import 'package:profixer_admin/screens/auth/verification/verification_screen.dar
 import 'package:profixer_admin/screens/bank_details/bank_details_screen.dart';
 import 'package:profixer_admin/screens/category/add_category/add_category_screen.dart';
 import 'package:profixer_admin/screens/category/category_menu/category_Menu_screen.dart';
+import 'package:profixer_admin/screens/city/add_city/add_city_screen.dart';
+import 'package:profixer_admin/screens/city/city_list/city_list_screen.dart';
 
 
 
@@ -102,6 +104,14 @@ class AppPages {
     GetPage(
       name: Routes.changeDetails,
       page: () =>  ChangeDetailsScreen(),
+    ),
+    GetPage(
+      name: Routes.cityList,
+      page: () =>  CityListScreen(),
+    ),
+    GetPage(
+      name: Routes.addCity,
+      page: () =>  AddCityScreen(),
     ),
   ];
 }

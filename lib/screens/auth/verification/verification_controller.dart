@@ -41,21 +41,31 @@ class VerificationController extends GetxController {
       Get.focusScope?.unfocus();
       if (enteredOtp.isEqual(int.parse(otp))) {
         if (await isNetConnected()) {
+          isLoading(true);
           UserDataResponse? loginResponse =
-          await ApiCall().loginDetailsByMobile(mobileNo.value, " ", " ");
+          await ApiCall().loginDetailsByMobile(mobileNo.value, "", "");
           if (loginResponse != null) {
             if (loginResponse.rtnStatus) {
               toast(loginResponse.rtnMsg);
-              _box.write(Session.isLogin, true);
-              Get.offAllNamed(Routes.main,
-                  arguments: {"userData": loginResponse.rtnData});
+              storeSessions(loginResponse.rtnData);
+              Get.offAllNamed(Routes.main);
             } else {
               toast(loginResponse.rtnMsg);
             }
           }
+          isLoading(false);
         } else {
           toast("Please Enter correct OTP");
         }
       }
     }
-  }}
+  }
+
+  storeSessions(UserData data){
+    _box.write(Session.isLogin, true);
+    _box.write(Session.userId, data.userID);
+    _box.write(Session.userData, data.toJson());
+  }
+
+}
+

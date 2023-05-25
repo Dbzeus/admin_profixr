@@ -6,11 +6,11 @@ import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 
 import '../../../routes/app_routes.dart';
-import 'home_controller.dart';
+import '../main_controller.dart';
 
-class HomeScreen extends GetView<HomeController> {
+class HomeScreen extends StatelessWidget {
   @override
-  final controller = Get.put(HomeController());
+  final controller = Get.put(MainController());
 
   HomeScreen({Key? key}) : super(key: key);
 

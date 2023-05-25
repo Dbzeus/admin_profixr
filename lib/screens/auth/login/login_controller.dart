@@ -36,8 +36,7 @@ class LoginController extends GetxController {
         if (loginResponse != null) {
           if (loginResponse.rtnStatus) {
             toast(loginResponse.rtnMsg);
-            _box.write(Session.isLogin, true);
-            _box.write(Session.userData, loginResponse.rtnData.toJson());
+            storeSessions(loginResponse.rtnData);
             Get.offAllNamed(Routes.main,);
           } else {
             toast(loginResponse.rtnMsg);
@@ -45,6 +44,12 @@ class LoginController extends GetxController {
         }
       }
     }
+  }
+
+  storeSessions(UserData data){
+    _box.write(Session.isLogin, true);
+    _box.write(Session.userId, data.userID);
+    _box.write(Session.userData, data.toJson());
   }
 
   forgetPassword() async {
@@ -60,7 +65,6 @@ class LoginController extends GetxController {
         if (forgetPasswordResponse != null) {
           if (forgetPasswordResponse["RtnStatus"]) {
             toast(forgetPasswordResponse["RtnMsg"]);
-
           } else {
             toast(forgetPasswordResponse["RtnMsg"]);
           }

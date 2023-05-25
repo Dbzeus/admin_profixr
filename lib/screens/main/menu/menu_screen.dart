@@ -1,17 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:profixer_admin/routes/app_routes.dart';
+import 'package:profixer_admin/model/MenuResponse.dart';
 import 'package:profixer_admin/widgets/custom_appbar.dart';
-import '../menu/menu_controller.dart';
+
 import '../../../helpers/custom_colors.dart';
+import '../main_controller.dart';
 
-class ProfixrMenuScreen extends GetView<ProfixrMenuController> {
-  final controller = Get.put(ProfixrMenuController());
+class ProfixerMenuScreen extends StatelessWidget {
+  final controller = Get.find<MainController>();
 
-  ProfixrMenuScreen({Key? key}) : super(key: key);
+  ProfixerMenuScreen({Key? key}) : super(key: key);
 
-  List menu = [
+/*  List menu = [
     {
       "title": "Services",
       "imagePath": 'assets/icon/menu/serviceicon.png',
@@ -39,7 +40,7 @@ class ProfixrMenuScreen extends GetView<ProfixrMenuController> {
       "imagePath": 'assets/icon/menu/technician.png',
       "path": Routes.technicianDetails,
     },
-  ];
+  ];*/
 
   @override
   Widget build(BuildContext context) {
@@ -57,45 +58,48 @@ class ProfixrMenuScreen extends GetView<ProfixrMenuController> {
           const SizedBox(
             height: 12,
           ),
-          GridView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-              itemCount: controller.menuData.length,
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              physics: const BouncingScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 1.3,
-                  mainAxisSpacing: 10),
-              itemBuilder: (_, index) => _buildMenu(controller.menuData)),
-
+          Obx(
+            () => GridView.builder(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                itemCount: controller.menuData.value.length,
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                physics: const BouncingScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 10,
+                    childAspectRatio: 1.3,
+                    mainAxisSpacing: 10),
+                itemBuilder: (_, index) =>
+                    _buildMenu(controller.menuData.value[index])),
+          )
         ],
       ),
     );
   }
 
-
-  _buildMenu2(){
+  _buildMenu(MenuData data) {
     return GestureDetector(
-      onTap: (){},
+      onTap: () {
+        Get.toNamed(data.actionName);
+      },
       child: Container(
-
         width: 110,
         color: Colors.blue,
         child: Column(
           children: [
             const CircleAvatar(
-              backgroundImage: CachedNetworkImageProvider('https://lh3.googleusercontent.com/ogw/AOLn63FrRz1Sj7YR6k9tIBht1Hp_Xbr2osMhWRMybXZDRg=s32-c-mo'),
+              backgroundImage: CachedNetworkImageProvider(
+                  'https://lh3.googleusercontent.com/ogw/AOLn63FrRz1Sj7YR6k9tIBht1Hp_Xbr2osMhWRMybXZDRg=s32-c-mo'),
               backgroundColor: Colors.white,
               radius: 50,
-
             ),
             const SizedBox(
               height: 10,
             ),
             Text(
-              "Demo",
+              data.subMenu,
               style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -105,10 +109,9 @@ class ProfixrMenuScreen extends GetView<ProfixrMenuController> {
         ),
       ),
     );
-
   }
 
-  _buildMenu(menu) {
+/* _buildMenu2(menu) {
     return GestureDetector(
       onTap: () {
         pageRoute(menu);
@@ -158,13 +161,5 @@ class ProfixrMenuScreen extends GetView<ProfixrMenuController> {
         ),
       ),
     );
-  }
-
-  pageRoute(menu) {
-    if (menu["path"] != null) {
-      Get.toNamed(
-        menu["path"],
-      );
-    }
-  }
+  }*/
 }

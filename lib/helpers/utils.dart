@@ -3,4 +3,6 @@ class Session{
   static const userData = "userData";
   static const menuData = "menuData";
 
+  static const userId = "userId";
+
 }

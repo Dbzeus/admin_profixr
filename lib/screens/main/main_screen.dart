@@ -2,17 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
+import 'package:profixer_admin/screens/main/main_controller.dart';
 import 'package:profixer_admin/screens/main/menu/menu_screen.dart';
 import 'package:profixer_admin/screens/main/profile/profile_screen.dart';
 
 import 'home/home_screen.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends GetView<MainController> {
   MainScreen({Key? key}) : super(key: key);
+
+  final controller=Get.put(MainController());
 
   var pages=[
     HomeScreen(),
-    ProfixrMenuScreen(),
+    ProfixerMenuScreen(),
     ProfileScreen(),
   ];
 

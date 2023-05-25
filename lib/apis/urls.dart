@@ -6,10 +6,6 @@ const loginDetailsByMobileUrl="Account/LoginDetailsByMobileNo";
 const getMenuUrl = "Account/GetMenuMobile";
 const forgetPasswordUrl = "Account/ForgetPassword";
 
-
-
-
-
 //master apis
 const getCountryUrl="Master/GetCountry";
 const insertCityUrl="Master/InsertUpdateCity";

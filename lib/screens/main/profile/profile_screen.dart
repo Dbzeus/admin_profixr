@@ -1,12 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
+import 'package:profixer_admin/screens/main/main_controller.dart';
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  ProfileScreen({Key? key}) : super(key: key);
+
+  final controller=Get.find<MainController>();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12,),
-            Text('Mohamad Rahman',style: TextStyle(
+            Text('${controller.userData.firstName} ${controller.userData.lastName}',style: TextStyle(
               color: primaryColor,
               fontSize: 18,
               fontWeight: FontWeight.bold
@@ -48,13 +50,13 @@ class ProfileScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Admin'),
+                Text('${controller.userData.designation}'),
                 const VerticalDivider(color: Colors.black,thickness: 4,),
                 Row(
                   children: [
                     Icon(Icons.call,size: 15,),
                     const SizedBox(width: 4,),
-                    Text('+966 1234567891',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)
+                    Text('${controller.userData.mobileNo}',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),)
                   ],
                 )
               ],
@@ -115,8 +117,6 @@ class ProfileScreen extends StatelessWidget {
                       size: 25,
                         color: Colors.red
                     ),
-
-                   
                     const SizedBox(width: 8,),
                     Text('Logout',style: TextStyle(
                         fontWeight: FontWeight.bold,

@@ -3,28 +3,29 @@ import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/constant_widgets.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
-import 'package:profixer_admin/screens/city/city_controller.dart';
-import 'package:profixer_admin/widgets/cusotm_alertdialogue.dart';
+import 'package:profixer_admin/screens/area/area_controller.dart';
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 import 'package:profixer_admin/widgets/custom_button.dart';
 import 'package:profixer_admin/widgets/custom_edittext.dart';
 
-class AddCityScreen extends StatelessWidget {
-  final controller = Get.find<CityController>();
+class AddAreaScreen extends StatelessWidget {
+  final controller = Get.find<AreaController>();
 
-  AddCityScreen({Key? key}) : super(key: key);
+  AddAreaScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    int cityId = -1;
-    if(Get.arguments['city'] != null){
-      controller.cityNameController.text = Get.arguments['city']['CityName'];
-      controller.countryNameController.text =
-          Get.arguments['city']['CountryName'];
-       cityId= Get.arguments['city']['CityID'];
-    }else{
-      controller.cityNameController.text = " ";
-      cityId =0;
+    int areaId = -1;
+    if (Get.arguments['area'] != null) {
+      controller.areaNameController.text = Get.arguments['area']['AreaName'];
+      controller.pincodeController.text = Get.arguments['area']['pincode'];
+      controller.cityDropdownController.text =
+          Get.arguments['area']['CityName'];
+      areaId = Get.arguments['area']['AreaID'];
+    } else {
+      controller.areaNameController.clear();
+      controller.pincodeController.clear();
+      areaId = 0;
     }
 
 
@@ -44,17 +45,25 @@ class AddCityScreen extends StatelessWidget {
                 height: 10,
               ),
               CustomEditText(
-                  hintText: "City Name",
-                  controller: controller.cityNameController),
+                  hintText: "Area Name",
+                  controller: controller.areaNameController),
               const SizedBox(
-                height: 12,
+                height: 10,
               ),
               CustomEditText(
-                hintText: "country Name",
-                controller: controller.countryNameController,
+                hintText: "Pincode",
+                controller: controller.pincodeController,
+                keyboardType: TextInputType.number,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CustomEditText(
+                hintText: "City ",
+                controller: controller.cityDropdownController,
                 suffixIcon: Obx(
                   () => DropdownButton(
-                      value: controller.selectedCountry.value,
+                      value: controller.selectedCity.value,
                       style: const TextStyle(color: blackColor, fontSize: 16),
                       underline: const SizedBox(),
                       isExpanded: true,
@@ -63,14 +72,15 @@ class AddCityScreen extends StatelessWidget {
                         color: blackColor,
                         size: 22,
                       ),
-                      items: controller.countries.map((item) {
+                      items: controller.cities.map((item) {
                         return DropdownMenuItem(
                           value: item,
-                          child: Text(item['CountryName']),
+                          child: Text(item['CityName']),
                         );
                       }).toList(),
                       onChanged: (val) {
-                        controller.selectedCountry(val);
+                        debugPrint(controller.selectedCity.toString());
+                        controller.selectedCity(val);
                       }),
                 ),
               ),
@@ -151,20 +161,20 @@ class AddCityScreen extends StatelessWidget {
               CustomButton(
                   text: Get.arguments['buttonTitle'],
                   onTap: () {
-                    var city = {
-                      "CityID": cityId,
-                      "CityName": controller.cityNameController.text.trim(),
-                      "CountryID":
-                          controller.selectedCountry.value['CountryID'],
+                    var area = {
+                      "AreaID": areaId,
+                      "AreaName": controller.areaNameController.text.trim(),
+                      "CityID":
+                          controller.selectedCity.value['CountryID'],
+                      "PinCode" : controller.pincodeController.text,
                       "IsActive": controller.selectedIsActive.value,
                       "CUID": 0
                     };
-                    controller.updateCity(
-                        controller.selectedIsActive.value, city);
-                    controller.cityNameController.clear();
-                    controller.countryNameController.clear();
+                    controller.updateArea(
+                        controller.selectedIsActive.value, area);
+                    controller.areaNameController.clear();
+                    controller.cityDropdownController.clear();
                     Get.back();
-
                   }),
             ],
           ),

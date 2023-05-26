@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 
-import '../city_controller.dart';
+import '../area_controller.dart';
 
-class CityListScreen extends GetView<CityController> {
+class AreaListScreen extends GetView<AreaController> {
   @override
-  final controller = Get.put(CityController());
+  final controller = Get.put(AreaController());
 
-  CityListScreen({Key? key}) : super(key: key);
+  AreaListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: "City",
+        title: "Area",
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -63,8 +63,8 @@ class CityListScreen extends GetView<CityController> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Get.toNamed(Routes.addCity,
-                        arguments: {"title": "Add City", "buttonTitle": "Add","city": null,});
+                    Get.toNamed(Routes.addarea,
+                        arguments: {"title": "Add Area", "buttonTitle": "Add","area": null,});
                   },
                   child: Container(
                     height: 50,
@@ -88,11 +88,11 @@ class CityListScreen extends GetView<CityController> {
                 child: ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
-                    itemCount: controller.cities.length,
+                    itemCount: controller.areas.length,
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     physics: const BouncingScrollPhysics(),
                     itemBuilder: (_, index) =>
-                        _buildCityTile(controller.cities[index])),
+                        _buildCityTile(controller.areas[index])),
               ),
             ),
           ],
@@ -115,13 +115,13 @@ class CityListScreen extends GetView<CityController> {
     );
   }
 
-  _buildCityTile(city) {
+  _buildCityTile(area) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.addCity, arguments: {
-          "title": "Edit City",
+        Get.toNamed(Routes.addarea, arguments: {
+          "title": "Edit Area",
           "buttonTitle": "Save Changes",
-          "city": city,
+          "area": area,
         });
       },
       child: Container(
@@ -153,7 +153,7 @@ class CityListScreen extends GetView<CityController> {
                     ),
                     child: Center(
                       child: Text(
-                        city["CityName"].substring(0,1).toString(),
+                        area["AreaName"].substring(0,1).toString(),
                        /* city["CityName"]
                             .split(" ")
                             .map((e) => e.substring(0, 1).toUpperCase())
@@ -170,16 +170,17 @@ class CityListScreen extends GetView<CityController> {
                     width: 26,
                   ),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        city["CityName"],
+                        area["AreaName"],
                         style: const TextStyle(
                             fontSize: 14,
                             color: blackColor,
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        city["CountryName"],
+                        "${area["CityName"]} ,  ${area["pincode"]}" ,
                         style: const TextStyle(
                           fontSize: 12,
                           color: blackColor,
@@ -191,10 +192,10 @@ class CityListScreen extends GetView<CityController> {
               ),
             ),
             Switch(
-                value: city["IsActive"],
+                value: area["IsActive"],
                 activeColor: Colors.green.shade200,
                 onChanged: (val) {
-                  controller.updateCity(val, city);
+                  controller.updateArea(val, area);
                 })
           ],
         ),

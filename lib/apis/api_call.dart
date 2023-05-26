@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:profixer_admin/apis/urls.dart';
+import 'package:profixer_admin/main.dart';
 import 'package:profixer_admin/model/MenuResponse.dart';
 import 'package:profixer_admin/model/userResponse.dart';
 
@@ -21,9 +22,10 @@ class ApiCall {
   ApiCall._internal() {
     _dio.options.baseUrl = baseUrl;
     // _dio.options.connectTimeout = 1000 * 60;
-    // _dio.interceptors.add(MyApp.alice.getDioInterceptor());
+    _dio.interceptors.add(MyApp.alice.getDioInterceptor());
   }
 
+  /** account Apis */
   //Login
   Future<UserDataResponse?> checkLogin(String userName, String password,
       String mobileToken, String webToken) async {
@@ -123,6 +125,7 @@ class ApiCall {
     }
     return null;
   }
+  /** account Apis */
 
   /*master apis*/
   Future<dynamic> getCountry({int countryId = 0}) async {

@@ -29,6 +29,7 @@ class CustomDropDown extends StatelessWidget {
         ),),
         DropdownButtonFormField(
           value: dropDownValue,
+
             style:  TextStyle(color: textColor, fontSize: 16),
             isExpanded: true,
             icon: const Icon(
@@ -38,7 +39,7 @@ class CustomDropDown extends StatelessWidget {
             ),
             decoration: const InputDecoration(
               isDense: true,
-              contentPadding: EdgeInsets.symmetric(horizontal: 8,vertical: 2),
+              contentPadding: EdgeInsets.symmetric(horizontal: 12,vertical: 2),
             ),
             items: items.map((String items) {
               return DropdownMenuItem(

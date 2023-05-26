@@ -1,5 +1,7 @@
 
 import 'package:get/get.dart';
+import 'package:profixer_admin/screens/area/add_area/add_area_screen.dart';
+import 'package:profixer_admin/screens/area/area_list/area_list_screen.dart';
 
 
 
@@ -112,6 +114,14 @@ class AppPages {
     GetPage(
       name: Routes.addCity,
       page: () =>  AddCityScreen(),
+    ),
+    GetPage(
+      name: Routes.addarea,
+      page: () =>  AddAreaScreen(),
+    ),
+    GetPage(
+      name: Routes.areaList,
+      page: () =>  AreaListScreen(),
     ),
   ];
 }

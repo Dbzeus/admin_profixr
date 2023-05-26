@@ -19,5 +19,9 @@ abstract class Routes {
   //city
   static const cityList = "/city/list";
   static const addCity = "/city/add";
+  //area
+  static const areaList = "/area/list";
+  static const addarea = "/area/add";
+
 
 }

@@ -4,15 +4,16 @@ import 'package:profixer_admin/apis/api_call.dart';
 
 import '../../helpers/constant_widgets.dart';
 
-class CityController extends GetxController {
+class AreaController extends GetxController {
+  RxList areas = RxList();
   RxList cities = RxList();
-  RxList countries = RxList();
   RxBool isLoading = true.obs;
 
-  Rx selectedCountry=Rx(null);
+  Rx selectedCity=Rx(null);
 
-  TextEditingController cityNameController=TextEditingController();
-  TextEditingController countryNameController=TextEditingController();
+  TextEditingController areaNameController=TextEditingController();
+  TextEditingController pincodeController=TextEditingController();
+  TextEditingController cityDropdownController=TextEditingController();
   TextEditingController searchController=TextEditingController();
   RxBool selectedIsActive=true.obs;
 
@@ -21,9 +22,25 @@ class CityController extends GetxController {
   void onInit() {
     // TODO: implement onInit
     super.onInit();
+    getArea();
     getCity();
-    getCountry();
   }
+
+  getArea() async {
+    if (await isNetConnected()) {
+      var response = await ApiCall().getArea();
+      isLoading(false);
+      if (response != null) {
+        if (response['RtnStatus']) {
+          areas(response['RtnData']);
+        } else {
+          toast(response['RtnMsg']);
+        }
+      }
+    }
+  }
+
+
 
   getCity() async {
     if (await isNetConnected()) {
@@ -39,30 +56,16 @@ class CityController extends GetxController {
     }
   }
 
-  getCountry() async {
-    if (await isNetConnected()) {
-      var response = await ApiCall().getCountry();
-      isLoading(false);
-      if (response != null) {
-        if (response['RtnStatus']) {
-          countries(response['RtnData']);
-        } else {
-          toast(response['RtnMsg']);
-        }
-      }
-    }
-  }
-
-  updateCity(bool val, city) async {
+  updateArea(bool val, area) async {
     if (await isNetConnected()) {
       isLoading(true);
-      city['IsActive'] = val;
-      var response = await ApiCall().insertCity(city);
+      area['IsActive'] = val;
+      var response = await ApiCall().insertArea(area);
       isLoading(false);
       if (response != null) {
         if (response['RtnStatus']) {
-          cities(response['RtnData']);
-          getCity();
+          areas(response['RtnData']);
+          getArea();
         } else {
           toast(response['RtnMsg']);
         }

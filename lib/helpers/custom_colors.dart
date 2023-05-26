@@ -15,6 +15,8 @@ const borderColor=Color.fromRGBO(138, 138, 138, 0.5);
 const uploadButtonColor=Color.fromRGBO(246, 246, 246, 1);
 const uploadTextColor=Color.fromRGBO(157, 157, 157, 1);
 const blueTextColor=Color.fromRGBO(0, 169, 206, 1);
+const greenColor=Color.fromRGBO(218, 255, 212, 1);
+
 
 
 

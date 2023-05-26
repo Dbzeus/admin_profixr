@@ -47,7 +47,7 @@ class ProfixerMenuScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         // Get.toNamed(data.actionName);
-        Get.toNamed(Routes.cityList);
+        Get.toNamed(Routes.areaList);
       },
       child: Column(
         children: [

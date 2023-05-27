@@ -696,5 +696,33 @@ class ApiCall {
     return null;
   }
 
+  Future<dynamic> uploadAttachment(List<String> filePaths) async {
+    debugPrint(filePaths.toString());
+    try {
+      var files = filePaths
+          .map((e) async => await MultipartFile.fromFile(
+                e,
+              ))
+          .toList();
+
+      debugPrint('${files.length}');
+
+
+      var data = FormData.fromMap({"files": files});
+
+      final response = await _dio.post(uploadAttachmentUrl, data: data);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
 /*end master apis*/
 }

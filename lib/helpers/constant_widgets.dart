@@ -35,6 +35,16 @@ uploadButton(Function onTab) {
   );
 }
 
+getImageCamera() async{
+  var res = await ImagePicker()
+      .pickImage(source: ImageSource.camera, imageQuality: 50);
+  if (res != null) {
+    return res.path;
+  }else{
+    return null;
+  }
+}
+
 getImageFromGallery() async{
   var res = await ImagePicker()
       .pickImage(source: ImageSource.gallery, imageQuality: 50);
@@ -43,7 +53,6 @@ getImageFromGallery() async{
   }else{
     return null;
   }
-
 }
 
 var connectivity = Connectivity();

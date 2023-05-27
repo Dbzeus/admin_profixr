@@ -29,7 +29,6 @@ class AreaListScreen extends GetView<AreaController> {
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     height: 50,
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
@@ -63,7 +62,7 @@ class AreaListScreen extends GetView<AreaController> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Get.toNamed(Routes.addarea,
+                    Get.toNamed(Routes.addArea,
                         arguments: {"title": "Add Area", "buttonTitle": "Add","area": null,});
                   },
                   child: Container(
@@ -98,27 +97,14 @@ class AreaListScreen extends GetView<AreaController> {
           ],
         ),
       ),
-      /*  floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Get.toNamed(Routes.addCity,
-                arguments: {"title": "Add City", "buttonTitle": "Add"});
-          },
-          elevation: 4,
-          backgroundColor: primaryColor,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-          ),
-          child: const Icon(
-            Icons.add,
-            color: whiteColor,
-          )),*/
+
     );
   }
 
   _buildCityTile(area) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.addarea, arguments: {
+        Get.toNamed(Routes.addArea, arguments: {
           "title": "Edit Area",
           "buttonTitle": "Save Changes",
           "area": area,
@@ -145,7 +131,7 @@ class AreaListScreen extends GetView<AreaController> {
               child: Row(
                 children: [
                   Container(
-                    width: 40,
+                    width: 50,
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
@@ -153,11 +139,7 @@ class AreaListScreen extends GetView<AreaController> {
                     ),
                     child: Center(
                       child: Text(
-                        area["AreaName"].substring(0,1).toString(),
-                       /* city["CityName"]
-                            .split(" ")
-                            .map((e) => e.substring(0, 1).toUpperCase())
-                            .toString(),*/
+                        (area["AreaName"].trim().split(" ") as List<String>).map((e) => e.trim().substring(0,1).toUpperCase()).join(""),
                         style: const TextStyle(
                           color: primaryColor,
                           fontSize: 18,
@@ -167,7 +149,7 @@ class AreaListScreen extends GetView<AreaController> {
                     ),
                   ),
                   const SizedBox(
-                    width: 26,
+                    width: 12,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,7 +162,7 @@ class AreaListScreen extends GetView<AreaController> {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "${area["CityName"]} ,  ${area["pincode"]}" ,
+                        "${area["CityName"]},  ${area["pincode"]}" ,
                         style: const TextStyle(
                           fontSize: 12,
                           color: blackColor,
@@ -194,6 +176,7 @@ class AreaListScreen extends GetView<AreaController> {
             Switch(
                 value: area["IsActive"],
                 activeColor: Colors.green.shade200,
+                inactiveThumbColor: Colors.red.shade200,
                 onChanged: (val) {
                   controller.updateArea(val, area);
                 })

@@ -1,23 +1,25 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 
-import '../city_controller.dart';
+import '../service_controller.dart';
 
-class CityListScreen extends GetView<CityController> {
+
+class ServiceListScreen extends GetView<ServiceController> {
   @override
-  final controller = Get.put(CityController());
+  final controller = Get.put(ServiceController());
 
-  CityListScreen({Key? key}) : super(key: key);
+  ServiceListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: "City",
+        title: "Services",
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -31,7 +33,7 @@ class CityListScreen extends GetView<CityController> {
                     height: 50,
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(16),
                         border: Border.all(color: Colors.grey.shade100),
                         boxShadow: [
                           BoxShadow(
@@ -62,8 +64,8 @@ class CityListScreen extends GetView<CityController> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Get.toNamed(Routes.addCity,
-                        arguments: {"title": "Add City", "buttonTitle": "Add","city": null,});
+                    Get.toNamed(Routes.addService,
+                        arguments: {"title": "Add Service", "buttonTitle": "Add"});
                   },
                   child: Container(
                     height: 50,
@@ -82,37 +84,32 @@ class CityListScreen extends GetView<CityController> {
                 )
               ],
             ),
-            Obx(
-              () => Expanded(
-                child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: controller.cities.length,
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (_, index) =>
-                        _buildCityTile(controller.cities[index])),
-              ),
-            ),
+            Obx(()=>ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: controller.services.length,
+                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
+                physics: const BouncingScrollPhysics(),
+                itemBuilder: (_, index) => _buildMenu(controller.services[index])),),
           ],
         ),
       ),
-
     );
   }
 
-  _buildCityTile(city) {
+  _buildMenu(data) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.addCity, arguments: {
-          "title": "Edit City",
-          "buttonTitle": "Save Changes",
-          "city": city,
-        });
+        Get.toNamed(Routes.addService,
+            arguments: {
+              "title": "Edit Service",
+              "buttonTitle" : "Save Changes",
+              "service":data
+            });
       },
       child: Container(
         padding: const EdgeInsets.all(12),
-        margin: const EdgeInsets.symmetric(vertical: 6),
+        margin:  const EdgeInsets.symmetric(vertical: 6),
         decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(color: Colors.grey.shade100),
@@ -127,59 +124,39 @@ class CityListScreen extends GetView<CityController> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            CachedNetworkImage(
+              imageUrl: '${data["ServiceImg"]}',
+              height: 50,
+              width: 50,
+            ),
+            const SizedBox(
+              width: 12,
+            ),
             Expanded(
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    width:50,
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: primaryColor.withAlpha(30),
-                    ),
-                    child: Center(
-                      child: Text(
-                        (city["CityName"]
-                            .split(" ") as List<String>).map((e) => e.trim().substring(0,1).toUpperCase()).join(""),
-                        style: const TextStyle(
-                          color: primaryColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+                  Text(
+                    data["ServiceName"],
+                    style: const TextStyle(
+                        fontSize: 14, color: blackColor, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(
-                    width: 12,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        city["CityName"],
-                        style: const TextStyle(
-                            fontSize: 14,
-                            color: blackColor,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        city["CountryName"],
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: blackColor,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    data["Remarks"],
+                    style: const TextStyle(
+                        fontSize: 12, color: blackColor,),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
             ),
             Switch(
-                value: city["IsActive"],
+                value: data["IsActive"],
                 activeColor: Colors.green.shade200,
                 inactiveThumbColor: Colors.red.shade200,
                 onChanged: (val) {
-                  controller.updateCity(val, city);
+                  controller.updateService(val, data);
                 })
           ],
         ),

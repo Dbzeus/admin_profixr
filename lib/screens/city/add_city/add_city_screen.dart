@@ -17,12 +17,16 @@ class AddCityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int cityId = 0;
-    controller.selectedCountry(null);
-    controller.cityNameController.clear();
+
     if (Get.arguments['city'] != null) {
       controller.cityNameController.text = Get.arguments['city']['CityName'];
       controller.selectedCountry('${Get.arguments['city']['CountryID']}');
       cityId = Get.arguments['city']['CityID'];
+      controller.selectedIsActive(Get.arguments['city']['IsActive']);
+    }else{
+      controller.selectedCountry(null);
+      controller.cityNameController.clear();
+      controller.selectedIsActive(true);
     }
 
     return GestureDetector(
@@ -48,7 +52,7 @@ class AddCityScreen extends StatelessWidget {
               ),
               Obx(
                 () => CustomDropDown(
-                  hintText: "Country Name",
+                  hintText: "Country",
                   dropDownValue: controller.selectedCountry.value,
                   items: controller.countries,
                   onSelected: (val) {
@@ -64,8 +68,12 @@ class AddCityScreen extends StatelessWidget {
                   children: [
                     const Expanded(child: Text('Status')),
                     InkWell(
-                      onTap: () => controller
-                          .selectedIsActive(!controller.selectedIsActive.value),
+                      onTap: () {
+                        if(controller.selectedIsActive.value==false) {
+                          controller.selectedIsActive(
+                              !controller.selectedIsActive.value);
+                        }
+                      },
                       child: Container(
                         width: 100,
                         height: 40,
@@ -104,8 +112,12 @@ class AddCityScreen extends StatelessWidget {
                       width: 12,
                     ),
                     InkWell(
-                      onTap: () => controller
-                          .selectedIsActive(!controller.selectedIsActive.value),
+                      onTap: () {
+                        if(controller.selectedIsActive.value==false) {
+                          controller.selectedIsActive(
+                              !controller.selectedIsActive.value);
+                        }
+                      },
                       child: Container(
                         width: 100,
                         height: 40,
@@ -154,7 +166,7 @@ class AddCityScreen extends StatelessWidget {
                       "IsActive": controller.selectedIsActive.value,
                       "CUID": controller.box.read(Session.userId)
                     };
-                    controller.createCity(city);
+                    controller.createCity(city,Get.arguments['city'] != null);
                   }),
             ],
           ),

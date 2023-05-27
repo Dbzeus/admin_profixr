@@ -3,21 +3,22 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
-
-import 'package:profixer_admin/screens/services/service_menu/service_menu_controller.dart';
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 
-class ServiceMenuScreen extends GetView<ServiceMenuController> {
-  final controller = Get.put(ServiceMenuController());
+import '../complaint_nature_controller.dart';
 
-  ServiceMenuScreen({Key? key}) : super(key: key);
+class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
+  @override
+  final controller = Get.put(ComplaintNatureController());
+
+  ComplaintNatureListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: CustomAppBar(
-        title: "Services",
+        title: "Complaint Nature",
       ),
       body: GestureDetector(
         onTap: ()=>Get.focusScope?.unfocus(),
@@ -36,7 +37,6 @@ class ServiceMenuScreen extends GetView<ServiceMenuController> {
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       height: 50,
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(16),
@@ -61,6 +61,13 @@ class ServiceMenuScreen extends GetView<ServiceMenuController> {
                             Icons.search,
                             color: textColor,
                           ),
+                          suffixIcon: SvgPicture.asset(
+                            'assets/icon/filter.svg',
+                            height: 12,
+                            width: 12,
+                            color: textColor,
+                          ),
+
                         ),
                       ),
                     ),
@@ -68,18 +75,23 @@ class ServiceMenuScreen extends GetView<ServiceMenuController> {
                   const SizedBox(
                     width: 10,
                   ),
-                  Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: primaryColor,
-                    ),
-                    child: Center(
-                      child: SvgPicture.asset(
-                        'assets/icon/filter.svg',
-                        height: 12,
-                        width: 12,
+                  GestureDetector(
+                    onTap: () {
+                      Get.toNamed(Routes.addComplaintNature,
+                          arguments: {"title": "Add Complaint Nature", "buttonTitle": "Add","area": null,});
+                    },
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: primaryColor,
+                      ),
+                      child: const Center(
+                        child: Icon(
+                          Icons.add,
+                          color: whiteColor,
+                        ),
                       ),
                     ),
                   )
@@ -88,7 +100,7 @@ class ServiceMenuScreen extends GetView<ServiceMenuController> {
               const SizedBox(
                 height: 16,
               ),
-              const Text(
+             /* const Text(
                 "Plumbing",
                 style: TextStyle(
                     color: Color.fromRGBO(0, 169, 206, 1),
@@ -97,50 +109,33 @@ class ServiceMenuScreen extends GetView<ServiceMenuController> {
               ),
               const SizedBox(
                 height: 10,
-              ),
-              Expanded(
+              ),*/
+              Obx(()=>Expanded(
                 child: ListView.builder(
-                    itemCount: 6,
+                    itemCount: controller.cNatures.length,
                     padding: EdgeInsets.only(bottom: 72),
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemBuilder: (_, index) {
-                      return _buildServices();
+                      return _buildServices(controller.cNatures[index]);
                     }),
-              ),
+              ),),
             ],
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: (){
-            Get.toNamed(Routes.addService,arguments: {
-              "title": "Add Services",
-              "buttonTitle" : "Add"
-            });
-          },
-          elevation: 4,
-          backgroundColor: primaryColor,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-                Radius.circular(8)
-            ),
-          ),
-          child: const Icon(
-            Icons.add,
-            color: whiteColor,
-          )
-      ),
+
     );
   }
 
-  _buildServices() {
+  _buildServices(data) {
     return GestureDetector(
       onTap: () {
         Get.focusScope?.unfocus();
-        Get.toNamed(Routes.addService,arguments: {
-          "title": "Edit Services",
-          "buttonTitle" : "Save Changes"
+        Get.toNamed(Routes.addComplaintNature,arguments: {
+          "title": "Edit Complaint Nature",
+          "buttonTitle" : "Save Changes",
+          "complaintNature" : data,
         });
       },
       child: Container(

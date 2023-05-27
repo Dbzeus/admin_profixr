@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:profixer_admin/helpers/constant_widgets.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
-import 'package:profixer_admin/routes/app_routes.dart';
+import 'package:profixer_admin/helpers/utils.dart';
 import 'package:profixer_admin/screens/area/area_controller.dart';
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 import 'package:profixer_admin/widgets/custom_button.dart';
 import 'package:profixer_admin/widgets/custom_edittext.dart';
+
+import '../../../widgets/custom_dropdown.dart';
 
 class AddAreaScreen extends StatelessWidget {
   final controller = Get.find<AreaController>();
@@ -15,19 +16,18 @@ class AddAreaScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int areaId = -1;
+    int areaId = 0;
     if (Get.arguments['area'] != null) {
       controller.areaNameController.text = Get.arguments['area']['AreaName'];
       controller.pincodeController.text = Get.arguments['area']['pincode'];
-      controller.cityDropdownController.text =
-          Get.arguments['area']['CityName'];
+      controller.selectedCity('${Get.arguments['area']['CityID']}');
       areaId = Get.arguments['area']['AreaID'];
-    } else {
+      controller.selectedIsActive(Get.arguments['area']['IsActive']);
+    }else{
       controller.areaNameController.clear();
       controller.pincodeController.clear();
-      areaId = 0;
+      controller.selectedIsActive(true);
     }
-
 
     return GestureDetector(
       onTap: () {
@@ -42,13 +42,13 @@ class AddAreaScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(
-                height: 10,
+                height: 12,
               ),
               CustomEditText(
                   hintText: "Area Name",
                   controller: controller.areaNameController),
               const SizedBox(
-                height: 10,
+                height: 24,
               ),
               CustomEditText(
                 hintText: "Pincode",
@@ -56,102 +56,112 @@ class AddAreaScreen extends StatelessWidget {
                 keyboardType: TextInputType.number,
               ),
               const SizedBox(
-                height: 10,
+                height: 24,
               ),
-              CustomEditText(
-                hintText: "City ",
-                controller: controller.cityDropdownController,
-                suffixIcon: Obx(
-                  () => DropdownButton(
-                      value: controller.selectedCity.value,
-                      style: const TextStyle(color: blackColor, fontSize: 16),
-                      underline: const SizedBox(),
-                      isExpanded: true,
-                      icon: const Icon(
-                        Icons.keyboard_arrow_down,
-                        color: blackColor,
-                        size: 22,
-                      ),
-                      items: controller.cities.map((item) {
-                        return DropdownMenuItem(
-                          value: item,
-                          child: Text(item['CityName']),
-                        );
-                      }).toList(),
-                      onChanged: (val) {
-                        debugPrint(controller.selectedCity.toString());
-                        controller.selectedCity(val);
-                      }),
+              Obx(
+                () => CustomDropDown(
+                  hintText: "City",
+                  dropDownValue: controller.selectedCity.value,
+                  items: controller.cities,
+                  onSelected: (val) {
+                    controller.selectedCity(val);
+                  },
                 ),
               ),
               const SizedBox(
-                height: 12,
+                height: 32,
               ),
               Obx(
                 () => Row(
                   children: [
                     const Expanded(child: Text('Status')),
-                    Container(
-                      width: 100,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: controller.selectedIsActive.value
-                            ? greenColor
-                            : Colors.grey.shade100,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.done_rounded,
-                            size: 16,
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            'Active',
-                            style: TextStyle(
+                    InkWell(
+                      onTap: () {
+                        if(controller.selectedIsActive.value==false) {
+                          controller.selectedIsActive(
+                              !controller.selectedIsActive.value);
+                      }
+                      },
+
+                      child: AnimatedContainer(
+                        width: 100,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: controller.selectedIsActive.value
+                              ? greenColor
+                              : Colors.grey.shade100,
+                        ),
+                        duration: Duration(milliseconds: 100),
+
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.done_rounded,
+                              size: 16,
                               color: controller.selectedIsActive.value
                                   ? Colors.green
-                                  : Colors.grey.shade100,
+                                  : Colors.black54,
                             ),
-                          )
-                        ],
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              'Active',
+                              style: TextStyle(
+                                color: controller.selectedIsActive.value
+                                    ? Colors.green
+                                    : Colors.black54,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(
                       width: 12,
                     ),
-                    Container(
-                      width: 100,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: !controller.selectedIsActive.value
-                            ? Colors.red.shade100
-                            : Colors.grey.shade100,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.close,
-                            size: 16,
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            'Inactive',
-                            style: TextStyle(
-                              color: controller.selectedIsActive.value
+                    InkWell(
+                      onTap: (){
+                        if(controller.selectedIsActive.value==true) {
+                          controller.selectedIsActive(
+                              !controller.selectedIsActive.value);
+                        }
+                      },
+                      child: AnimatedContainer(
+                        width: 100,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: !controller.selectedIsActive.value
+                              ? Colors.red.shade100
+                              : Colors.grey.shade100,
+                        ),
+                        duration: Duration(milliseconds: 100),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.close,
+                              size: 16,
+                              color: !controller.selectedIsActive.value
                                   ? Colors.red
-                                  : Colors.grey.shade100,
+                                  : Colors.black54,
                             ),
-                          )
-                        ],
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            Text(
+                              'Inactive',
+                              style: TextStyle(
+                                color: !controller.selectedIsActive.value
+                                    ? Colors.red
+                                    : Colors.black54,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -164,17 +174,12 @@ class AddAreaScreen extends StatelessWidget {
                     var area = {
                       "AreaID": areaId,
                       "AreaName": controller.areaNameController.text.trim(),
-                      "CityID":
-                          controller.selectedCity.value['CountryID'],
-                      "PinCode" : controller.pincodeController.text,
+                      "CityID": controller.selectedCity.value,
+                      "PinCode": controller.pincodeController.text,
                       "IsActive": controller.selectedIsActive.value,
-                      "CUID": 0
+                      "CUID": controller.box.read(Session.userId)
                     };
-                    controller.updateArea(
-                        controller.selectedIsActive.value, area);
-                    controller.areaNameController.clear();
-                    controller.cityDropdownController.clear();
-                    Get.back();
+                    controller.createArea(area,Get.arguments['area'] != null);
                   }),
             ],
           ),

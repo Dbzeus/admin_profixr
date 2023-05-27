@@ -63,7 +63,7 @@ class CityController extends GetxController {
     }
   }
 
-  createCity(city) async {
+  createCity(city,bool isUpdated) async {
     debugPrint(city.toString());
     if (await isNetConnected()) {
       isLoading(true);
@@ -72,12 +72,14 @@ class CityController extends GetxController {
       if (response != null) {
         if (response['RtnStatus']) {
           customDialog(
-              Get.context, "Added Successful!", "${response['RtnMsg']}",
+              Get.context, isUpdated ? "Updated Successful!": "Added Successful!", "${response['RtnMsg']}",
               () {
             Get.back();
             getCity();
           }, isDismissable: false);
-        } else {}
+        } else {
+          toast('${response['RtnMsg']}');
+        }
       }
     }
   }

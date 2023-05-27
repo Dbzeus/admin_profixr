@@ -1,26 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:profixer_admin/apis/api_call.dart';
 
 import '../../helpers/constant_widgets.dart';
+import '../../helpers/custom_dialog.dart';
 
 class AreaController extends GetxController {
   RxList areas = RxList();
-  RxList cities = RxList();
-  RxBool isLoading = true.obs;
+  RxList<Map<String, String>> cities = RxList();
+  RxBool isLoading = false.obs;
 
-  Rx selectedCity=Rx(null);
+  RxString selectedCity = "".obs;
 
-  TextEditingController areaNameController=TextEditingController();
-  TextEditingController pincodeController=TextEditingController();
-  TextEditingController cityDropdownController=TextEditingController();
-  TextEditingController searchController=TextEditingController();
-  RxBool selectedIsActive=true.obs;
+  TextEditingController areaNameController = TextEditingController();
+  TextEditingController pincodeController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
+  RxBool selectedIsActive = true.obs;
 
+  final box = GetStorage();
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     getArea();
     getCity();
@@ -28,6 +29,7 @@ class AreaController extends GetxController {
 
   getArea() async {
     if (await isNetConnected()) {
+      isLoading(true);
       var response = await ApiCall().getArea();
       isLoading(false);
       if (response != null) {
@@ -40,17 +42,38 @@ class AreaController extends GetxController {
     }
   }
 
-
-
   getCity() async {
     if (await isNetConnected()) {
       var response = await ApiCall().getCity();
+      if (response != null) {
+        if (response['RtnStatus']) {
+          for (var e in response['RtnData']) {
+            cities.add({"id": '${e["CityID"]}', "value": "${e['CityName']}"});
+          }
+          if (cities.isNotEmpty) {
+            selectedCity('${cities.first['id']}');
+          }
+        } else {
+          toast(response['RtnMsg']);
+        }
+      }
+    }
+  }
+
+  createArea(area,bool isUpdated) async {
+    if (await isNetConnected()) {
+      isLoading(true);
+      var response = await ApiCall().insertArea(area);
       isLoading(false);
       if (response != null) {
         if (response['RtnStatus']) {
-          cities(response['RtnData']);
+          customDialog(
+              Get.context, isUpdated ? "Updated Successful!": "Added Successful!", "${response['RtnMsg']}", () {
+            Get.back();
+            getArea();
+          }, isDismissable: false);
         } else {
-          toast(response['RtnMsg']);
+          toast('${response['RtnMsg']}');
         }
       }
     }
@@ -64,11 +87,9 @@ class AreaController extends GetxController {
       isLoading(false);
       if (response != null) {
         if (response['RtnStatus']) {
-          areas(response['RtnData']);
-          getArea();
-        } else {
-          toast(response['RtnMsg']);
+          areas.refresh();
         }
+        toast(response['RtnMsg']);
       }
     }
   }

@@ -5,10 +5,7 @@ abstract class Routes {
   static const mobileLogin = "/mobileLogin";
   static const verification = "/verification";
   static const main = "/main";
-  static const addService = "/addService";
-  static const serviceMenu = "/serviceMenu";
-  static const categoryMenu = "/categoryMenu";
-  static const addCategory = "/addCategory";
+
   static const newTicket = "/newTicket";
   static const bookedTicket = "/bookedTicket";
   static const ticketDetails = "/ticketDetails";
@@ -21,7 +18,12 @@ abstract class Routes {
   static const addCity = "/city/add";
   //area
   static const areaList = "/area/list";
-  static const addarea = "/area/add";
-
+  static const addArea = "/area/add";
+  //service
+  static const serviceList = "/service/list";
+  static const addService = "/service/add";
+  //complaintNature
+  static const complaintNatureList = "/complaintNature/list";
+  static const addComplaintNature = "/complaintNature/add";
 
 }

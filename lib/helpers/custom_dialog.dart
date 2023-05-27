@@ -25,7 +25,7 @@ customDialog(context,String title,String message,Function onTab,{
             mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(height: 16,),
-              Image.asset('assets/icon/profixer.png',height: 100,),
+              Image.asset('assets/done.png',height: 100,),
               const SizedBox(height: 24,),
               Text(title,style: TextStyle(
                   fontWeight: FontWeight.bold,

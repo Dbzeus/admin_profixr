@@ -7,6 +7,9 @@ const getMenuUrl = "Account/GetMenuMobile";
 const forgetPasswordUrl = "Account/ForgetPassword";
 const resetPasswordUrl = "Account/ResetPassword";
 
+//attachment api
+const uploadAttachmentUrl="Master/UploadImages";
+
 //master apis
 const getCountryUrl="Master/GetCountry";
 const insertCityUrl="Master/InsertUpdateCity";

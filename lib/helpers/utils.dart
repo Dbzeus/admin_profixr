@@ -5,4 +5,6 @@ class Session{
 
   static const userId = "userId";
 
+  static String userMobileNo="userMobileNo";
+
 }

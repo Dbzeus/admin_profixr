@@ -5,6 +5,7 @@ const loginOtpUrl="Account/SendLoginOTP";
 const loginDetailsByMobileUrl="Account/LoginDetailsByMobileNo";
 const getMenuUrl = "Account/GetMenuMobile";
 const forgetPasswordUrl = "Account/ForgetPassword";
+const resetPasswordUrl = "Account/ResetPassword";
 
 //master apis
 const getCountryUrl="Master/GetCountry";

@@ -125,6 +125,7 @@ class ApiCall {
     }
     return null;
   }
+
   /** account Apis */
 
   /*master apis*/
@@ -481,7 +482,7 @@ class ApiCall {
           await _dio.get(getServiceProviderAreaUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
-     return MenuResponse.fromJson(response.data);
+      return MenuResponse.fromJson(response.data);
     } on DioError catch (e) {
       log(e.message);
       toast(e.message);
@@ -491,14 +492,48 @@ class ApiCall {
     }
     return null;
   }
+
   //Forget Password
-  Future<dynamic> forgetPassword(String mobileNo, ) async {
+  Future<dynamic> forgetPassword(
+    String mobileNo,
+  ) async {
     try {
-      var params = {"MobileNo": mobileNo,};
+      var params = {
+        "MobileNo": mobileNo,
+      };
 
       log(jsonEncode(params));
 
-      final response = await _dio.post(forgetPasswordUrl, queryParameters: params);
+      final response =
+          await _dio.post(forgetPasswordUrl, queryParameters: params);
+
+      log('response code ${response.requestOptions.path} ${response.statusCode} $params ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      debugPrint(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  //Reset Password
+  Future<dynamic> resetPassword(
+      String mobileNo, String oldPassword, String newPassword) async {
+    try {
+      var params = {
+        "MobileNo": mobileNo,
+        "OldPwd": oldPassword,
+        "NewPwd": newPassword
+      };
+
+      log(jsonEncode(params));
+
+      final response =
+          await _dio.post(resetPasswordUrl, queryParameters: params);
 
       log('response code ${response.requestOptions.path} ${response.statusCode} $params ${response.data}');
 

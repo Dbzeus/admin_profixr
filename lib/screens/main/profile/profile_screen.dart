@@ -118,7 +118,7 @@ class ProfileScreen extends StatelessWidget {
                 Get.toNamed(Routes.loginSelection);
               },
               child: Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(8),
                   margin: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                       color: Colors.white,
@@ -132,13 +132,14 @@ class ProfileScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: const [
-                      Icon(Icons.logout_outlined, size: 25, color: Colors.red),
+                      Icon(Icons.logout_outlined, size: 20, color: Colors.red),
                       SizedBox(
                         width: 8,
                       ),
                       Text(
                         'Logout',
                         style: TextStyle(
+                          fontSize: 12,
                             fontWeight: FontWeight.bold, color: Colors.red),
                       ),
                     ],

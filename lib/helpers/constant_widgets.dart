@@ -68,27 +68,3 @@ toast(String? msg) {
   );
 }
 
-
-
-customAlertDialogue({onTab}){
-  Function() onTab = (){};
-  return AlertDialog(
-    content: Column(
-      children: [
-        Text(
-          "Added Succesfull!",
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-              fontSize: 16, fontWeight: FontWeight.bold, color: primaryColor),
-        ),
-        Text(
-          "Work with profixer and earn more",
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 12, color: textColor),
-        ),
-        CustomButton(text: "OK", onTap: onTab)
-      ],
-    ),
-  );
-}
-

@@ -30,6 +30,7 @@ class ChangePasswordScreen extends GetView<ChangePasswordController> {
               children: [
                 CustomEditText(
                     hintText: "Old Password",
+
                     controller: controller.oldPasswordController),
                 const SizedBox(
                   height: 10,
@@ -42,7 +43,7 @@ class ChangePasswordScreen extends GetView<ChangePasswordController> {
                 ),
                 CustomEditText(
                     hintText: "Confirm New Password",
-                    controller: controller.confirmNewPasswordController,
+                    controller: controller.confirmPasswordController,
                   obscureText: true,
                 ),
                 const Spacer(),

@@ -1,21 +1,24 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:profixer_admin/apis/api_call.dart';
+import 'package:profixer_admin/helpers/custom_dialog.dart';
 
 import '../../helpers/constant_widgets.dart';
 
 class CityController extends GetxController {
   RxList cities = RxList();
-  RxList countries = RxList();
-  RxBool isLoading = true.obs;
+  RxList<Map<String, String>> countries = RxList();
+  RxBool isLoading = false.obs;
 
-  Rx selectedCountry=Rx(null);
+  RxString selectedCountry = "".obs;
 
-  TextEditingController cityNameController=TextEditingController();
-  TextEditingController countryNameController=TextEditingController();
-  TextEditingController searchController=TextEditingController();
-  RxBool selectedIsActive=true.obs;
+  TextEditingController cityNameController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
+  RxBool selectedIsActive = true.obs;
 
+  final box=GetStorage();
 
   @override
   void onInit() {
@@ -27,6 +30,7 @@ class CityController extends GetxController {
 
   getCity() async {
     if (await isNetConnected()) {
+      isLoading(true);
       var response = await ApiCall().getCity();
       isLoading(false);
       if (response != null) {
@@ -45,10 +49,35 @@ class CityController extends GetxController {
       isLoading(false);
       if (response != null) {
         if (response['RtnStatus']) {
-          countries(response['RtnData']);
+          for (var e in response['RtnData']) {
+            countries.add(
+                {"id": '${e["CountryID"]}', "value": "${e['CountryName']}"});
+          }
+          if (countries.isNotEmpty) {
+            selectedCountry('${countries.first['id']}');
+          }
         } else {
           toast(response['RtnMsg']);
         }
+      }
+    }
+  }
+
+  createCity(city) async {
+    debugPrint(city.toString());
+    if (await isNetConnected()) {
+      isLoading(true);
+      var response = await ApiCall().insertCity(city);
+      isLoading(false);
+      if (response != null) {
+        if (response['RtnStatus']) {
+          customDialog(
+              Get.context, "Added Successful!", "${response['RtnMsg']}",
+              () {
+            Get.back();
+            getCity();
+          }, isDismissable: false);
+        } else {}
       }
     }
   }
@@ -61,11 +90,9 @@ class CityController extends GetxController {
       isLoading(false);
       if (response != null) {
         if (response['RtnStatus']) {
-          cities(response['RtnData']);
-          getCity();
-        } else {
-          toast(response['RtnMsg']);
+          cities.refresh();
         }
+        toast(response['RtnMsg']);
       }
     }
   }

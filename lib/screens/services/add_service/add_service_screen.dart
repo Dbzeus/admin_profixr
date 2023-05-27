@@ -67,12 +67,16 @@ class AddServiceScreen extends GetView<AddServiceController> {
                       }),
                 ),
               ),
-              Obx(
-                () => CustomDropDown(
-                    hintText: "Service Amount",
-                    dropDownValue: controller.categoryDropDownValue.value,
-                    items: controller.categoryItems),
-              ),
+              // Obx(
+              //   () => CustomDropDown(
+              //       hintText: "Service Amount",
+              //       dropDownValue: controller.categoryDropDownValue.value,
+              //       items: controller.categoryItems,
+              //       onSelected: (val){
+              //         controller.categoryDropDownValue(val)
+              //       },
+              //   ),
+              // ),
               const SizedBox(
                 height: 10,
               ),

@@ -49,6 +49,7 @@ class LoginController extends GetxController {
   storeSessions(UserData data){
     _box.write(Session.isLogin, true);
     _box.write(Session.userId, data.userID);
+    _box.write(Session.userMobileNo, data.mobileNo);
     _box.write(Session.userData, data.toJson());
   }
 

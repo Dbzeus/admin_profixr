@@ -357,9 +357,7 @@ class NewTicketScreen extends GetView<NewTicketController> {
                       TextSpan(text: " SAR"),
                     ])),
                 GestureDetector(
-                  onTap: () => customDialog(Get.context, () {
-                    Get.back();
-                  }),
+                  onTap: () =>Get.back(),
                   child: Container(
                     height: 55,
                     width: 155,

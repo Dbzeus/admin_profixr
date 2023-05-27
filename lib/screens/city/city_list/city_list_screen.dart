@@ -29,10 +29,9 @@ class CityListScreen extends GetView<CityController> {
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     height: 50,
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(12),
                         border: Border.all(color: Colors.grey.shade100),
                         boxShadow: [
                           BoxShadow(
@@ -98,20 +97,7 @@ class CityListScreen extends GetView<CityController> {
           ],
         ),
       ),
-      /*  floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Get.toNamed(Routes.addCity,
-                arguments: {"title": "Add City", "buttonTitle": "Add"});
-          },
-          elevation: 4,
-          backgroundColor: primaryColor,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-          ),
-          child: const Icon(
-            Icons.add,
-            color: whiteColor,
-          )),*/
+
     );
   }
 
@@ -145,7 +131,7 @@ class CityListScreen extends GetView<CityController> {
               child: Row(
                 children: [
                   Container(
-                    width: 40,
+                    width:50,
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
@@ -153,11 +139,8 @@ class CityListScreen extends GetView<CityController> {
                     ),
                     child: Center(
                       child: Text(
-                        city["CityName"].substring(0,1).toString(),
-                       /* city["CityName"]
-                            .split(" ")
-                            .map((e) => e.substring(0, 1).toUpperCase())
-                            .toString(),*/
+                        (city["CityName"]
+                            .split(" ") as List<String>).map((e) => e.substring(0,1).toUpperCase()).join(""),
                         style: const TextStyle(
                           color: primaryColor,
                           fontSize: 18,
@@ -167,9 +150,10 @@ class CityListScreen extends GetView<CityController> {
                     ),
                   ),
                   const SizedBox(
-                    width: 26,
+                    width: 12,
                   ),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         city["CityName"],

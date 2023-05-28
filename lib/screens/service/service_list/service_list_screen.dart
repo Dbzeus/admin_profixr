@@ -84,13 +84,19 @@ class ServiceListScreen extends GetView<ServiceController> {
                 )
               ],
             ),
-            Obx(()=>ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: controller.services.length,
-                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (_, index) => _buildMenu(controller.services[index])),),
+            Obx(()=>Expanded(
+              child: controller.isLoading.value
+                  ? Center(child: const CircularProgressIndicator())
+                  : controller.services.isEmpty
+                  ? Center(child: const Text('No Service Found'))
+                  :ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: controller.services.length,
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (_, index) => _buildMenu(controller.services[index])),
+            ),),
           ],
         ),
       ),

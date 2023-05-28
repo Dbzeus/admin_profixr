@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
@@ -62,8 +61,11 @@ class AreaListScreen extends GetView<AreaController> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Get.toNamed(Routes.addArea,
-                        arguments: {"title": "Add Area", "buttonTitle": "Add","area": null,});
+                    Get.toNamed(Routes.addArea, arguments: {
+                      "title": "Add Area",
+                      "buttonTitle": "Add",
+                      "area": null,
+                    });
                   },
                   child: Container(
                     height: 50,
@@ -84,20 +86,23 @@ class AreaListScreen extends GetView<AreaController> {
             ),
             Obx(
               () => Expanded(
-                child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: controller.areas.length,
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (_, index) =>
-                        _buildCityTile(controller.areas[index])),
+                child: controller.isLoading.value
+                    ? Center(child: const CircularProgressIndicator())
+                    : controller.areas.isEmpty
+                        ? Center(child: const Text('No Area Found'))
+                        : ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: controller.areas.length,
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (_, index) =>
+                                _buildCityTile(controller.areas[index])),
               ),
             ),
           ],
         ),
       ),
-
     );
   }
 
@@ -139,7 +144,9 @@ class AreaListScreen extends GetView<AreaController> {
                     ),
                     child: Center(
                       child: Text(
-                        (area["AreaName"].trim().split(" ") as List<String>).map((e) => e.trim().substring(0,1).toUpperCase()).join(""),
+                        (area["AreaName"].trim().split(" ") as List<String>)
+                            .map((e) => e.trim().substring(0, 1).toUpperCase())
+                            .join(""),
                         style: const TextStyle(
                           color: primaryColor,
                           fontSize: 18,
@@ -162,7 +169,7 @@ class AreaListScreen extends GetView<AreaController> {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "${area["CityName"]},  ${area["pincode"]}" ,
+                        "${area["CityName"]},  ${area["pincode"]}",
                         style: const TextStyle(
                           fontSize: 12,
                           color: blackColor,

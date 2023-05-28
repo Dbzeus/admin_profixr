@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
-import 'package:profixer_admin/widgets/custom_appbar.dart';
+import 'package:profixer_admin/helpers/hexcolor.dart';
+import 'package:profixer_admin/model/ticket_count_response.dart';
 
 import '../../../routes/app_routes.dart';
 import '../main_controller.dart';
@@ -17,33 +17,34 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  PreferredSize(
-        preferredSize: Size.fromHeight(MediaQuery.of(context).size.height * 0.14),
+      appBar: PreferredSize(
+        preferredSize:
+            Size.fromHeight(MediaQuery.of(context).size.height * 0.14),
         child: Container(
-          height:  100,
+          height: 100,
           decoration: BoxDecoration(
               color: whiteColor,
-              boxShadow:  [
+              boxShadow: [
                 BoxShadow(
                     color: Colors.black26,
                     blurRadius: 10,
-                    offset: Offset(0.0, 0.75)
-                )
-              ] ,
+                    offset: Offset(0.0, 0.75))
+              ],
               borderRadius: const BorderRadius.only(
                 bottomRight: Radius.circular(16),
                 bottomLeft: Radius.circular(16),
               )),
-          child:  Column(
+          child: Column(
             children: [
               const Spacer(),
               Padding(
-                padding: const EdgeInsets.only(left: 16,top: 16,bottom: 16),
+                padding: const EdgeInsets.only(left: 16, top: 16, bottom: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const CircleAvatar(
-                      backgroundImage: CachedNetworkImageProvider('https://lh3.googleusercontent.com/ogw/AOLn63FrRz1Sj7YR6k9tIBht1Hp_Xbr2osMhWRMybXZDRg=s32-c-mo'),
+                    CircleAvatar(
+                      backgroundImage: CachedNetworkImageProvider(
+                          controller.userData.imagePath),
                       backgroundColor: Colors.white,
                       radius: 18,
                     ),
@@ -57,55 +58,67 @@ class HomeScreen extends StatelessWidget {
                         ))
                   ],
                 ),
-
               ),
             ],
           ),
         ),
-
       ),
-
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Overview',style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                  ),),
+                  Text(
+                    'Overview',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                   Container(
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: primaryColor,
-                      borderRadius: BorderRadius.circular(8),
+                        color: primaryColor,
+                        borderRadius: BorderRadius.circular(8),
                         boxShadow: [
                           BoxShadow(
                               color: Colors.grey.shade100,
                               spreadRadius: 1,
                               blurRadius: 3,
                               offset: const Offset(0, 2))
-                        ]
-                    ),
+                        ]),
                     child: Row(
                       children: [
-                        const SizedBox(width: 4,),
-
-                        Container(
-                          decoration : BoxDecoration(
-                            color:Colors.white,
-                            borderRadius: BorderRadius.circular(12)
-                          ),
-                          child: Icon(Icons.add,color: primaryColor,size: 12,),
+                        const SizedBox(
+                          width: 4,
                         ),
-                        const SizedBox(width: 8,),
-                        Text('Add Ticket',style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 12),),
-                        const SizedBox(width: 4,),
-
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Icon(
+                            Icons.add,
+                            color: primaryColor,
+                            size: 12,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          'Add Ticket',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12),
+                        ),
+                        const SizedBox(
+                          width: 4,
+                        ),
                       ],
                     ),
                   )
@@ -113,8 +126,9 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             GridView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 0),
-                itemCount: controller.dashboard.length,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+                itemCount: controller.dashboards.length,
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
                 physics: const BouncingScrollPhysics(),
@@ -123,38 +137,22 @@ class HomeScreen extends StatelessWidget {
                     crossAxisSpacing: 10,
                     childAspectRatio: 0.8,
                     mainAxisSpacing: 15),
-                itemBuilder: (_,index){
-                  return _buildDashboard(controller.dashboard[index]);
-            }),
-            const SizedBox(height: 16,),
+                itemBuilder: (_, index) {
+                  return _buildDashboard(controller.dashboards[index]);
+                }),
+            const SizedBox(
+              height: 16,
+            ),
           ],
         ),
       ),
-      /*floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          Get.toNamed(Routes.newTicket);
-        },
-        elevation: 4,
-        backgroundColor: primaryColor,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(8)
-          ),
-        ),
-        child: const Icon(
-          Icons.add,
-          color: whiteColor,
-        )
-      ),*/
     );
   }
 
-  _buildDashboard(Map<String, String> dashboard){
+  _buildDashboard(TicketCount dashboard) {
     return GestureDetector(
-      onTap: (){
-        Get.toNamed(Routes.bookedTicket,arguments: {
-          "title":"${dashboard['title']}"
-        });
+      onTap: () {
+        Get.toNamed(Routes.bookedTicket, arguments: {"data": "$dashboard"});
       },
       child: Container(
         margin: const EdgeInsets.only(top: 12),
@@ -176,8 +174,8 @@ class HomeScreen extends StatelessWidget {
                 right: -10,
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Color.fromRGBO(245, 190, 134, 1),
-                      shape: BoxShape.circle,
+                    color: HexColor.fromHex(dashboard.colorCode),
+                    shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
                           color: Colors.grey.shade100,
@@ -194,7 +192,7 @@ class HomeScreen extends StatelessWidget {
                 right: -15,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Color.fromRGBO(255, 227, 200, 1),
+                    color: HexColor.fromHex(dashboard.colorCode2),
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
@@ -207,55 +205,43 @@ class HomeScreen extends StatelessWidget {
                   width: 40,
                   height: 40,
                 )),
-            Positioned(
-                bottom: 0,
-                right: 0,
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: blackColor,
-                      borderRadius: BorderRadius.only(bottomRight: Radius.circular(16),topLeft: Radius.circular(8))
-                  ),
-                  width: 30,
-                  height: 30,
-                  child: Center(
-                    child: SvgPicture.asset('assets/icon/arrow.svg'),
-                  ),
-                )),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12,horizontal: 12),
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SvgPicture.asset(
-                    dashboard['icon']!,
+                  CachedNetworkImage(
+                    imageUrl: dashboard.statusImage,
                     height: 15,
                     width: 15,
                   ),
                   const Spacer(),
                   Text(
-                    "${dashboard['count']}",
-                    style: TextStyle(fontSize: 25,
+                    "${dashboard.ticketCount}",
+                    style: TextStyle(
+                        fontSize: 25,
                         fontWeight: FontWeight.bold,
                         color: primaryColor),
                   ),
                   Text(
-                    "${dashboard['title']}",
+                    dashboard.statusName,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style:
-                    TextStyle(fontSize: 12, color: blackColor, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: blackColor,
+                        fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 8,),
+                  const SizedBox(
+                    height: 8,
+                  ),
                 ],
               ),
             ),
-
           ],
         ),
       ),
     );
   }
-
-
 }

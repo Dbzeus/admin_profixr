@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:profixer_admin/model/ticket_count_response.dart';
 
 import '../../apis/api_call.dart';
 import '../../helpers/constant_widgets.dart';
@@ -14,58 +15,11 @@ class MainController extends GetxController {
   final box = GetStorage();
   late UserData userData;
 
-
-  var dashboard = [
-    {
-      "icon": "assets/icon/dashboard/booked.svg",
-      "title": "Booked",
-      "count": "58",
-    },
-    {
-      "icon": "assets/icon/dashboard/accepted.svg",
-      "title": "Accepted",
-      "count": "20",
-    },
-    {
-      "icon": "assets/icon/dashboard/rejected.svg",
-      "title": "Rejected",
-      "count": "2",
-    },
-    {
-      "icon": "assets/icon/dashboard/assigned.svg",
-      "title": "Assigned",
-      "count": "15",
-    },
-    {
-      "icon": "assets/icon/dashboard/reassign.svg",
-      "title": "Re-Assign",
-      "count": "8",
-    },
-    {
-      "icon": "assets/icon/dashboard/inprogress.svg",
-      "title": "In-Progress",
-      "count": "13",
-    },
-    {
-      "icon": "assets/icon/dashboard/resolved.svg",
-      "title": "Resolved",
-      "count": "5",
-    },
-    {
-      "icon": "assets/icon/dashboard/onhold.svg",
-      "title": "On-Hold",
-      "count": "11",
-    },
-    {
-      "icon": "assets/icon/dashboard/completed.svg",
-      "title": "Completed",
-      "count": "30",
-    },
-
-
-  ];
+  var dashboards=RxList();
 
   RxList<MenuData> menuData=RxList();
+
+  RxBool isLoading=false.obs;
 
 
   @override
@@ -73,11 +27,25 @@ class MainController extends GetxController {
     userData = UserData.fromJson(box.read(Session.userData));
     var menus=jsonDecode(box.read(Session.menuData) ?? "[]");
     menus.forEach((v) {
-      menuData.value.add(MenuData.fromJson(v));
+      menuData.add(MenuData.fromJson(v));
     });
     super.onInit();
+    getTicketCounts();
     getMenu();
   }
+
+  getTicketCounts()async{
+    if (await isNetConnected()) {
+      isLoading(true);
+      TicketCountResponse? response =  await ApiCall().getTicketCount(box.read(Session.userId),0,"05-25-2023","05-30-2023");
+      isLoading(false);
+      if (response != null) {
+        if (response.rtnStatus) {
+            dashboards(response.rtnData);
+          }
+        }
+      }
+    }
 
 
   getMenu()async{

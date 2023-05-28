@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -61,10 +62,8 @@ class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
                             Icons.search,
                             color: textColor,
                           ),
-                          suffixIcon: SvgPicture.asset(
-                            'assets/icon/filter.svg',
-                            height: 12,
-                            width: 12,
+                          suffixIcon: const Icon(
+                            Icons.filter_alt_rounded,
                             color: textColor,
                           ),
 
@@ -111,10 +110,14 @@ class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
                 height: 10,
               ),*/
               Obx(()=>Expanded(
-                child: ListView.builder(
+                child: controller.isLoading.value
+                    ? Center(child: const CircularProgressIndicator())
+                    : controller.cNatures.isEmpty
+                    ? Center(child: const Text('No Complaint Nature Found'))
+                    : ListView.builder(
                     itemCount: controller.cNatures.length,
-                    padding: EdgeInsets.only(bottom: 72),
                     scrollDirection: Axis.vertical,
+                    padding: const EdgeInsets.symmetric(vertical: 8),
                     shrinkWrap: true,
                     itemBuilder: (_, index) {
                       return _buildServices(controller.cNatures[index]);
@@ -153,120 +156,74 @@ class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
                     blurRadius: 3,
                     offset: const Offset(0, 2))
               ]),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Image.asset(
-                      "assets/plumber.jpg",
-                      height: 85,
-                      fit: BoxFit.cover,
-                      width: 85,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 12,
-                  ),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Home Plumbing",
-                              style: TextStyle(
-                                  color: blackColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Container(
-                              height: 20,
-                              width: 20,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                color: const Color.fromRGBO(0, 169, 206, 1),
-                              ),
-                              child: Center(
-                                child: SvgPicture.asset(
-                                  'assets/icon/waterdrop.svg',
-                                  height: 10,
-                                  width: 10,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        const Text(
-                          "A service description includes descriptions of the functional and nonfunctional properties of the service, service interfaces, and the legal and technical constraints or rules for its usage. ",
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 4,
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: blackColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: CachedNetworkImage(
+                  imageUrl: "${data['ComplientNatureImg']}",
+                  height: 85,
+                  fit: BoxFit.cover,
+                  width: 85,
+                ),
               ),
               const SizedBox(
-                height: 10
+                width: 12,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text.rich(
-                    TextSpan(
-                      text: "Amount:",
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${data['ComplaintNatureName']}",
                       style: TextStyle(
-                        fontSize: 14,
+                          color: blackColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      "${data['Remarks']}",
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 4,
+                      style: TextStyle(
+                        fontSize: 12,
                         color: blackColor,
                       ),
-                      children: [
-                        TextSpan(
-                          text: " 250",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: primaryColor,
-                          ),
-                        ),
-                        TextSpan(
-                          text: " SAR",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: blackColor,
-                          ),
-                        )
-                      ],
                     ),
-                  ),
+                  ],
+                ),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
                   Container(
-                    width: 25,
-                    height: 25,
+                    height: 20,
+                    width: 20,
                     decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(4)),
+                      borderRadius: BorderRadius.circular(4),
+                      color: const Color.fromRGBO(0, 169, 206, 1),
+                    ),
                     child: Center(
-                      child: Icon(
-                        Icons.delete,
-                        size: 16,
-                        color: whiteColor,
+                      child: SvgPicture.asset(
+                        'assets/icon/waterdrop.svg',
+                        height: 10,
+                        width: 10,
                       ),
                     ),
-                  )
+                  ),
+                  Switch(
+                      value: data["IsActive"],
+                      activeColor: Colors.green.shade200,
+                      inactiveThumbColor: Colors.red.shade200,
+                      onChanged: (val) {
+                        controller.updateComplaintNature(val,data);
+                      })
                 ],
-              ),
+              )
             ],
           )),
     );

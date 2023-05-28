@@ -9,6 +9,9 @@ import 'package:profixer_admin/screens/city/city_list/city_list_screen.dart';
 import 'package:profixer_admin/screens/complaint_nature/add_complaint_nature/add_complaint_nature_screen.dart';
 import 'package:profixer_admin/screens/complaint_nature/complaint_nature_controller.dart';
 import 'package:profixer_admin/screens/complaint_nature/complaint_nature_list/complaint_nature_list_screen.dart';
+import 'package:profixer_admin/screens/customer/add_customer/add_customer_screen.dart';
+import 'package:profixer_admin/screens/customer/customer_list/customer_list_screen.dart';
+import 'package:profixer_admin/screens/holiday/add_holiday/add_holiday_screen.dart';
 import 'package:profixer_admin/screens/main/main_screen.dart';
 import 'package:profixer_admin/screens/main/profile/change_details/change_details_screen.dart';
 import 'package:profixer_admin/screens/main/profile/change_password/change_password_screen.dart';
@@ -20,6 +23,7 @@ import 'package:profixer_admin/screens/tickets/new_ticket/new_ticket_screen.dart
 import 'package:profixer_admin/screens/tickets/ticket_details/ticket_details_screen.dart';
 
 import '../screens/auth/login/login_screen.dart';
+import '../screens/holiday/holiday_list/holiday_list_screen.dart';
 import '../screens/service/add_service/add_service_screen.dart';
 import '../screens/service/service_list/service_list_screen.dart';
 import 'app_routes.dart';
@@ -109,6 +113,22 @@ class AppPages {
     GetPage(
       name: Routes.areaList,
       page: () => AreaListScreen(),
+    ),
+    GetPage(
+      name: Routes.addHoliday,
+      page: () => AddHolidayScreen(),
+    ),
+    GetPage(
+      name: Routes.holidayList,
+      page: () => HolidayListScreen(),
+    ),
+    GetPage(
+      name: Routes.addCustomer,
+      page: () => AddCustomerScreen(),
+    ),
+    GetPage(
+      name: Routes.customerList,
+      page: () => CustomerListScreen(),
     ),
   ];
 }

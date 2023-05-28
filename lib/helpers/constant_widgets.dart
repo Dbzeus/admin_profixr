@@ -4,10 +4,37 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
-import '../widgets/custom_button.dart';
 import 'custom_colors.dart';
 
+getDate({
+  DateTime? initialDate,
+  DateTime? firstDate,
+  DateTime? lastDate,
+  String dateFormat="dd-MM-yyyy"
+
+}) async{
+  var date= await showDatePicker(
+      context: Get.context!,
+      initialDate: initialDate ?? DateTime.now(),
+      firstDate: firstDate ?? DateTime.now(),
+      lastDate:
+       lastDate ?? DateTime(DateTime.now().year + 1));
+    return date==null ? "" : DateFormat(dateFormat).format(date);
+
+}
+
+getTime(
+{
+  TimeOfDay? initialTime,
+  String timeFormat="HH:mm"
+}
+    )async{
+  var time = await showTimePicker(
+      context: Get.context!, initialTime: initialTime ?? TimeOfDay.now());
+  return time==null ? "" : DateFormat(timeFormat).format(DateTime(0, 1, 1, time.hour, time.minute));
+}
 
 
 uploadButton(Function onTab) {

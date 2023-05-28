@@ -31,7 +31,16 @@ const insertServiceProviderUserUrl="Master/InsertUpdateServiceProviderUser";
 const getServiceProviderTechnicianUrl="Master/GetTechnician";
 const insertServiceProviderTechnicianUrl="Master/InsertUpdateTechnician";
 const getCustomerUrl="Master/GetCustomer";
-const insertCustomerUrl="Master/InsertUpdateTechnician";
+const insertCustomerUrl="Master/InsertUpdateCustomer";
 const getCustomerAddressUrl="Master/GetCustomerAddress";
-const insertCustomerAddressUrl="Master/InsertUpdateTechnician";
+const insertCustomerAddressUrl="Master/InsertUpdateCustomerAddress";
+const getTimeSlotUrl="Master/GetTimeSlot";
 
+
+//holiday
+const getHolidayUrl="Master/GetHoliday";
+const insertHolidayUrl="Master/InsertUpdateHoliday";
+const deleteHolidayUrl="Master/DeleteHoliday";
+
+//tickets
+const ticketCountUrl="Supportdesk/GetTicketCount";

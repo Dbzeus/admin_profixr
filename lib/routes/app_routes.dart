@@ -25,5 +25,11 @@ abstract class Routes {
   //complaintNature
   static const complaintNatureList = "/complaintNature/list";
   static const addComplaintNature = "/complaintNature/add";
+  //holiday
+  static const holidayList = "/holiday/list";
+  static const addHoliday = "/holiday/add";
+  //customer
+  static const customerList = "/customer/list";
+  static const addCustomer = "/customer/add";
 
 }

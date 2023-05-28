@@ -84,7 +84,11 @@ class CityListScreen extends GetView<CityController> {
             ),
             Obx(
               () => Expanded(
-                child: ListView.builder(
+                child: controller.isLoading.value
+                    ? Center(child: const CircularProgressIndicator())
+                    : controller.cities.isEmpty
+                    ? Center(child: const Text('No Cities Found'))
+                    :ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemCount: controller.cities.length,

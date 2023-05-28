@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:profixer_admin/apis/urls.dart';
 import 'package:profixer_admin/main.dart';
 import 'package:profixer_admin/model/MenuResponse.dart';
+import 'package:profixer_admin/model/customer_response.dart';
 import 'package:profixer_admin/model/userResponse.dart';
 
 import '../helpers/constant_widgets.dart';
@@ -588,7 +589,7 @@ class ApiCall {
     return null;
   }
 
-  Future<dynamic> getProfixerCustomer({int userId = 0}) async {
+  Future<CustomerResponse?> getProfixerCustomer({int userId = 0}) async {
     try {
       var params = {
         "UserID": userId,
@@ -596,7 +597,7 @@ class ApiCall {
       final response = await _dio.get(getCustomerUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
-      return response.data;
+      return CustomerResponse.fromJson(response.data);
     } on DioError catch (e) {
       log(e.message);
       toast(e.message);
@@ -707,7 +708,6 @@ class ApiCall {
 
       debugPrint('${files.length}');
 
-
       var data = FormData.fromMap({"files": files});
 
       final response = await _dio.post(uploadAttachmentUrl, data: data);
@@ -724,5 +724,123 @@ class ApiCall {
     return null;
   }
 
+  //holiday
+  Future<dynamic> getHoliday({int holidayId = 0}) async {
+    try {
+      var params = {
+        "HolidayID": holidayId,
+      };
+      final response = await _dio.get(getHolidayUrl, queryParameters: params);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> deleteHoliday(int holidayId) async {
+    try {
+      var params = {
+        "HolidayID": holidayId,
+      };
+      final response =
+      await _dio.get(deleteHolidayUrl, queryParameters: params);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> insertHoliday(var body) async {
+    try {
+      /*
+      *
+{
+  "HolidayID": 0,
+  "HolidayDate": "2023-05-27T05:28:48.068Z",
+  "Reason": "string",
+  "IsFullDay": true,
+  "TimeFrom": "string",
+  "TimeTo": "string",
+  "Remarks": "string",
+  "CUID": 0
+}
+      * */
+
+      final response = await _dio.post(insertHolidayUrl, data: body);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> getTimeSlot({int timeSlotId=0}) async {
+    try {
+      var params = {
+        "TimeSlotID": timeSlotId,
+      };
+      final response =
+      await _dio.get(getTimeSlotUrl, queryParameters: params);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
 /*end master apis*/
+
+/*support desk*/
+
+  Future<dynamic> getTicketCount(
+      int userId, int ticketStatusId, String fromDate, String toDate) async {
+    try {
+      var params = {
+        "UserID": userId,
+        "TicketStatusID": ticketStatusId,
+        "FromDate": fromDate,
+        "ToDate": toDate,
+      };
+      final response =
+          await _dio.get(deleteHolidayUrl, queryParameters: params);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+/*end of support desk*/
 }

@@ -34,9 +34,8 @@ class ProfixerMenuScreen extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
-                crossAxisSpacing: 10,
-                childAspectRatio: 0.8,
-                mainAxisSpacing: 8),
+                childAspectRatio: 0.9,
+                ),
             itemBuilder: (_, index) =>
                 _buildMenu(controller.menuData[index])),
       ),
@@ -47,7 +46,7 @@ class ProfixerMenuScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         // Get.toNamed(data.actionName);
-        Get.toNamed(Routes.serviceList);
+        Get.toNamed(Routes.complaintNatureList);
       },
       child: Column(
         children: [

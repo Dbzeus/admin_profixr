@@ -24,12 +24,12 @@ class AddComplaintNatureScreen extends StatelessWidget {
     int natureId = 0;
     if (Get.arguments['complaintNature'] != null) {
       controller.natureNameController.text =
-          Get.arguments['complaintNature']['AreaName'];
+          Get.arguments['complaintNature']['ComplaintNatureName'];
       controller.remarkController.text =
-          Get.arguments['complaintNature']['pincode'];
+          Get.arguments['complaintNature']['Remarks'];
       controller
           .selectedService('${Get.arguments['complaintNature']['CityID']}');
-      natureId = Get.arguments['complaintNature']['AreaID'];
+      natureId = Get.arguments['complaintNature']['ComplaintNatureID'];
       controller.selectedIsActive(Get.arguments['complaintNature']['IsActive']);
     } else {
       controller.natureNameController.clear();
@@ -95,9 +95,10 @@ class AddComplaintNatureScreen extends StatelessWidget {
                             image: DecorationImage(
                                 image: controller.imagePath.value.isURL
                                     ? CachedNetworkImage(
-                                            imageUrl: controller.imagePath.value)
-                                        as ImageProvider
-                                    : FileImage(File(controller.imagePath.value)),
+                                        imageUrl: controller
+                                            .imagePath.value) as ImageProvider
+                                    : FileImage(
+                                        File(controller.imagePath.value)),
                                 fit: BoxFit.cover),
                             borderRadius: BorderRadius.circular(8),
                             gradient: LinearGradient(
@@ -111,7 +112,8 @@ class AddComplaintNatureScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                           child: Align(
                             alignment: Alignment.topRight,
                             child: GestureDetector(
@@ -168,8 +170,8 @@ class AddComplaintNatureScreen extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () async {
-                          controller.imagePath(
-                              await getImageCamera() ?? controller.imagePath.value);
+                          controller.imagePath(await getImageCamera() ??
+                              controller.imagePath.value);
                         },
                         child: Container(
                           padding: EdgeInsets.all(12),
@@ -303,7 +305,9 @@ class AddComplaintNatureScreen extends StatelessWidget {
               ),
             ),
           ),
-          Obx(()=> controller.isLoading.value ? CustomLoader() : const SizedBox.shrink())
+          Obx(() => controller.isLoading.value
+              ? CustomLoader()
+              : const SizedBox.shrink())
         ],
       ),
     );

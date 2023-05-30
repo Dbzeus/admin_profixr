@@ -76,8 +76,8 @@ class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Get.toNamed(Routes.addComplaintNature,
-                          arguments: {"title": "Add Complaint Nature", "buttonTitle": "Add","area": null,});
+                      /*Get.toNamed(Routes.addComplaintNature,
+                          arguments: {"title": "Add Complaint Nature", "buttonTitle": "Add","complaintNature": null,});*/
                     },
                     child: Container(
                       height: 50,
@@ -134,12 +134,13 @@ class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
   _buildServices(data) {
     return GestureDetector(
       onTap: () {
+        debugPrint("data $data");
         Get.focusScope?.unfocus();
-        Get.toNamed(Routes.addComplaintNature,arguments: {
+        /*Get.toNamed(Routes.addComplaintNature,arguments: {
           "title": "Edit Complaint Nature",
           "buttonTitle" : "Save Changes",
           "complaintNature" : data,
-        });
+        });*/
       },
       child: Container(
           width: MediaQuery.of(Get.context!).size.width,

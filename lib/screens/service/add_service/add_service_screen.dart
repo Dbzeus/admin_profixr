@@ -9,6 +9,7 @@ import 'package:profixer_admin/widgets/custom_appbar.dart';
 import 'package:profixer_admin/widgets/custom_button.dart';
 import 'package:profixer_admin/widgets/custom_edittext.dart';
 import 'package:profixer_admin/widgets/custom_loader.dart';
+import 'package:dotted_border/dotted_border.dart';
 
 import '../../../helpers/utils.dart';
 import '../service_controller.dart';
@@ -29,8 +30,7 @@ class AddServiceScreen extends StatelessWidget {
       controller.remarkController.text = Get.arguments['service']['Remarks'];
       controller.imagePath(Get.arguments['service']['ServiceImage']);
       controller.selectedIsActive(Get.arguments['service']['IsActive']);
-
-    }else{
+    } else {
       controller.serviceNameController.clear();
       controller.remarkController.clear();
       controller.imagePath("");
@@ -71,9 +71,7 @@ class AddServiceScreen extends StatelessWidget {
                     "Service Image",
                     style: TextStyle(color: hintColor, fontSize: 12),
                   ),
-                  const SizedBox(
-                    height: 16,
-                  ),
+
                   /*Obx(() => controller.imagePath.value.isNotEmpty
                       ? Container(
                           width: MediaQuery.of(context).size.width,
@@ -118,23 +116,32 @@ class AddServiceScreen extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: Obx(() => Container(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: controller.imagePath.value.isNotEmpty
-                                      ? primaryColor
-                                      : Colors.black26,
+                        child: Obx(() => DottedBorder(
+                              color: controller.imagePath.value.isNotEmpty
+                                  ? primaryColor
+                                  : Colors.black26,
+                              strokeWidth: 1,
+                              child: Container(
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  /* border: Border.all(
+                                    color: controller.imagePath.value.isNotEmpty
+                                        ? primaryColor
+                                        : Colors.black26,
+                                  ),*/
+                                  image: DecorationImage(
+                                      image: controller.imagePath.value.isURL
+                                          ? CachedNetworkImage(
+                                              imageUrl: controller.imagePath
+                                                  .value) as ImageProvider
+                                          : FileImage(
+                                              File(controller.imagePath.value)),
+                                      fit: BoxFit.cover),
                                 ),
-                                image: DecorationImage(
-                                    image: controller.imagePath.value.isURL
-                                        ? CachedNetworkImage(
-                                        imageUrl: controller.imagePath.value)
-                                    as ImageProvider
-                                        : FileImage(File(controller.imagePath.value)),
-                                    fit: BoxFit.cover),
+                                child: controller.imagePath.value.isEmpty
+                                    ? const Center(child: Text('Upload images'))
+                                    :const Center(child: Text(''))
                               ),
-                              child: const Center(child: Text('Upload images')),
                             )),
                       ),
                       const SizedBox(
@@ -146,8 +153,9 @@ class AddServiceScreen extends StatelessWidget {
                             children: [
                               InkWell(
                                 onTap: () async {
-                                  controller.imagePath(await getImageFromGallery() ??
-                                      controller.imagePath.value);
+                                  controller.imagePath(
+                                      await getImageFromGallery() ??
+                                          controller.imagePath.value);
                                 },
                                 child: Container(
                                   padding: EdgeInsets.all(12),
@@ -166,8 +174,8 @@ class AddServiceScreen extends StatelessWidget {
                               ),
                               InkWell(
                                 onTap: () async {
-                                  controller.imagePath(
-                                      await getImageCamera() ?? controller.imagePath.value);
+                                  controller.imagePath(await getImageCamera() ??
+                                      controller.imagePath.value);
                                 },
                                 child: Container(
                                   padding: EdgeInsets.all(12),
@@ -183,21 +191,31 @@ class AddServiceScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          Obx(()=> controller.imagePath.isNotEmpty ? InkWell(
-                            onTap: ()=> controller.imagePath(""),
-                            child: Row(
-                              children: [
-                                Icon(Icons.delete,color: Colors.red,),
-                                const SizedBox(width: 6,),
-                                Text('Delete',style: TextStyle(
-                                  color: Colors.red
-                                ),)
-                              ],
-                            ),
-                          ) : const SizedBox.shrink() )
+                          const SizedBox(
+                            height: 6
+                          ),
+                          Obx(() => controller.imagePath.isNotEmpty
+                              ? InkWell(
+                                  onTap: () => controller.imagePath(""),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                      ),
+                                      const SizedBox(
+                                        width: 6,
+                                      ),
+                                      Text(
+                                        'Delete',
+                                        style: TextStyle(color: Colors.red),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              : const SizedBox.shrink())
                         ],
                       )
-
                     ],
                   ),
                   /*uploadButton(() async {
@@ -319,7 +337,9 @@ class AddServiceScreen extends StatelessWidget {
               ),
             ),
           ),
-          Obx(()=> controller.isLoading.value ? CustomLoader() : const SizedBox.shrink())
+          Obx(() => controller.isLoading.value
+              ? CustomLoader()
+              : const SizedBox.shrink())
         ],
       ),
     );

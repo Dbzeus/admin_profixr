@@ -41,6 +41,9 @@ class AreaListScreen extends GetView<AreaController> {
                         ]),
                     child: TextFormField(
                       controller: controller.searchController,
+                      onChanged: (text){
+                        controller.onSearchChanged(text);
+                      },
                       style: const TextStyle(
                         fontSize: 16,
                         color: textColor,

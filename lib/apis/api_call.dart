@@ -7,6 +7,7 @@ import 'package:profixer_admin/apis/urls.dart';
 import 'package:profixer_admin/main.dart';
 import 'package:profixer_admin/model/MenuResponse.dart';
 import 'package:profixer_admin/model/customer_response.dart';
+import 'package:profixer_admin/model/ticket_count_response.dart';
 import 'package:profixer_admin/model/userResponse.dart';
 
 import '../helpers/constant_widgets.dart';
@@ -818,7 +819,7 @@ class ApiCall {
 
 /*support desk*/
 
-  Future<dynamic> getTicketCount(
+  Future<TicketCountResponse?> getTicketCount(
       int userId, int ticketStatusId, String fromDate, String toDate) async {
     try {
       var params = {
@@ -828,10 +829,10 @@ class ApiCall {
         "ToDate": toDate,
       };
       final response =
-          await _dio.get(deleteHolidayUrl, queryParameters: params);
+          await _dio.get(ticketCountUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
-      return response.data;
+      return TicketCountResponse.fromJson(response.data);
     } on DioError catch (e) {
       log(e.message);
       toast(e.message);

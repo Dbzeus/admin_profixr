@@ -16,6 +16,7 @@ class CityListScreen extends GetView<CityController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: CustomAppBar(
         title: "City",
       ),
@@ -42,6 +43,9 @@ class CityListScreen extends GetView<CityController> {
                         ]),
                     child: TextFormField(
                       controller: controller.searchController,
+                      onChanged: (text){
+                        controller.onSearchChanged(text);
+                      },
                       style: const TextStyle(
                         fontSize: 16,
                         color: textColor,
@@ -49,6 +53,7 @@ class CityListScreen extends GetView<CityController> {
                       decoration: const InputDecoration(
                         hintText: 'Search',
                         border: InputBorder.none,
+
                         prefixIcon: Icon(
                           Icons.search,
                           color: textColor,
@@ -85,9 +90,9 @@ class CityListScreen extends GetView<CityController> {
             Obx(
               () => Expanded(
                 child: controller.isLoading.value
-                    ? Center(child: const CircularProgressIndicator())
+                    ? const Center(child: CircularProgressIndicator())
                     : controller.cities.isEmpty
-                    ? Center(child: const Text('No Cities Found'))
+                    ? const Center(child: Text('No Cities Found'))
                     :ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,

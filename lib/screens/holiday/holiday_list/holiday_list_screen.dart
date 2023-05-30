@@ -52,10 +52,10 @@ class HolidayListScreen extends GetView<HolidayController> {
                             Icons.search,
                             color: textColor,
                           ),
-                          suffix: Icon(
+                          /*suffix: Icon(
                             Icons.filter_alt_rounded,
                             color: textColor,
-                          )),
+                          )*/),
                     ),
                   ),
                 ),
@@ -64,7 +64,7 @@ class HolidayListScreen extends GetView<HolidayController> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Get.toNamed(Routes.addService, arguments: {
+                    Get.toNamed(Routes.addHoliday, arguments: {
                       "title": "Add Holiday",
                       "buttonTitle": "Add"
                     });
@@ -188,39 +188,36 @@ class HolidayListScreen extends GetView<HolidayController> {
                     ],
                   ),
                 ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        data["IsFullDay"] ? "Full Day" : "No Full Day",
-                        style:
-                            const TextStyle(fontSize: 14, color: Colors.blue),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      data["IsFullDay"] ? "Full Day" : "No Full Day",
+                      style: const TextStyle(fontSize: 14, color: Colors.blue),
+                    ),
+                    Text(
+                      data["TimeFrom"],
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: blackColor,
                       ),
-                      Text(
-                        data["TimeFrom"],
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: blackColor,
-                        ),
+                    ),
+                    Text(
+                      data["TimeTo"],
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: blackColor,
                       ),
-                      Text(
-                        data["TimeTo"],
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: blackColor,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),
             const Divider(),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                    child: Column(
+                Column(
                   children: [
                     Text(
                       'Remark',
@@ -234,7 +231,7 @@ class HolidayListScreen extends GetView<HolidayController> {
                       style: TextStyle(fontSize: 13),
                     ),
                   ],
-                )),
+                ),
                 InkWell(
                   onTap: () async {
                     controller.deleteHoliday(data);

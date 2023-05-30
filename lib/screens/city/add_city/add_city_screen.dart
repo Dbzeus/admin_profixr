@@ -76,6 +76,7 @@ class AddCityScreen extends StatelessWidget {
                               controller.selectedIsActive(
                                   !controller.selectedIsActive.value);
                             }
+
                           },
                           child: Container(
                             width: 100,
@@ -116,10 +117,11 @@ class AddCityScreen extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
-                            if(controller.selectedIsActive.value==false) {
+                            if(controller.selectedIsActive.value==true) {
                               controller.selectedIsActive(
                                   !controller.selectedIsActive.value);
                             }
+
                           },
                           child: Container(
                             width: 100,

@@ -54,9 +54,9 @@ class VerificationController extends GetxController {
             }
           }
           isLoading(false);
-        } else {
-          toast("Please Enter correct OTP");
         }
+      } else {
+        toast("Please Enter correct OTP");
       }
     }
   }

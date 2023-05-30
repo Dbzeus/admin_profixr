@@ -15,7 +15,7 @@ class MainController extends GetxController {
   final box = GetStorage();
   late UserData userData;
 
-  var dashboards=RxList();
+  RxList<TicketCount> dashboards=RxList();
 
   RxList<MenuData> menuData=RxList();
 

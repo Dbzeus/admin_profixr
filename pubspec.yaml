@@ -23,6 +23,8 @@ dependencies:
   intl: ^0.18.1
   image_picker:
   flutter_native_splash:
+  permission_handler:
+  dotted_border: ^2.0.0+3
 #  timelineview:
 
 flutter_native_splash:

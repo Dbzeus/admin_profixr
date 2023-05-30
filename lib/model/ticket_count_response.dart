@@ -2,7 +2,9 @@ class TicketCountResponse {
   TicketCountResponse(
       this.rtnStatus, 
       this.rtnMsg, 
-      this.rtnData,);
+      this.rtnData,
+      this.otherMsg,
+      this.id,);
 
   TicketCountResponse.fromJson(dynamic json) {
     rtnStatus = json['RtnStatus'];
@@ -12,11 +14,15 @@ class TicketCountResponse {
       json['RtnData'].forEach((v) {
         rtnData.add(TicketCount.fromJson(v));
       });
+      otherMsg = json['OtherMsg'];
+      id = json['ID'];
     }
   }
   late bool rtnStatus;
   late String rtnMsg;
   late List<TicketCount> rtnData;
+  late dynamic otherMsg;
+  late dynamic id;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -25,6 +31,8 @@ class TicketCountResponse {
     if (rtnData != null) {
       map['RtnData'] = rtnData.map((v) => v.toJson()).toList();
     }
+    map['OtherMsg'] = otherMsg;
+    map['ID'] = id;
     return map;
   }
 

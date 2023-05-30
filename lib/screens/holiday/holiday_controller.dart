@@ -64,10 +64,12 @@ class HolidayController extends GetxController{
   }
 
   deleteHoliday(data) async {
+
     if (await isNetConnected()) {
       customDialog(
           Get.context, "Delete?", "Are you sure to delete holiday", () async{
         isLoading(true);
+
         var response = await ApiCall().deleteHoliday(data['HolidayID']);
         isLoading(false);
         if (response != null) {

@@ -29,6 +29,7 @@ class LoginController extends GetxController {
     } else {
       Get.focusScope?.unfocus();
       if (await isNetConnected()) {
+        await notificationPermission();
         isLoading(true);
         UserDataResponse? loginResponse = await ApiCall().checkLogin(
             mobNoController.text, passwordController.text, " ", " ");

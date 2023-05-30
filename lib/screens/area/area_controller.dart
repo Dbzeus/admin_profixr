@@ -8,6 +8,7 @@ import '../../helpers/custom_dialog.dart';
 
 class AreaController extends GetxController {
   RxList areas = RxList();
+  List searchList = [];
   RxList<Map<String, String>> cities = RxList();
   RxBool isLoading = false.obs;
 
@@ -35,6 +36,7 @@ class AreaController extends GetxController {
       if (response != null) {
         if (response['RtnStatus']) {
           areas(response['RtnData']);
+          searchList = response['RtnData'];
         } else {
           toast(response['RtnMsg']);
         }
@@ -91,6 +93,19 @@ class AreaController extends GetxController {
         }
         toast(response['RtnMsg']);
       }
+    }
+  }
+
+  onSearchChanged(String text) {
+    if (text.isEmpty) {
+      areas(searchList);
+    } else {
+      areas(searchList.where((element) =>
+      element["AreaName"].toString().toLowerCase().contains(
+          text.toLowerCase()) ||
+          element["CityName"].toString().toLowerCase().contains(
+              text.toLowerCase())
+      ).toList());
     }
   }
 }

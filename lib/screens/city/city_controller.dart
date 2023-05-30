@@ -9,6 +9,7 @@ import '../../helpers/constant_widgets.dart';
 
 class CityController extends GetxController {
   RxList cities = RxList();
+  List searchList = [];
   RxList<Map<String, String>> countries = RxList();
   RxBool isLoading = false.obs;
 
@@ -18,7 +19,7 @@ class CityController extends GetxController {
   TextEditingController searchController = TextEditingController();
   RxBool selectedIsActive = true.obs;
 
-  final box=GetStorage();
+  final box = GetStorage();
 
   @override
   void onInit() {
@@ -36,6 +37,7 @@ class CityController extends GetxController {
       if (response != null) {
         if (response['RtnStatus']) {
           cities(response['RtnData']);
+          searchList = response['RtnData'];
         } else {
           toast(response['RtnMsg']);
         }
@@ -63,7 +65,7 @@ class CityController extends GetxController {
     }
   }
 
-  createCity(city,bool isUpdated) async {
+  createCity(city, bool isUpdated) async {
     debugPrint(city.toString());
     if (await isNetConnected()) {
       isLoading(true);
@@ -72,11 +74,13 @@ class CityController extends GetxController {
       if (response != null) {
         if (response['RtnStatus']) {
           customDialog(
-              Get.context, isUpdated ? "Updated Successful!": "Added Successful!", "${response['RtnMsg']}",
-              () {
-            Get.back();
-            getCity();
-          }, isDismissable: false);
+              Get.context,
+              isUpdated ? "Updated Successful!" : "Added Successful!",
+              "${response['RtnMsg']}",
+                  () {
+                Get.back();
+                getCity();
+              }, isDismissable: false);
         } else {
           toast('${response['RtnMsg']}');
         }
@@ -96,6 +100,19 @@ class CityController extends GetxController {
         }
         toast(response['RtnMsg']);
       }
+    }
+  }
+
+  onSearchChanged(String text) {
+    if (text.isEmpty) {
+      cities(searchList);
+    } else {
+      cities(searchList.where((element) =>
+          element["CityName"].toString().toLowerCase().contains(
+              text.toLowerCase()) ||
+              element["CountryName"].toString().toLowerCase().contains(
+                  text.toLowerCase())
+      ).toList());
     }
   }
 }

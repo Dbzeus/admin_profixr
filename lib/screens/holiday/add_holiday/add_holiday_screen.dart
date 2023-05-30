@@ -58,7 +58,7 @@ class AddHolidayScreen extends StatelessWidget {
                       hintText: "Reason",
                       controller: controller.reasonController),
                   const SizedBox(
-                    height: 24,
+                    height: 10,
                   ),
                   CustomEditText(
                     hintText: "Date",
@@ -75,7 +75,7 @@ class AddHolidayScreen extends StatelessWidget {
                     },
                   ),
                   const SizedBox(
-                    height: 24,
+                    height: 10,
                   ),
                   Obx(
                     () => Row(
@@ -170,7 +170,7 @@ class AddHolidayScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(
-                    height: 24,
+                    height: 10,
                   ),
                   CustomEditText(
                     hintText: "Time From",
@@ -187,7 +187,7 @@ class AddHolidayScreen extends StatelessWidget {
                     },
                   ),
                   const SizedBox(
-                    height: 24,
+                    height: 10,
                   ),
                   CustomEditText(
                     hintText: "Time To",
@@ -203,12 +203,15 @@ class AddHolidayScreen extends StatelessWidget {
                       controller.toTimeController.text = await getTime();
                     },
                   ),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   CustomEditText(
                       hintText: "Remarks",
                       maxLines: 4,
                       controller: controller.remarkController),
                   const SizedBox(
-                    height: 24,
+                    height: 10,
                   ),
                   const Spacer(),
                   CustomButton(

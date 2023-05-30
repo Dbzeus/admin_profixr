@@ -20,7 +20,7 @@ class ComplaintNatureController extends GetxController {
   final box = GetStorage();
 
   RxList<Map<String, String>> services = RxList();
-  RxString selectedService = "".obs;
+    RxString selectedService = "".obs;
 
   @override
   void onInit() {
@@ -39,9 +39,12 @@ class ComplaintNatureController extends GetxController {
           for (var e in response['RtnData']) {
             services.add(
                 {"id": '${e["ServiceID"]}', "value": "${e['ServiceName']}"});
+
           }
           if (services.isNotEmpty) {
-            selectedService('${services.first['id']}');
+            selectedService('${services.first['value']}');
+            debugPrint('${services.first['value']}');
+            debugPrint('${services}');
           }
         } else {
           toast(response['RtnMsg']);

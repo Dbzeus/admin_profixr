@@ -9,7 +9,6 @@ import '../../../routes/app_routes.dart';
 import '../main_controller.dart';
 
 class HomeScreen extends StatelessWidget {
-  @override
   final controller = Get.put(MainController());
 
   HomeScreen({Key? key}) : super(key: key);
@@ -22,7 +21,7 @@ class HomeScreen extends StatelessWidget {
             Size.fromHeight(MediaQuery.of(context).size.height * 0.14),
         child: Container(
           height: 100,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
               color: whiteColor,
               boxShadow: [
                 BoxShadow(
@@ -30,7 +29,7 @@ class HomeScreen extends StatelessWidget {
                     blurRadius: 10,
                     offset: Offset(0.0, 0.75))
               ],
-              borderRadius: const BorderRadius.only(
+              borderRadius: BorderRadius.only(
                 bottomRight: Radius.circular(16),
                 bottomLeft: Radius.circular(16),
               )),
@@ -72,74 +71,81 @@ class HomeScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     'Overview',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: primaryColor,
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.grey.shade100,
-                              spreadRadius: 1,
-                              blurRadius: 3,
-                              offset: const Offset(0, 2))
-                        ]),
-                    child: Row(
-                      children: [
-                        const SizedBox(
-                          width: 4,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12)),
-                          child: Icon(
-                            Icons.add,
-                            color: primaryColor,
-                            size: 12,
+                  GestureDetector(
+                      onTap: (){
+                        Get.toNamed(Routes.newTicket);
+                      },
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: primaryColor,
+                          borderRadius: BorderRadius.circular(8),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey.shade100,
+                                spreadRadius: 1,
+                                blurRadius: 3,
+                                offset: const Offset(0, 2))
+                          ]),
+                      child: Row(
+                        children: [
+                          const SizedBox(
+                            width: 4,
                           ),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          'Add Ticket',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12),
-                        ),
-                        const SizedBox(
-                          width: 4,
-                        ),
-                      ],
+                          Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12)),
+                            child: const Icon(
+                              Icons.add,
+                              color: primaryColor,
+                              size: 12,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 8,
+                          ),
+                          const Text(
+                            'Add Ticket',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12),
+                          ),
+                          const SizedBox(
+                            width: 4,
+                          ),
+                        ],
+                      ),
                     ),
                   )
                 ],
               ),
             ),
-            GridView.builder(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-                itemCount: controller.dashboards.length,
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                physics: const BouncingScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 10,
-                    childAspectRatio: 0.8,
-                    mainAxisSpacing: 15),
-                itemBuilder: (_, index) {
-                  return _buildDashboard(controller.dashboards[index]);
-                }),
+            Obx(()=>
+               GridView.builder(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+                  itemCount: controller.dashboards.length,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  physics: const BouncingScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 10,
+                      childAspectRatio: 0.8,
+                      mainAxisSpacing: 15),
+                  itemBuilder: (_, index) {
+                    return _buildDashboard(controller.dashboards[index]);
+                  }),
+            ),
             const SizedBox(
               height: 16,
             ),
@@ -150,6 +156,7 @@ class HomeScreen extends StatelessWidget {
   }
 
   _buildDashboard(TicketCount dashboard) {
+
     return GestureDetector(
       onTap: () {
         Get.toNamed(Routes.bookedTicket, arguments: {"data": "$dashboard"});
@@ -219,7 +226,7 @@ class HomeScreen extends StatelessWidget {
                   const Spacer(),
                   Text(
                     "${dashboard.ticketCount}",
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
                         color: primaryColor),
@@ -228,7 +235,7 @@ class HomeScreen extends StatelessWidget {
                     dashboard.statusName,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 12,
                         color: blackColor,
                         fontWeight: FontWeight.bold),

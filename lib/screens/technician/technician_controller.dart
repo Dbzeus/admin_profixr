@@ -2,8 +2,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class TechnicianDetailsController extends GetxController{
-  TextEditingController nameController = TextEditingController();
+class TechnicianController extends GetxController{
+
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController userNameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController dobController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController genderController = TextEditingController();
@@ -13,7 +18,12 @@ class TechnicianDetailsController extends GetxController{
   TextEditingController permanentAddressController = TextEditingController();
   TextEditingController currentAddressController = TextEditingController();
   TextEditingController cityController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
 
+  RxBool isConfirm = true.obs;
+
+
+  String dateFormat ="MM/dd/yyyy";
   RxString imagePath="".obs;
 
 
@@ -21,30 +31,31 @@ class TechnicianDetailsController extends GetxController{
 
   RxString mobileNoDropDownValue = "+966".obs;
   var mobileItems = [
-    '+966',
-    '+967',
-    '+968',
-    '+969',
+  '+966',
+  '+967',
+  '+968',
+  '+969',
   ];
 
   RxString genderDropDownValue = "Male".obs;
   var genderItems = [
-    'Male',
-    'Female',
-    'Other',
+  'Male',
+  'Female',
+  'Other',
   ];
 
-  RxString occupationDropDownValue = "Plumbing".obs;
-  var occupationItems = [
-    'Plumbing',
-    'Electrician',
-    'Technician',
+  RxString serviceProviderDropDownValue = "Plumbing".obs;
+  var serviceProviderDropDownItems = [
+  'Plumbing',
+  'Electrician',
+  'Technician',
   ];
 
   RxString cityDropDownValue = "Arabia".obs;
   var cityItems = [
-    'Arabia',
-    'Muscat',
-    'Sohar',
+  'Arabia',
+  'Muscat',
+  'Sohar',
   ];
+
 }

@@ -6,10 +6,15 @@ abstract class Routes {
   static const verification = "/verification";
   static const main = "/main";
 
+  //ticket
+  static const checkCustomer = "/checkCustomer";
   static const newTicket = "/newTicket";
   static const bookedTicket = "/bookedTicket";
   static const ticketDetails = "/ticketDetails";
-  static const technicianDetails = "/technicianDetails";
+  //technician
+  static const addTechnician = "/technician/add";
+  static const technicianList = "/technician/list";
+
   static const bankDetails = "/bankDetails";
   static const changePassword = "/changePassword";
   static const changeDetails = "/changeDetails";

@@ -3,16 +3,41 @@ import 'package:get/get.dart';
 
 class NewTicketController extends GetxController{
 
+  RxInt currentStep = 0.obs;
+
+
+//Personal details TextEditingController
   TextEditingController customerNameController = TextEditingController();
-  TextEditingController customerAddressController = TextEditingController();
   TextEditingController customerMobileNoController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController dobController = TextEditingController();
+  TextEditingController remarksController = TextEditingController();
+
+  //Address TextEditingController
+  TextEditingController customerAddressTitleController = TextEditingController();
+  TextEditingController doorNoController = TextEditingController();
+  TextEditingController streetNameController = TextEditingController();
+  TextEditingController cityNameController = TextEditingController();
+  RxString cityDropDownValue = "Muscat".obs;
+  var cityDropDownItems = [
+    'Muscat',
+    'Oman',
+  ];
+  TextEditingController areaNameController = TextEditingController();
+  RxString areaDropDownValue = "Muscat".obs;
+  var areaDropDownItems = [
+    'Muscat',
+    'Oman',
+  ];
+
+//Booking TextEditingController
+  TextEditingController serviceDateController = TextEditingController();
+  TextEditingController bookingRemarksController = TextEditingController();
   TextEditingController serviceTypeController = TextEditingController();
   TextEditingController serviceNameController = TextEditingController();
   TextEditingController serviceCategoryController = TextEditingController();
   TextEditingController serviceAmountController = TextEditingController();
-  TextEditingController serviceDateController = TextEditingController();
   TextEditingController serviceTimeController = TextEditingController();
-
   RxString imagePath=''.obs;
 
   String dateFormat ="MM/dd/yyyy";

@@ -80,7 +80,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   GestureDetector(
                       onTap: (){
-                        Get.toNamed(Routes.newTicket);
+                        Get.toNamed(Routes.checkCustomer);
                       },
                     child: Container(
                       padding: const EdgeInsets.all(10),

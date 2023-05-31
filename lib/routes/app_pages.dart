@@ -7,7 +7,7 @@ import 'package:profixer_admin/screens/bank_details/bank_details_screen.dart';
 import 'package:profixer_admin/screens/city/add_city/add_city_screen.dart';
 import 'package:profixer_admin/screens/city/city_list/city_list_screen.dart';
 import 'package:profixer_admin/screens/complaint_nature/add_complaint_nature/add_complaint_nature_screen.dart';
-import 'package:profixer_admin/screens/complaint_nature/complaint_nature_controller.dart';
+
 import 'package:profixer_admin/screens/complaint_nature/complaint_nature_list/complaint_nature_list_screen.dart';
 import 'package:profixer_admin/screens/customer/add_customer/add_customer_screen.dart';
 import 'package:profixer_admin/screens/customer/customer_list/customer_list_screen.dart';
@@ -17,7 +17,10 @@ import 'package:profixer_admin/screens/main/profile/change_details/change_detail
 import 'package:profixer_admin/screens/main/profile/change_password/change_password_screen.dart';
 import 'package:profixer_admin/screens/onboarding/language/language_screen.dart';
 import 'package:profixer_admin/screens/onboarding/login_selection/login_selection_screen.dart';
-import 'package:profixer_admin/screens/techinican_details/techinician_details_screen.dart';
+import 'package:profixer_admin/screens/technician/add_techinican/add_technician_screen.dart';
+import 'package:profixer_admin/screens/technician/technician_list/technician_list_screen.dart';
+
+
 import 'package:profixer_admin/screens/tickets/booked_ticket/booked_ticket_screen.dart';
 import 'package:profixer_admin/screens/tickets/new_ticket/new_ticket_screen.dart';
 import 'package:profixer_admin/screens/tickets/ticket_details/ticket_details_screen.dart';
@@ -26,6 +29,7 @@ import '../screens/auth/login/login_screen.dart';
 import '../screens/holiday/holiday_list/holiday_list_screen.dart';
 import '../screens/service/add_service/add_service_screen.dart';
 import '../screens/service/service_list/service_list_screen.dart';
+import '../screens/tickets/check_customer/check_customer_screen.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -71,6 +75,10 @@ class AppPages {
       page: () => AddServiceScreen(),
     ),
     GetPage(
+      name: Routes.checkCustomer,
+      page: () => CheckCustomerScreen(),
+    ),
+    GetPage(
       name: Routes.newTicket,
       page: () => NewTicketScreen(),
     ),
@@ -83,8 +91,12 @@ class AppPages {
       page: () => const TicketDetailsScreen(),
     ),
     GetPage(
-      name: Routes.technicianDetails,
-      page: () => TechnicianDetailsScreen(),
+      name: Routes.technicianList,
+      page: () => TechnicianListScreen(),
+    ),
+    GetPage(
+      name: Routes.addTechnician,
+      page: () => AddTechnicianScreen(),
     ),
     GetPage(
       name: Routes.bankDetails,

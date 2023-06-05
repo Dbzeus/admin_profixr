@@ -13,37 +13,16 @@ import 'package:profixer_admin/widgets/custom_button.dart';
 import 'package:profixer_admin/widgets/custom_edittext.dart';
 
 import '../../../widgets/custom_dropdown.dart';
+import 'existing_ticket_controller.dart';
 
-class NewTicketScreen extends GetView<NewTicketController> {
-  final controller = Get.put(NewTicketController());
+class ExistingTicketScreen extends GetView<ExistingTicketController> {
+  final controller = Get.put(ExistingTicketController());
 
-  NewTicketScreen({Key? key}) : super(key: key);
+  ExistingTicketScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    List<Step> stepList() => [
-          Step(
-              title: Text('Personal'),
-              content: personalForm(),
-              isActive: controller.currentStep.value == 0,
-              state: controller.currentStep.value > 0
-                  ? StepState.complete
-                  : StepState.indexed),
-          Step(
-              title: Text('Address'),
-              content: addressForm(),
-              isActive: controller.currentStep.value == 1,
-              state: controller.currentStep.value > 1
-                  ? StepState.complete
-                  : StepState.indexed),
-          Step(
-              title: Text('Booking'),
-              content: bookingForm(),
-              isActive: controller.currentStep.value == 2,
-              state: controller.currentStep.value > 2
-                  ? StepState.complete
-                  : StepState.indexed)
-        ];
+
     return GestureDetector(
         onTap: () {
           Get.focusScope!.unfocus();
@@ -54,184 +33,63 @@ class NewTicketScreen extends GetView<NewTicketController> {
             title: "New Ticket",
           ),
           body: Obx(
-            () => Stepper(
-              steps: stepList(),
-              currentStep: controller.currentStep.value,
-              type: StepperType.horizontal,
-              controlsBuilder: (_, __) {
-                return Obx(() => CustomButton(
-                      text: controller.currentStep.value == 2 ? 'Book' : 'Next',
-                      onTap: () {
-                        if (controller.currentStep.value == 0) {
-                          controller.saveCustomer();
-                        } else if (controller.currentStep.value == 1) {
-                          controller.saveCustomerAddress();
-                        } else {
-                          controller.bookATicket();
-                        }
-                      },
-                    ));
-              },
-            ),
+            () => Column(
+              children: [
+                CustomEditText(
+                    hintText: "Customer Name",
+                    controller: controller.customerNameController),
+                const SizedBox(
+                  height: 10,
+                ),
+                CustomEditText(
+                  hintText: "Customer Mobile Number",
+                  controller: controller.customerMobileNoController,
+                  maxLength: 10,
+                  keyboardType: TextInputType.phone,
+                  prefixIcon: Obx(
+                        () => DropdownButton(
+                        value: controller.mobileNoDropDownValue.value,
+                        style: const TextStyle(color: primaryColor, fontSize: 16),
+                        underline: const SizedBox(),
+                        icon: const Icon(
+                          Icons.keyboard_arrow_down,
+                          color: primaryColor,
+                          size: 16,
+                        ),
+                        items: controller.mobileItems.map((String items) {
+                          return DropdownMenuItem(
+                            value: items,
+                            child: Text(items),
+                          );
+                        }).toList(),
+                        onChanged: (val) {
+                          controller.mobileNoDropDownValue(val.toString());
+                        }),
+                  ),
+                ),
+                const SizedBox(
+                  height: 12,
+                ),
+                Obx(
+                      () => CustomDropDown(
+                    hintText: "Customer Address",
+                    dropDownValue: controller.selectedAddress.value,
+                    items: controller.addresses,
+                    onSelected: (val) {
+                      controller.selectedAddress(val);
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                bookingForm(),
+              ],
+            )
           ),
         ));
   }
 
-  personalForm() {
-    return Column(
-      children: [
-        CustomEditText(
-            hintText: "Customer Name",
-            controller: controller.customerNameController),
-        const SizedBox(
-          height: 10,
-        ),
-        CustomEditText(
-          hintText: "Customer Mobile Number",
-          controller: controller.customerMobileNoController,
-          keyboardType: TextInputType.phone,
-          prefixIcon: Obx(
-            () => DropdownButton(
-                value: controller.mobileNoDropDownValue.value,
-                style: const TextStyle(color: primaryColor, fontSize: 16),
-                underline: const SizedBox(),
-                icon: const Icon(
-                  Icons.keyboard_arrow_down,
-                  color: primaryColor,
-                  size: 16,
-                ),
-                items: controller.mobileItems.map((String items) {
-                  return DropdownMenuItem(
-                    value: items,
-                    child: Text(items),
-                  );
-                }).toList(),
-                onChanged: (val) {
-                  controller.mobileNoDropDownValue(val.toString());
-                }),
-          ),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        CustomEditText(
-            hintText: "Email", controller: controller.emailController),
-        const SizedBox(
-          height: 12,
-        ),
-        CustomEditText(
-          hintText: "Date of Birth",
-          showCursor: false,
-          keyboardType: TextInputType.none,
-          controller: controller.dobController,
-          suffixIcon: const Icon(
-            Icons.calendar_month_rounded,
-            color: blackColor,
-            size: 22,
-          ),
-          onTab: () async {
-            var date = await showDatePicker(
-                context: Get.context!,
-                initialDate: DateTime.now(),
-                firstDate: DateTime.now(),
-                lastDate: DateTime(DateTime.now().year + 1, 12, 31));
-            if (date != null) {
-              debugPrint(date.toString());
-              controller.dobController.text =
-                  DateFormat(controller.dateFormat).format(date);
-            }
-          },
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        CustomEditText(
-            hintText: "Remarks", controller: controller.remarksController),
-        const SizedBox(
-          height: 64,
-        ),
-      ],
-    );
-  }
-
-  addressForm() {
-    return Column(
-      children: [
-        CustomEditText(
-            hintText: "Address title",
-            controller: controller.customerAddressTitleController),
-        const SizedBox(
-          height: 10,
-        ),
-        CustomEditText(
-            hintText: "Door No / Plot N0",
-            controller: controller.doorNoController),
-        const SizedBox(
-          height: 10,
-        ),
-        CustomEditText(
-            hintText: "Street Name",
-            controller: controller.streetNameController),
-        const SizedBox(
-          height: 10,
-        ),
-        Obx(
-              () => CustomDropDown(
-            hintText: "City",
-            dropDownValue: controller.selectedCity.value,
-            items: controller.cities,
-            onSelected: (val) {
-              controller.selectedCity(val);
-            },
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        Obx(
-              () => CustomDropDown(
-            hintText: "Area",
-            dropDownValue: controller.selectedArea.value,
-            items: controller.areas,
-            onSelected: (val) {
-              controller.selectedArea(val);
-            },
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        CustomEditText(
-            hintText: "Landmark (Optional)",
-            controller: controller.landmarkController),
-        const SizedBox(
-          height: 16,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.gps_fixed,
-              color: primaryColor,
-            ),
-            const SizedBox(
-              width: 12,
-            ),
-            Text(
-              "set my location",
-              style: TextStyle(
-                color: primaryColor,
-                fontSize: 14,
-              ),
-            )
-          ],
-        ),
-        const SizedBox(
-          height: 64,
-        ),
-      ],
-    );
-  }
 
   bookingForm() {
     return Column(

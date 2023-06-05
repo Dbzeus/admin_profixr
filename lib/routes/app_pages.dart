@@ -32,6 +32,7 @@ import 'package:profixer_admin/screens/technician/technician_list/technician_lis
 
 
 import 'package:profixer_admin/screens/tickets/booked_ticket/booked_ticket_screen.dart';
+import 'package:profixer_admin/screens/tickets/existing_customer_ticket/existing_ticket_screen.dart';
 import 'package:profixer_admin/screens/tickets/new_ticket/new_ticket_screen.dart';
 import 'package:profixer_admin/screens/tickets/ticket_details/ticket_details_screen.dart';
 
@@ -172,6 +173,10 @@ class AppPages {
     GetPage(
       name: Routes.addCustomerAddress,
       page: () => AddAddressScreen(),
+    ),
+    GetPage(
+      name: Routes.existingNewTicket,
+      page: () => ExistingTicketScreen(),
     ),
 
     GetPage(

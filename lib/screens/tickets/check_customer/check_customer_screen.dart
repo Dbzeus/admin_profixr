@@ -105,6 +105,11 @@ class CheckCustomerScreen extends GetView<CheckCustomerController> {
 
   _buildList(Customer customer) {
     return ListTile(
+      onTap:(){
+        Get.toNamed(Routes.existingNewTicket, arguments: {
+          'customer':customer
+        });
+      },
       leading: Container(
         width: 50,
         padding: const EdgeInsets.all(10),
@@ -112,11 +117,10 @@ class CheckCustomerScreen extends GetView<CheckCustomerController> {
           borderRadius: BorderRadius.circular(12),
           color: primaryColor.withAlpha(30),
         ),
-        child: const Center(
+
+        child:  Center(
           child: Text(
-            "R",
-            /*city["CityName"]
-                .split(" ") as List<String>).map((e) => e.trim().substring(0,1).toUpperCase()).join(""),*/
+            customer.firstName[0].toUpperCase(),
             style: TextStyle(
               color: primaryColor,
               fontSize: 18,
@@ -125,8 +129,8 @@ class CheckCustomerScreen extends GetView<CheckCustomerController> {
           ),
         ),
       ),
-      title: const Text(
-        "Rahman",
+      title: Text(
+        customer.firstName,
         style: TextStyle(
             color: blackColor, fontSize: 14, fontWeight: FontWeight.bold),
       ),
@@ -137,8 +141,8 @@ class CheckCustomerScreen extends GetView<CheckCustomerController> {
             color: primaryColor,
             size: 12,
           ),
-          const Text(
-            "+966 1234567890",
+          Text(
+            customer.mobileNo,
             style: TextStyle(
                 color: primaryColor, fontSize: 12, fontWeight: FontWeight.bold),
           ),

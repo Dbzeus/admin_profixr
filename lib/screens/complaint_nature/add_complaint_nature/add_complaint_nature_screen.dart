@@ -22,19 +22,22 @@ class AddComplaintNatureScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int natureId = 0;
+    debugPrint(Get.arguments['complaintNature'].toString());
     if (Get.arguments['complaintNature'] != null) {
       controller.natureNameController.text =
           Get.arguments['complaintNature']['ComplaintNatureName'];
       controller.remarkController.text =
           Get.arguments['complaintNature']['Remarks'];
-      controller
-          .selectedService('${Get.arguments['complaintNature']['CityID']}');
+      /*controller
+          .selectedService('${Get.arguments['complaintNature']['CityID']}');*/
       natureId = Get.arguments['complaintNature']['ComplaintNatureID'];
       controller.selectedIsActive(Get.arguments['complaintNature']['IsActive']);
+
     } else {
       controller.natureNameController.clear();
       controller.remarkController.clear();
       controller.selectedIsActive(true);
+
     }
 
     return GestureDetector(

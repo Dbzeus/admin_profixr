@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:profixer_admin/model/ticket_count_response.dart';
@@ -32,7 +33,7 @@ class MainController extends GetxController {
     super.onInit();
     getTicketCounts();
     getMenu();
-  }
+      }
 
   getTicketCounts()async{
     if (await isNetConnected()) {
@@ -42,6 +43,7 @@ class MainController extends GetxController {
       if (response != null) {
         if (response.rtnStatus) {
             dashboards(response.rtnData);
+
           }
         }
       }

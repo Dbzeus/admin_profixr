@@ -14,6 +14,13 @@ abstract class Routes {
   //technician
   static const addTechnician = "/technician/add";
   static const technicianList = "/technician/list";
+  //Service Provider
+  static const addServiceProvider = "/serviceProvider/add";
+  static const serviceProviderList = "/serviceProvider/list";
+  static const addAdminServiceProvider = "/serviceProvider/admin/add";
+  //Profixer
+  static const addProfixer = "/profixer/add";
+  static const profixerList = "/profixer/list";
 
   static const bankDetails = "/bankDetails";
   static const changePassword = "/changePassword";
@@ -36,5 +43,8 @@ abstract class Routes {
   //customer
   static const customerList = "/customer/list";
   static const addCustomer = "/customer/add";
+  static const addCustomerAddress = "/customer/address/add";
+
+
 
 }

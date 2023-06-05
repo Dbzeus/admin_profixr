@@ -1,106 +1,95 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:profixer_admin/helpers/custom_colors.dart';
-import 'package:profixer_admin/routes/app_routes.dart';
-import 'package:profixer_admin/screens/technician/technician_controller.dart';
-import 'package:profixer_admin/widgets/custom_appbar.dart';
 
-class TechnicianListScreen extends GetView<TechnicianController> {
+import '../../../../helpers/custom_colors.dart';
+import '../../../../routes/app_routes.dart';
+import '../../service_provider_controller.dart';
 
-  final controller= Get.put(TechnicianController());
-   TechnicianListScreen({Key? key}) : super(key: key);
+
+class ServiceProviderAdminList extends StatelessWidget {
+  final controller = Get.find<ServiceProviderController>();
+   ServiceProviderAdminList( {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: "Technician",
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
+    return Column(
+      children: [
+        Row(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: Colors.grey.shade100),
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.grey.shade100,
-                              spreadRadius: 1,
-                              blurRadius: 3,
-                              offset: const Offset(0, 2))
-                        ]),
-                    child: TextFormField(
-                      controller: controller.searchController,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: textColor,
-                      ),
-                      decoration: const InputDecoration(
-                        hintText: 'Search',
-                        border: InputBorder.none,
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: textColor,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Get.toNamed(Routes.addTechnician,
-                        arguments: {"title": "Add Technician", "buttonTitle": "Add"});
-                  },
-                  child: Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: primaryColor,
-                    ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.add,
-                        color: whiteColor,
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
             Expanded(
-              child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: 2,
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (_, index) => _buildList(),),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: 50,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.grey.shade100),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.grey.shade100,
+                          spreadRadius: 1,
+                          blurRadius: 3,
+                          offset: const Offset(0, 2))
+                    ]),
+                child: TextFormField(
+                  controller: controller.searchController,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: textColor,
+                  ),
+                  decoration: const InputDecoration(
+                    hintText: 'Search',
+                    border: InputBorder.none,
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: textColor,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            GestureDetector(
+              onTap: () {
+                Get.toNamed(Routes.addAdminServiceProvider,
+                    arguments: {"title": "Add Admin", "buttonTitle": "Next"});
+              },
+              child: Container(
+                height: 50,
+                width: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  color: primaryColor,
+                ),
+                child: const Center(
+                  child: Icon(
+                    Icons.add,
+                    color: whiteColor,
+                  ),
+                ),
+              ),
             )
-
           ],
         ),
-      ),
+        ListView.builder(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          itemCount: 4,
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          physics: const BouncingScrollPhysics(),
+          itemBuilder: (_, index) => _buildList(),)
+
+      ],
     );
   }
-
   _buildList() {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.addTechnician,
-            arguments: {"title": "Edit Technician", "buttonTitle": "Next"});
-       /* Get.toNamed(Routes.addService,
+
+        /* Get.toNamed(Routes.addService,
             arguments: {
               "title": "Edit Service",
               "buttonTitle" : "Save Changes",
@@ -166,8 +155,8 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                             width: 6,
                           ),
                           Text("+966 1234567890", style: TextStyle(
-                              color: primaryColor,
-                              fontSize: 12,
+                            color: primaryColor,
+                            fontSize: 12,
 
                           ),),
                         ],
@@ -183,8 +172,8 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                             width: 6,
                           ),
                           Text("demo@gmail.com", style: TextStyle(
-                              color: blackColor,
-                              fontSize: 12,
+                            color: blackColor,
+                            fontSize: 12,
 
                           ),),
                         ],
@@ -196,8 +185,8 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Rahman125", style: TextStyle(
-                        color: blueTextColor,
-                        fontSize: 12,
+                      color: blueTextColor,
+                      fontSize: 12,
 
                     ),),
                     Text("Rahman125", style: TextStyle(
@@ -264,11 +253,11 @@ class TechnicianListScreen extends GetView<TechnicianController> {
 
                   padding: EdgeInsets.symmetric(horizontal: 4),
                   label:Text("Plumbing", style: TextStyle(
-                  color: primaryColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 10,
+                    color: primaryColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 10,
 
-                ),), ),
+                  ),), ),
 
               ],
             ),
@@ -306,11 +295,11 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                  color: blackColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
+                    color: blackColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
 
-                ),),
+                  ),),
               ],
             ),
             const SizedBox(

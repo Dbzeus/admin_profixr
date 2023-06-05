@@ -16,5 +16,5 @@ toSendDateFormat(String date){
 }
 
 toShowDateFormat(String date){
-  return DateFormat("dd-MM-yyyy").format(DateFormat("MM-dd-yyyy").parse(date));
+  return DateFormat("dd-MM-yyyy").format(DateFormat("yyyy-MM-dd").parse(date));
 }

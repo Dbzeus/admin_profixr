@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
-import 'package:profixer_admin/screens/technician/technician_controller.dart';
+import 'package:profixer_admin/screens/profixer/profixer_controller.dart';
+
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 
-class TechnicianListScreen extends GetView<TechnicianController> {
+class ProfixerListScreen extends GetView<ProfixerController> {
 
-  final controller= Get.put(TechnicianController());
-   TechnicianListScreen({Key? key}) : super(key: key);
+  final controller= Get.put(ProfixerController());
+   ProfixerListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: "Technician",
+        title: "Profixer",
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -59,8 +60,8 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Get.toNamed(Routes.addTechnician,
-                        arguments: {"title": "Add Technician", "buttonTitle": "Add"});
+                    Get.toNamed(Routes.addProfixer,
+                        arguments: {"title": "Add Profixer", "buttonTitle": "Add"});
                   },
                   child: Container(
                     height: 50,
@@ -98,8 +99,8 @@ class TechnicianListScreen extends GetView<TechnicianController> {
   _buildList() {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.addTechnician,
-            arguments: {"title": "Edit Technician", "buttonTitle": "Next"});
+        Get.toNamed(Routes.addProfixer,
+            arguments: {"title": "Edit Profixer", "buttonTitle": "Next"});
        /* Get.toNamed(Routes.addService,
             arguments: {
               "title": "Edit Service",

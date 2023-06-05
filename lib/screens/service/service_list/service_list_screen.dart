@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -7,7 +8,6 @@ import 'package:profixer_admin/routes/app_routes.dart';
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 
 import '../service_controller.dart';
-
 
 class ServiceListScreen extends GetView<ServiceController> {
   @override
@@ -64,8 +64,10 @@ class ServiceListScreen extends GetView<ServiceController> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Get.toNamed(Routes.addService,
-                        arguments: {"title": "Add Service", "buttonTitle": "Add"});
+                    Get.toNamed(Routes.addService, arguments: {
+                      "title": "Add Service",
+                      "buttonTitle": "Add"
+                    });
                   },
                   child: Container(
                     height: 50,
@@ -84,19 +86,22 @@ class ServiceListScreen extends GetView<ServiceController> {
                 )
               ],
             ),
-            Obx(()=>Expanded(
-              child: controller.isLoading.value
-                  ? Center(child: const CircularProgressIndicator())
-                  : controller.services.isEmpty
-                  ? Center(child: const Text('No Service Found'))
-                  :ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: controller.services.length,
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (_, index) => _buildMenu(controller.services[index])),
-            ),),
+            Obx(
+              () => Expanded(
+                child: controller.isLoading.value
+                    ? Center(child: const CircularProgressIndicator())
+                    : controller.services.isEmpty
+                        ? Center(child: const Text('No Service Found'))
+                        : ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: controller.services.length,
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (_, index) =>
+                                _buildMenu(controller.services[index])),
+              ),
+            ),
           ],
         ),
       ),
@@ -106,16 +111,15 @@ class ServiceListScreen extends GetView<ServiceController> {
   _buildMenu(data) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.addService,
-            arguments: {
-              "title": "Edit Service",
-              "buttonTitle" : "Save Changes",
-              "service":data
-            });
+        Get.toNamed(Routes.addService, arguments: {
+          "title": "Edit Service",
+          "buttonTitle": "Save Changes",
+          "service": data
+        });
       },
       child: Container(
         padding: const EdgeInsets.all(12),
-        margin:  const EdgeInsets.symmetric(vertical: 6),
+        margin: const EdgeInsets.symmetric(vertical: 6),
         decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(color: Colors.grey.shade100),
@@ -145,19 +149,32 @@ class ServiceListScreen extends GetView<ServiceController> {
                   Text(
                     data["ServiceName"],
                     style: const TextStyle(
-                        fontSize: 14, color: blackColor, fontWeight: FontWeight.bold),
+                        fontSize: 14,
+                        color: blackColor,
+                        fontWeight: FontWeight.bold),
                   ),
                   Text(
                     data["Remarks"],
                     style: const TextStyle(
-                        fontSize: 12, color: blackColor,),
+                      fontSize: 12,
+                      color: blackColor,
+                    ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
               ),
             ),
-            Switch(
+          /*  CupertinoSwitch(
+                value: data["IsActive"],
+                activeColor: Colors.green.shade200,
+                thumbColor: Colors.white10,
+                trackColor: Colors.red.shade200,
+                onChanged: (val) {
+                  controller.updateService(val, data);
+                }),*/
+
+             Switch(
                 value: data["IsActive"],
                 activeColor: Colors.green.shade200,
                 inactiveThumbColor: Colors.red.shade200,

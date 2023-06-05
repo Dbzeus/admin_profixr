@@ -19,6 +19,7 @@ class CustomDropDown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -26,9 +27,7 @@ class CustomDropDown extends StatelessWidget {
           hintText,
           style: const TextStyle(color: hintColor, fontSize: 12),
         ),
-        const SizedBox(
-          height: 16,
-        ),
+
         DropdownButtonFormField(
             value: dropDownValue,
             style: TextStyle(color: textColor, fontSize: 16),
@@ -40,11 +39,11 @@ class CustomDropDown extends StatelessWidget {
             ),
             decoration: const InputDecoration(
               isDense: true,
-              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
             ),
             items: items.map((items) {
               return DropdownMenuItem(
-                value: items["id"],
+                value: items["value"],
                 child: Text('${items['value']}'),
               );
             }).toList(),

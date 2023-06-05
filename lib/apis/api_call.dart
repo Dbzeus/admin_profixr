@@ -7,6 +7,8 @@ import 'package:profixer_admin/apis/urls.dart';
 import 'package:profixer_admin/main.dart';
 import 'package:profixer_admin/model/MenuResponse.dart';
 import 'package:profixer_admin/model/customer_response.dart';
+import 'package:profixer_admin/model/profixer_response.dart';
+import 'package:profixer_admin/model/serviceprovider_response.dart';
 import 'package:profixer_admin/model/ticket_count_response.dart';
 import 'package:profixer_admin/model/userResponse.dart';
 
@@ -341,7 +343,7 @@ class ApiCall {
     return null;
   }
 
-  Future<dynamic> getProfixerUser({int userId = 0}) async {
+  Future<ProfixerResponse?> getProfixerUser({int userId = 0}) async {
     try {
       var params = {
         "UserID": userId,
@@ -350,7 +352,7 @@ class ApiCall {
           await _dio.get(getProfixerUserUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
-      return response.data;
+      return  ProfixerResponse.fromJson(response.data);
     } on DioError catch (e) {
       log(e.message);
       toast(e.message);
@@ -399,7 +401,7 @@ class ApiCall {
     return null;
   }
 
-  Future<dynamic> getServiceProvider({int providerId = 0}) async {
+  Future<ServiceproviderResponse?> getServiceProvider({int providerId = 0}) async {
     try {
       var params = {
         "ServiceProviderID": providerId,
@@ -408,7 +410,7 @@ class ApiCall {
           await _dio.get(getServiceProviderUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
-      return response.data;
+      return ServiceproviderResponse.fromJson(response.data);
     } on DioError catch (e) {
       log(e.message);
       toast(e.message);
@@ -464,6 +466,27 @@ class ApiCall {
           await _dio.get(getServiceProviderServiceUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> getServiceProviderAdmin(int serviceProviderId ,int userId ) async {
+    try {
+      var params = {
+        "ServiceProviderID": serviceProviderId,
+        "UserID" : userId
+      };
+      final response =
+      await _dio.get(getServiceProviderAdminUrl, queryParameters: params);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+      //return ServiceproviderResponse.fromJson(response.data);
       return response.data;
     } on DioError catch (e) {
       log(e.message);
@@ -576,7 +599,7 @@ class ApiCall {
       * */
 
       final response =
-          await _dio.post(insertServiceProviderTechnicianUrl, data: body);
+          await _dio.post(getTechnicianUrl, data: body);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
@@ -802,6 +825,27 @@ class ApiCall {
       };
       final response =
       await _dio.get(getTimeSlotUrl, queryParameters: params);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  //techinican
+  Future<dynamic> getTechnician(int userId,int serviceProviderId) async {
+    try {
+      var params = {
+        "ServiceProviderID" : serviceProviderId,
+        "UserID": userId,
+      };
+      final response = await _dio.get(getTechnicianUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;

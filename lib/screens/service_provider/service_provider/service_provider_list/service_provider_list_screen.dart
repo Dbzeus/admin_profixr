@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
+import 'package:profixer_admin/helpers/utils.dart';
+import 'package:profixer_admin/model/serviceprovider_response.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
-import 'package:profixer_admin/screens/technician/technician_controller.dart';
+import 'package:profixer_admin/screens/service_provider/service_provider_controller.dart';
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 
-class TechnicianListScreen extends GetView<TechnicianController> {
+class ServiceProviderListScreen extends GetView<ServiceProviderController> {
+  final controller = Get.put(ServiceProviderController());
 
-  final controller= Get.put(TechnicianController());
-   TechnicianListScreen({Key? key}) : super(key: key);
+  ServiceProviderListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: "Technician",
+        title: "Service Provider",
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -59,8 +61,11 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Get.toNamed(Routes.addTechnician,
-                        arguments: {"title": "Add Technician", "buttonTitle": "Add"});
+                    Get.toNamed(Routes.addServiceProvider, arguments: {
+                      "title": "Add Service Provider",
+                      "buttonTitle": "Next",
+                      "slider": false
+                    });
                   },
                   child: Container(
                     height: 50,
@@ -79,37 +84,42 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                 )
               ],
             ),
-            Expanded(
-              child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: 2,
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (_, index) => _buildList(),),
-            )
 
+            Obx(
+              () =>Expanded(child:  controller.isLoading.value
+                  ? const Center(child: CircularProgressIndicator())
+                  : controller.serviceProviders.isEmpty
+                      ? const Center(child: Text('No Service Provider Found'))
+                      : ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: controller.serviceProviders.length,
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (_, index) =>
+                            _buildList(controller.serviceProviders[index]),
+                      ),
+            ))
           ],
         ),
       ),
     );
   }
 
-  _buildList() {
+  _buildList(ServiceProviderData data) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.addTechnician,
-            arguments: {"title": "Edit Technician", "buttonTitle": "Next"});
-       /* Get.toNamed(Routes.addService,
+         Get.toNamed(Routes.addServiceProvider,
             arguments: {
-              "title": "Edit Service",
-              "buttonTitle" : "Save Changes",
-              "service":data
-            });*/
+              "title": "Edit Service Provider",
+              "buttonTitle" : "Next",
+              "service":data,
+              "slider": true
+            });
       },
       child: Container(
         padding: const EdgeInsets.all(12),
-        margin:  const EdgeInsets.symmetric(vertical: 6),
+        margin: const EdgeInsets.symmetric(vertical: 6),
         decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(color: Colors.grey.shade100),
@@ -132,9 +142,9 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                     borderRadius: BorderRadius.circular(12),
                     color: primaryColor.withAlpha(30),
                   ),
-                  child: const Center(
+                  child:  Center(
                     child: Text(
-                      "Ra",
+                      data.contactPerson.substring(0,2).toUpperCase().toString(),
                       style: const TextStyle(
                         color: primaryColor,
                         fontSize: 18,
@@ -150,11 +160,13 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Rahman", style: TextStyle(
-                          color: blackColor,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold
-                      ),),
+                      Text(
+                        data.contactPerson.toString(),
+                        style: TextStyle(
+                            color: blackColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
+                      ),
                       Row(
                         children: [
                           const Icon(
@@ -165,11 +177,13 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                           const SizedBox(
                             width: 6,
                           ),
-                          Text("+966 1234567890", style: TextStyle(
+                          Text(
+                            data.contactNumber.toString(),
+                            style: TextStyle(
                               color: primaryColor,
                               fontSize: 12,
-
-                          ),),
+                            ),
+                          ),
                         ],
                       ),
                       Row(
@@ -182,33 +196,42 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                           const SizedBox(
                             width: 6,
                           ),
-                          Text("demo@gmail.com", style: TextStyle(
+                          Text(
+                            data.contactMailID.toString(),
+                            style: TextStyle(
                               color: blackColor,
-                              fontSize: 12,
-
-                          ),),
+                              fontSize: 10,
+                            ),
+                          ),
                         ],
                       ),
                     ],
                   ),
                 ),
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text("Rahman125", style: TextStyle(
+                    Text(
+                      data.contactPerson.toString(),
+                      style: TextStyle(
                         color: blueTextColor,
-                        fontSize: 12,
-
-                    ),),
-                    Text("Rahman125", style: TextStyle(
-                      color: Colors.green,
-                      fontSize: 12,
-
-                    ),),Text("Rahman125", style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 12,
-
-                    ),),
+                        fontSize: 10,
+                      ),
+                    ),
+                    Text(
+                      toShowDateFormat(data.contractStartDate).toString(),
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 10,
+                      ),
+                    ),
+                    Text(
+                      toShowDateFormat(data.contractEndDate).toString(),
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 10,
+                      ),
+                    ),
                   ],
                 )
               ],
@@ -217,100 +240,94 @@ class TechnicianListScreen extends GetView<TechnicianController> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Service Provider Name", style: TextStyle(
-                  color: blackColor,
-                  fontSize: 12,
-
-                ),),
-                Text("Surya (Ramon Electronics)", style: TextStyle(
-                  color: blackColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-
-                ),),
+                Text(
+                  "Service Provider Name",
+                  style: TextStyle(
+                    color: blackColor,
+                    fontSize: 12,
+                  ),
+                ),
+                Text(
+                  data.serviceProviderName.toString(),
+                  style: TextStyle(
+                    color: blackColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
+                ),
               ],
             ),
             const SizedBox(
               height: 4,
             ),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Date of Joining", style: TextStyle(
-                  color: blackColor,
-                  fontSize: 12,
-
-                ),),
-                Text("25-05-2023", style: TextStyle(
-                  color: blackColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-
-                ),),
-              ],
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Services", style: TextStyle(
-                  color: blackColor,
-                  fontSize: 12,
-
-                ),),
+                Text(
+                  "Services",
+                  style: TextStyle(
+                    color: blackColor,
+                    fontSize: 12,
+                  ),
+                ),
                 Chip(
                   backgroundColor: cardStackColor,
-
                   padding: EdgeInsets.symmetric(horizontal: 4),
-                  label:Text("Plumbing", style: TextStyle(
-                  color: primaryColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 10,
-
-                ),), ),
-
+                  label: Text(
+                    data.serviceName.toString(),
+                    style: TextStyle(
+                      color: primaryColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 10,
+                    ),
+                  ),
+                ),
               ],
             ),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Area", style: TextStyle(
-                  color: blackColor,
-                  fontSize: 12,
-
-                ),),
+                Text(
+                  "Area",
+                  style: TextStyle(
+                    color: blackColor,
+                    fontSize: 12,
+                  ),
+                ),
                 Chip(
                   backgroundColor: cardStackColor,
-
                   padding: EdgeInsets.symmetric(horizontal: 4),
-                  label:Text("Muscat", style: TextStyle(
-                    color: primaryColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 10,
-
-                  ),), ),
+                  label: Text(
+                    data.areaName.toString(),
+                    style: TextStyle(
+                      color: primaryColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 10,
+                    ),
+                  ),
+                ),
               ],
             ),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Permanent Address", style: TextStyle(
-                  color: blackColor,
-                  fontSize: 12,
-
-                ),),
-                Text("Surya (Ramon Electronics)",
+                Text(
+                  "Permanent Address",
+                  style: TextStyle(
+                    color: blackColor,
+                    fontSize: 12,
+                  ),
+                ),
+                Text(
+                  data.contactAddress.toString(),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                  color: blackColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-
-                ),),
+                    color: blackColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
+                ),
               ],
             ),
             const SizedBox(
@@ -319,22 +336,52 @@ class TechnicianListScreen extends GetView<TechnicianController> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Current Address", style: TextStyle(
-                  color: blackColor,
-                  fontSize: 12,
-
-                ),),
-                Text("Surya (Ramon Electronics)", style: TextStyle(
-                  color: blackColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-
-                ),),
+                Text(
+                  "Tax Details",
+                  style: TextStyle(
+                    color: blackColor,
+                    fontSize: 12,
+                  ),
+                ),
+                Text(
+                  data.taxDetails.toString(),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: blackColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
+                ),
               ],
             ),
-
             const SizedBox(
-              height: 8,
+              height: 4,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Bank Details",
+                  style: TextStyle(
+                    color: blackColor,
+                    fontSize: 12,
+                  ),
+                ),
+                Text(
+                  data.bankDetails.toString(),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: blackColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 4,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -350,7 +397,7 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                       const SizedBox(
                         width: 4,
                       ),
-                      Text("12345"),
+                      Text(data.contactNumber.toString()),
                       const SizedBox(
                         width: 4,
                       ),
@@ -363,12 +410,10 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                   ),
                 ),
                 Switch(
-                    value: true,
+                    value: data.isActive,
                     activeColor: Colors.green.shade200,
                     inactiveThumbColor: Colors.red.shade200,
-                    onChanged: (val) {
-
-                    })
+                    onChanged: (val) {})
               ],
             )
           ],

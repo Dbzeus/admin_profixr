@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
+import 'package:profixer_admin/helpers/utils.dart';
+import 'package:profixer_admin/model/customer_response.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
+import 'package:profixer_admin/screens/customer/customer_controller.dart';
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 
-import '../customer_controller.dart';
+
 
 class CustomerListScreen extends GetView<CustomerController> {
   @override
@@ -66,7 +69,8 @@ class CustomerListScreen extends GetView<CustomerController> {
                   onTap: () {
                     Get.toNamed(Routes.addCustomer, arguments: {
                       "title": "Add Customer",
-                      "buttonTitle": "Add"
+                      "buttonTitle": "Add",
+                      "customer": null
                     });
                   },
                   child: Container(
@@ -89,9 +93,9 @@ class CustomerListScreen extends GetView<CustomerController> {
             Obx(
               () => Expanded(
                 child: controller.isLoading.value
-                    ? Center(child: const CircularProgressIndicator())
+                    ? const Center(child: CircularProgressIndicator())
                     : controller.customers.isEmpty
-                        ? Center(child: const Text('No Customers Found'))
+                        ? const Center(child: Text('No Customers Found'))
                         : ListView.builder(
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
@@ -108,10 +112,10 @@ class CustomerListScreen extends GetView<CustomerController> {
     );
   }
 
-  _buildMenu(data) {
+  _buildMenu(Customer data) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.addService, arguments: {
+        Get.toNamed(Routes.addCustomer, arguments: {
           "title": "Edit Customer",
           "buttonTitle": "Save Changes",
           "customer": data
@@ -144,7 +148,8 @@ class CustomerListScreen extends GetView<CustomerController> {
                   ),
                   child: Center(
                     child: Text(
-                      '${data["FirstName"].substring(0, 1).toUpperCase()}${data["LastNAme"].substring(0, 1).toUpperCase()}',
+
+                      '${data.firstName.substring(0, 1).toUpperCase()}${data.lastNAme.substring(0, 0).toUpperCase()}',
                       style: const TextStyle(
                         color: primaryColor,
                         fontSize: 18,
@@ -161,7 +166,7 @@ class CustomerListScreen extends GetView<CustomerController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${data["FirstName"]} ${data["LastName"]}',
+                        '${data.firstName} ${data.lastNAme}',
                         style: const TextStyle(
                             fontSize: 14,
                             color: blackColor,
@@ -170,12 +175,15 @@ class CustomerListScreen extends GetView<CustomerController> {
                       Row(
                         children: [
                           Icon(
-                            Icons.call,
+                            Icons.wifi_calling_3,
                             size: 14,
                             color: primaryColor,
                           ),
+                          const SizedBox(
+                            width: 6,
+                          ),
                           Text(
-                            data["MobileNo"],
+                            data.mobileNo,
                             style: const TextStyle(
                               fontSize: 12,
                               color: primaryColor,
@@ -185,17 +193,33 @@ class CustomerListScreen extends GetView<CustomerController> {
                         ],
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(
-                            Icons.email,
-                            size: 14,
-                            color: primaryColor,
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.email,
+                                size: 14,
+                                color: blackColor,
+                              ),
+                              const SizedBox(
+                                width: 6,
+                              ),
+                              Text(
+                                data.emailID,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: blackColor,
+                                ),
+                                maxLines: 1,
+                              ),
+                            ],
                           ),
                           Text(
-                            data["EmailID"],
+                           "DOB: ${toShowDateFormat(data.dob)}",
                             style: const TextStyle(
-                              fontSize: 12,
-                              color: primaryColor,
+                              fontSize: 10,
+                              color: blackColor,
                             ),
                             maxLines: 1,
                           ),
@@ -220,7 +244,7 @@ class CustomerListScreen extends GetView<CustomerController> {
                     ),
                     Expanded(
                       child: Text(
-                        '${data["CurrentAddress"]}',
+                        '${data.currentAddress}',
                         style: TextStyle(fontSize: 13),
                         maxLines: 2,
                         textAlign: TextAlign.end,
@@ -231,7 +255,7 @@ class CustomerListScreen extends GetView<CustomerController> {
                 Row(
                   children: [
                     Text(
-                      'Remark',
+                      'Remarks',
                       style: TextStyle(color: blackColor, fontSize: 12),
                     ),
                     const SizedBox(
@@ -239,7 +263,7 @@ class CustomerListScreen extends GetView<CustomerController> {
                     ),
                     Expanded(
                       child: Text(
-                        '${data["Remarks"]}',
+                        '${data.remarks}',
                         style: TextStyle(fontSize: 13),
                         maxLines: 2,
                         textAlign: TextAlign.end,

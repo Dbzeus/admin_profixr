@@ -76,8 +76,8 @@ class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      /*Get.toNamed(Routes.addComplaintNature,
-                          arguments: {"title": "Add Complaint Nature", "buttonTitle": "Add","complaintNature": null,});*/
+                      Get.toNamed(Routes.addComplaintNature,
+                          arguments: {"title": "Add Complaint Nature", "buttonTitle": "Add","complaintNature": null,});
                     },
                     child: Container(
                       height: 50,
@@ -111,9 +111,9 @@ class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
               ),*/
               Obx(()=>Expanded(
                 child: controller.isLoading.value
-                    ? Center(child: const CircularProgressIndicator())
+                    ? const Center(child: CircularProgressIndicator())
                     : controller.cNatures.isEmpty
-                    ? Center(child: const Text('No Complaint Nature Found'))
+                    ? const Center(child: Text('No Complaint Nature Found'))
                     : ListView.builder(
                     itemCount: controller.cNatures.length,
                     scrollDirection: Axis.vertical,
@@ -136,11 +136,11 @@ class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
       onTap: () {
         debugPrint("data $data");
         Get.focusScope?.unfocus();
-        /*Get.toNamed(Routes.addComplaintNature,arguments: {
+        Get.toNamed(Routes.addComplaintNature,arguments: {
           "title": "Edit Complaint Nature",
           "buttonTitle" : "Save Changes",
           "complaintNature" : data,
-        });*/
+        });
       },
       child: Container(
           width: MediaQuery.of(Get.context!).size.width,

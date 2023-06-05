@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
-import 'package:profixer_admin/screens/customer/customer_controller.dart';
+import 'package:profixer_admin/screens/customer/customer_address/customer_address_controller.dart';
 
-class AddressList extends StatelessWidget {
-  final controller = Get.find<CustomerController>();
+import '../../../../model/customer_address_response.dart';
 
-  AddressList({Key? key}) : super(key: key);
+class AddressList extends GetView<CustomerAddressController> {
+  int customerId;
+
+  AddressList(this.customerId,{Key? key}) : super(key: key);
+
+  @override
+  final controller = Get.put(CustomerAddressController());
 
   @override
   Widget build(BuildContext context) {
@@ -59,9 +64,8 @@ class AddressList extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 Get.toNamed(Routes.addCustomerAddress, arguments: {
-                  "title": "Add Addres",
-                  "buttonTitle": "Next",
-                  "customer": null
+                  "title": "Add Address",
+                  "buttonTitle": "Save",
                 });
               },
               child: Container(
@@ -81,25 +85,25 @@ class AddressList extends StatelessWidget {
             )
           ],
         ),
-        ListView.builder(
+        Obx(()=> controller.isLoading.value ? Center(child: CircularProgressIndicator(),) :ListView.builder(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
-              itemCount: 6,
+              itemCount: controller.customerAddress.length,
               padding: const EdgeInsets.symmetric(vertical: 12),
               physics: const BouncingScrollPhysics(),
-              itemBuilder: (_, index) => _buildList()),
+              itemBuilder: (_, index) => _buildList(controller.customerAddress[index])),),
 
       ],
     );
   }
 
-  _buildList() {
+  _buildList(CustomerAddress data) {
     return GestureDetector(
       onTap: () {
         Get.toNamed(Routes.addCustomerAddress, arguments: {
           "title": "Edit Address",
           "buttonTitle": "Save Changes",
-          //"customer": data
+          "address": data
         });
       },
       child: Container(
@@ -142,28 +146,29 @@ class AddressList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Home',
+                      '${data.firstName}',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: blackColor,
+                      ),
+                    ),
+                    Text(
+                      '${data.addressTitle}',
                       style: const TextStyle(
                           fontSize: 14,
                           color: blackColor,
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      'Address',
+                      '${data.streetName}',
                       style: const TextStyle(
                           fontSize: 12,
                           color: blackColor,
                           ),
                     ),
+
                     Text(
-                      'City',
-                      style: const TextStyle(
-                          fontSize: 12,
-                          color: blackColor,
-                          ),
-                    ),
-                    Text(
-                      'Landmark',
+                      '${data.landMark}',
                       style: const TextStyle(
                           fontSize: 12,
                           color: blackColor,
@@ -173,10 +178,13 @@ class AddressList extends StatelessWidget {
                 ),
               ),
               Switch(
-                  value: true,
+                  value: data.isActive,
                   activeColor: Colors.green.shade200,
                   inactiveThumbColor: Colors.red.shade200,
-                  onChanged: (val) {})
+                  onChanged: (val) {
+                    data.isActive=val;
+                    controller.insertCustomerAddress(data, !data.isActive,showDialog: false);
+                  })
             ],
           )),
     );

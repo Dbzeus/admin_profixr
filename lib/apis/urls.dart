@@ -16,6 +16,7 @@ const insertCityUrl="Master/InsertUpdateCity";
 const getCityUrl="Master/GetCity";
 const getAreaUrl="Master/GetArea";
 const insertAreaUrl="Master/InsertUpdateArea";
+const getServiceTypeUrl="Master/GetServiceType";
 const getServiceUrl="Master/GetService";
 const insertServiceUrl="Master/InsertUpdateService";
 const getComplaintNatureUrl="Master/GetComplaintNature";
@@ -44,3 +45,6 @@ const deleteHolidayUrl="Master/DeleteHoliday";
 
 //tickets
 const ticketCountUrl="Supportdesk/GetTicketCount";
+const bookATicketUrl="Supportdesk/TicketUpdate";
+
+

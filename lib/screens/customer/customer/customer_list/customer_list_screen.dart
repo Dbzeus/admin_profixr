@@ -4,7 +4,7 @@ import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/helpers/utils.dart';
 import 'package:profixer_admin/model/customer_response.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
-import 'package:profixer_admin/screens/customer/customer_controller.dart';
+import 'package:profixer_admin/screens/customer/customer/customer_controller.dart';
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 
 
@@ -70,7 +70,6 @@ class CustomerListScreen extends GetView<CustomerController> {
                     Get.toNamed(Routes.addCustomer, arguments: {
                       "title": "Add Customer",
                       "buttonTitle": "Add",
-                      "customer": null
                     });
                   },
                   child: Container(

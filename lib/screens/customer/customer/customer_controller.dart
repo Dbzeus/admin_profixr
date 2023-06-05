@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:profixer_admin/model/customer_response.dart';
 
-import '../../apis/api_call.dart';
-import '../../helpers/constant_widgets.dart';
-import '../../helpers/custom_dialog.dart';
+import '../../../apis/api_call.dart';
+import '../../../helpers/constant_widgets.dart';
+import '../../../helpers/custom_dialog.dart';
 
 class CustomerController extends GetxController{
   RxList<Customer> customers = RxList();
@@ -20,51 +20,12 @@ class CustomerController extends GetxController{
   TextEditingController emailController = TextEditingController();
   TextEditingController permanentAddressController = TextEditingController();
 
-  //address form
-  TextEditingController  addressTitleController= TextEditingController();
-  TextEditingController  doorNoController= TextEditingController();
-  TextEditingController  streetNameController= TextEditingController();
-  TextEditingController  landmarkController= TextEditingController();
-
-
   RxBool selectedIsActive = true.obs;
 
   final box = GetStorage();
 
   RxString mobileNoDropDownValue = "+966".obs;
   List<String> mobileItems = ["+966", "+967", "+968"];
-
-  RxString cityDropDownValue = "Plumbing".obs;
-  List<Map<String, String>> cityDropDownItems = [
-    {
-      "id": "1",
-      "value": 'Plumbing',
-    },
-    {
-      "id": "2",
-      "value": 'Electrician',
-    },
-    {
-      "id": "3",
-      "value": 'Technician',
-    }
-  ];
-
-  RxString areaDropDownValue = "Plumbing".obs;
-  List<Map<String, String>> areaDropDownItems = [
-    {
-      "id": "1",
-      "value": 'Plumbing',
-    },
-    {
-      "id": "2",
-      "value": 'Electrician',
-    },
-    {
-      "id": "3",
-      "value": 'Technician',
-    }
-  ];
 
   RxInt isSelectedTag = 0.obs;
 
@@ -82,7 +43,6 @@ class CustomerController extends GetxController{
       if (response != null) {
         if (response.rtnStatus) {
           customers(response.rtnData);
-
         } else {
           toast(response.rtnMsg);
         }

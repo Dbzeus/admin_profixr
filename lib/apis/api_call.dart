@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:profixer_admin/apis/urls.dart';
 import 'package:profixer_admin/main.dart';
+import 'package:profixer_admin/model/customer_address_response.dart';
 import 'package:profixer_admin/model/MenuResponse.dart';
 import 'package:profixer_admin/model/customer_response.dart';
 import 'package:profixer_admin/model/profixer_response.dart';
@@ -232,6 +233,25 @@ class ApiCall {
       * */
 
       final response = await _dio.post(insertAreaUrl, data: body);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> getServiceType({int serviceTypeId = 0}) async {
+    try {
+      var params = {
+        "ServiceTypeID": serviceTypeId,
+      };
+      final response = await _dio.get(getServiceTypeUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
@@ -667,7 +687,7 @@ class ApiCall {
     return null;
   }
 
-  Future<dynamic> getCustomerAddress({int customerId = 0}) async {
+  Future<CustomerAddressResponse?> getCustomerAddress({int customerId = 0}) async {
     try {
       var params = {
         "CustomerID": customerId,
@@ -676,7 +696,7 @@ class ApiCall {
           await _dio.get(getCustomerAddressUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
-      return response.data;
+      return CustomerAddressResponse.fromJson(response.data);
     } on DioError catch (e) {
       log(e.message);
       toast(e.message);
@@ -877,6 +897,43 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return TicketCountResponse.fromJson(response.data);
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<dynamic> bookATicket(var body) async {
+    try {
+      /*
+      *
+{
+  "TicketID": 0,
+  "TicketStatusID": 0,
+  "CustomerID": 0,
+  "CustomerAddressID": 0,
+  "ServiceID": 0,
+  "ComplaintNatureID": 0,
+  "ServiceTypeID": 0,
+  "ServiceProviderID": 0,
+  "TechnicianID": 0,
+  "AppoinmentDate": "2023-06-05T15:42:25.563Z",
+  "TimeSlotID": 0,
+  "Reason": "string",
+  "Remarks": "string",
+  "Images": "string",
+  "CUID": 0
+}
+      * */
+
+      final response = await _dio.post(bookATicketUrl, data: body);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
     } on DioError catch (e) {
       log(e.message);
       toast(e.message);

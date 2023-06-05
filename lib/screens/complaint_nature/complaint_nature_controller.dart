@@ -41,7 +41,7 @@ class ComplaintNatureController extends GetxController {
                 {"id": '${e["ServiceID"]}', "value": "${e['ServiceName']}"});
           }
           if (services.isNotEmpty) {
-            selectedService('${services.first['value']}');
+            selectedService('${services.first['id']}');
           }
         } else {
           toast(response['RtnMsg']);

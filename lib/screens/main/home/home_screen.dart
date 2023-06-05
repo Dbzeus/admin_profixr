@@ -79,9 +79,9 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                      onTap: (){
-                        Get.toNamed(Routes.checkCustomer);
-                      },
+                    onTap: () {
+                      Get.toNamed(Routes.checkCustomer);
+                    },
                     child: Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
@@ -129,22 +129,32 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Obx(()=>
-               GridView.builder(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-                  itemCount: controller.dashboards.length,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  physics: const BouncingScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 10,
-                      childAspectRatio: 0.8,
-                      mainAxisSpacing: 15),
-                  itemBuilder: (_, index) {
-                    return _buildDashboard(controller.dashboards[index]);
-                  }),
+            Obx(
+              () => controller.isLoading.value
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : controller.dashboards.isEmpty
+                      ? Center(
+                          child: Text("No Records Found"),
+                        )
+                      : GridView.builder(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 0),
+                          itemCount: controller.dashboards.length,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          physics: const BouncingScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  crossAxisSpacing: 10,
+                                  childAspectRatio: 0.8,
+                                  mainAxisSpacing: 15),
+                          itemBuilder: (_, index) {
+                            return _buildDashboard(
+                                controller.dashboards[index]);
+                          }),
             ),
             const SizedBox(
               height: 16,
@@ -156,7 +166,6 @@ class HomeScreen extends StatelessWidget {
   }
 
   _buildDashboard(TicketCount dashboard) {
-
     return GestureDetector(
       onTap: () {
         Get.toNamed(Routes.bookedTicket, arguments: {"data": "$dashboard"});

@@ -6,7 +6,7 @@ import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/helpers/utils.dart';
 import 'package:profixer_admin/model/customer_response.dart';
 import 'package:profixer_admin/screens/customer/customer_address/address_list/address_list.dart';
-import 'package:profixer_admin/screens/customer/customer_controller.dart';
+import 'package:profixer_admin/screens/customer/customer/customer_controller.dart';
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 import 'package:profixer_admin/widgets/custom_button.dart';
 import 'package:profixer_admin/widgets/custom_edittext.dart';
@@ -18,25 +18,26 @@ class AddCustomerScreen extends StatelessWidget {
 
   AddCustomerScreen({Key? key}) : super(key: key);
 
+  Customer? customerData = Get.arguments['customer'];
+
   @override
   Widget build(BuildContext context) {
     int customerId = 0;
     int userId = 0;
 
 
-    if (Get.arguments['customer'] != null)  {
-      Customer customerData = Get.arguments['customer'];
-      customerId = customerData.customerID;
-      userId = customerData.userID;
+    if (customerData!=null)  {
+      customerId = customerData!.customerID;
+      userId = customerData!.userID;
 
-      controller.nameController.text = customerData.firstName.toString();
-      controller.remarkController.text = customerData.remarks.toString();
+      controller.nameController.text = customerData!.firstName.toString();
+      controller.remarkController.text = customerData!.remarks.toString();
       controller.dateController.text =
-          toShowDateFormat(customerData.dob.toString());
-      controller.mobileController.text =customerData.mobileNo.toString();
-      controller.emailController.text = customerData.emailID.toString();
+          toShowDateFormat(customerData!.dob.toString());
+      controller.mobileController.text =customerData!.mobileNo.toString();
+      controller.emailController.text = customerData!.emailID.toString();
       controller.permanentAddressController.text =
-          customerData.currentAddress.toString();
+          customerData!.currentAddress.toString();
     } else {
       controller.nameController.clear();
       controller.remarkController.clear();
@@ -208,7 +209,7 @@ class AddCustomerScreen extends StatelessWidget {
                               }),
                         ],
                       ),
-                    ) : AddressList()
+                    ) : AddressList(customerData?.customerID ?? 0)
                   ],
                 ),
               ),

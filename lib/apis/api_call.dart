@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:profixer_admin/apis/urls.dart';
 import 'package:profixer_admin/main.dart';
 import 'package:profixer_admin/model/MenuResponse.dart';
+import 'package:profixer_admin/model/admin_response.dart';
 import 'package:profixer_admin/model/customer_response.dart';
 import 'package:profixer_admin/model/profixer_response.dart';
 import 'package:profixer_admin/model/serviceprovider_response.dart';
@@ -477,7 +478,7 @@ class ApiCall {
     return null;
   }
 
-  Future<dynamic> getServiceProviderAdmin(int serviceProviderId ,int userId ) async {
+  Future<AdminResponse?> getServiceProviderAdmin(int serviceProviderId ,int userId ) async {
     try {
       var params = {
         "ServiceProviderID": serviceProviderId,
@@ -486,7 +487,42 @@ class ApiCall {
       final response =
       await _dio.get(getServiceProviderAdminUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
-      //return ServiceproviderResponse.fromJson(response.data);
+      return AdminResponse.fromJson(response.data);
+
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+  Future<dynamic> insertServiceProviderAdmin(var body) async {
+    try {
+      /*
+      *
+       {
+  "ServiceProviderID": 0,
+  "ServiceProviderName": "string",
+  "ContactPerson": "string",
+  "ContactNumber": "string",
+  "ContactMailID": "string",
+  "ContactAddress": "string",
+  "TaxDetails": "string",
+  "BankDetails": "string",
+  "ServiceIDs": "string",
+  "AreaIDs": "string",
+  "ContractStartDate": "2023-05-24T16:16:05.417Z",
+  "ContractEndDate": "2023-05-24T16:16:05.417Z",
+  "IsActive": true,
+  "CUID": 0
+}
+      * */
+
+      final response = await _dio.post(insertServiceProviderAdminUrl, data: body);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
       return response.data;
     } on DioError catch (e) {
       log(e.message);

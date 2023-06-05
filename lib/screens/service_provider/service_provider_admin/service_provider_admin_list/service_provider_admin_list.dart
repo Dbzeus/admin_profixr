@@ -1,15 +1,16 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:profixer_admin/helpers/utils.dart';
+import 'package:profixer_admin/model/admin_response.dart';
 
 import '../../../../helpers/custom_colors.dart';
 import '../../../../routes/app_routes.dart';
 import '../../service_provider_controller.dart';
 
-
 class ServiceProviderAdminList extends StatelessWidget {
   final controller = Get.find<ServiceProviderController>();
-   ServiceProviderAdminList( {Key? key}) : super(key: key);
+
+  ServiceProviderAdminList({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +55,11 @@ class ServiceProviderAdminList extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Get.toNamed(Routes.addAdminServiceProvider,
-                    arguments: {"title": "Add Admin", "buttonTitle": "Next"});
+                Get.toNamed(Routes.addAdminServiceProvider, arguments: {
+                  "title": "Add Admin",
+                  "buttonTitle": "Next",
+                  "service": null
+                });
               },
               child: Container(
                 height: 50,
@@ -74,31 +78,45 @@ class ServiceProviderAdminList extends StatelessWidget {
             )
           ],
         ),
-        ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: 4,
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          physics: const BouncingScrollPhysics(),
-          itemBuilder: (_, index) => _buildList(),)
-
+        Obx(
+          () => controller.isLoading.value
+              ? const Center(child: CircularProgressIndicator())
+              : controller.serviceProviderAdmin.isEmpty
+                  ? Center(
+                      child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 100,
+                        ),
+                        Text('No Admin Found'),
+                      ],
+                    ))
+                  : ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: controller.serviceProviderAdmin.length,
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (_, index) =>
+                          _buildList(controller.serviceProviderAdmin[index]),
+                    ),
+        )
       ],
     );
   }
-  _buildList() {
+
+  _buildList(AdminData data) {
     return GestureDetector(
       onTap: () {
-
-        /* Get.toNamed(Routes.addService,
-            arguments: {
-              "title": "Edit Service",
-              "buttonTitle" : "Save Changes",
-              "service":data
-            });*/
+        Get.toNamed(Routes.addAdminServiceProvider, arguments: {
+          "title": "Edit Admin",
+          "buttonTitle": "Save Changes",
+          "service": data
+        });
       },
       child: Container(
         padding: const EdgeInsets.all(12),
-        margin:  const EdgeInsets.symmetric(vertical: 6),
+        margin: const EdgeInsets.symmetric(vertical: 6),
         decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(color: Colors.grey.shade100),
@@ -121,9 +139,9 @@ class ServiceProviderAdminList extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                     color: primaryColor.withAlpha(30),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Text(
-                      "Ra",
+                      data.firstName.substring(0, 2).toUpperCase().toString(),
                       style: const TextStyle(
                         color: primaryColor,
                         fontSize: 18,
@@ -139,11 +157,13 @@ class ServiceProviderAdminList extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Rahman", style: TextStyle(
-                          color: blackColor,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold
-                      ),),
+                      Text(
+                        data.firstName.toString(),
+                        style: TextStyle(
+                            color: blackColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
+                      ),
                       Row(
                         children: [
                           const Icon(
@@ -154,11 +174,13 @@ class ServiceProviderAdminList extends StatelessWidget {
                           const SizedBox(
                             width: 6,
                           ),
-                          Text("+966 1234567890", style: TextStyle(
-                            color: primaryColor,
-                            fontSize: 12,
-
-                          ),),
+                          Text(
+                            data.mobileNumber.toString(),
+                            style: TextStyle(
+                              color: primaryColor,
+                              fontSize: 10,
+                            ),
+                          ),
                         ],
                       ),
                       Row(
@@ -171,33 +193,35 @@ class ServiceProviderAdminList extends StatelessWidget {
                           const SizedBox(
                             width: 6,
                           ),
-                          Text("demo@gmail.com", style: TextStyle(
-                            color: blackColor,
-                            fontSize: 12,
-
-                          ),),
+                          Text(
+                            data.mailID.toString(),
+                            style: TextStyle(
+                              color: blackColor,
+                              fontSize: 10,
+                            ),
+                          ),
                         ],
                       ),
                     ],
                   ),
                 ),
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text("Rahman125", style: TextStyle(
-                      color: blueTextColor,
-                      fontSize: 12,
-
-                    ),),
-                    Text("Rahman125", style: TextStyle(
-                      color: Colors.green,
-                      fontSize: 12,
-
-                    ),),Text("Rahman125", style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 12,
-
-                    ),),
+                    Text(
+                      data.serviceProviderName.toString(),
+                      style: TextStyle(
+                        color: blueTextColor,
+                        fontSize: 10,
+                      ),
+                    ),
+                    Text(
+                      toShowDateFormat(data.dob).toString(),
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 10,
+                      ),
+                    ),
                   ],
                 )
               ],
@@ -206,100 +230,46 @@ class ServiceProviderAdminList extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Service Provider Name", style: TextStyle(
-                  color: blackColor,
-                  fontSize: 12,
-
-                ),),
-                Text("Surya (Ramon Electronics)", style: TextStyle(
-                  color: blackColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-
-                ),),
+                Text(
+                  "Date of joining",
+                  style: TextStyle(
+                    color: blackColor,
+                    fontSize: 12,
+                  ),
+                ),
+                Text(
+                  toShowDateFormat(data.doj).toString(),
+                  style: TextStyle(
+                    color: blackColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
+                ),
               ],
             ),
             const SizedBox(
               height: 4,
             ),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Date of Joining", style: TextStyle(
-                  color: blackColor,
-                  fontSize: 12,
-
-                ),),
-                Text("25-05-2023", style: TextStyle(
-                  color: blackColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-
-                ),),
-              ],
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Services", style: TextStyle(
-                  color: blackColor,
-                  fontSize: 12,
-
-                ),),
-                Chip(
-                  backgroundColor: cardStackColor,
-
-                  padding: EdgeInsets.symmetric(horizontal: 4),
-                  label:Text("Plumbing", style: TextStyle(
-                    color: primaryColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 10,
-
-                  ),), ),
-
-              ],
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Area", style: TextStyle(
-                  color: blackColor,
-                  fontSize: 12,
-
-                ),),
-                Chip(
-                  backgroundColor: cardStackColor,
-
-                  padding: EdgeInsets.symmetric(horizontal: 4),
-                  label:Text("Muscat", style: TextStyle(
-                    color: primaryColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 10,
-
-                  ),), ),
-              ],
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Permanent Address", style: TextStyle(
-                  color: blackColor,
-                  fontSize: 12,
-
-                ),),
-                Text("Surya (Ramon Electronics)",
+                Text(
+                  "Permanent Address",
+                  style: TextStyle(
+                    color: blackColor,
+                    fontSize: 12,
+                  ),
+                ),
+                Text(
+                  data.permanentAddress.toString(),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     color: blackColor,
                     fontWeight: FontWeight.w600,
                     fontSize: 12,
-
-                  ),),
+                  ),
+                ),
               ],
             ),
             const SizedBox(
@@ -308,20 +278,23 @@ class ServiceProviderAdminList extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Current Address", style: TextStyle(
-                  color: blackColor,
-                  fontSize: 12,
-
-                ),),
-                Text("Surya (Ramon Electronics)", style: TextStyle(
-                  color: blackColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-
-                ),),
+                Text(
+                  "Current Address",
+                  style: TextStyle(
+                    color: blackColor,
+                    fontSize: 12,
+                  ),
+                ),
+                Text(
+                  data.contactAddress.toString(),
+                  style: TextStyle(
+                    color: blackColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
+                ),
               ],
             ),
-
             const SizedBox(
               height: 8,
             ),
@@ -339,7 +312,13 @@ class ServiceProviderAdminList extends StatelessWidget {
                       const SizedBox(
                         width: 4,
                       ),
-                      Text("12345"),
+                      Text(
+                        data.mobileNumber.toString(),
+                        style: TextStyle(
+                          color: blackColor,
+                          fontSize: 12,
+                        ),
+                      ),
                       const SizedBox(
                         width: 4,
                       ),
@@ -352,12 +331,10 @@ class ServiceProviderAdminList extends StatelessWidget {
                   ),
                 ),
                 Switch(
-                    value: true,
+                    value: data.isActive,
                     activeColor: Colors.green.shade200,
                     inactiveThumbColor: Colors.red.shade200,
-                    onChanged: (val) {
-
-                    })
+                    onChanged: (val) {})
               ],
             )
           ],

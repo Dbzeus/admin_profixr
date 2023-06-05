@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
-import 'package:profixer_admin/helpers/custom_dialog.dart';
+
 import 'package:profixer_admin/helpers/utils.dart';
 
 import 'package:profixer_admin/screens/service_provider/service_provider_controller.dart';
@@ -20,41 +20,38 @@ class AddServiceProviderScreen extends StatelessWidget {
 
   AddServiceProviderScreen({Key? key}) : super(key: key);
 
+  ServiceProviderData? serviceProviderData = Get.arguments["service"];
 
   @override
   Widget build(BuildContext context) {
-    if (Get.arguments["service"] != null) {
-
-      ServiceProviderData serviceProviderData = Get.arguments["service"];
+    if (serviceProviderData != null) {
       controller.servicerProviderNameController.text =
-          serviceProviderData.serviceProviderName.toString();
+          serviceProviderData!.serviceProviderName.toString();
       controller.contactNameController.text =
-          serviceProviderData.contactPerson.toString();
+          serviceProviderData!.contactPerson.toString();
       controller.userNameController.text =
-          serviceProviderData.contactPerson.toString();
+          serviceProviderData!.contactPerson.toString();
       controller.mobileController.text =
-          serviceProviderData.contactNumber.toString();
+          serviceProviderData!.contactNumber.toString();
       controller.emailController.text =
-          serviceProviderData.contactMailID.toString();
+          serviceProviderData!.contactMailID.toString();
       controller.permanentAddressController.text =
-          serviceProviderData.contactAddress.toString();
+          serviceProviderData!.contactAddress.toString();
 
-      controller.serviceProviderId = serviceProviderData.serviceProviderID;
-      controller.areaId = serviceProviderData.areaIDs;
-      controller.serviceId  = serviceProviderData.serviceIDs;
+
 
 
 
 
       controller.taxDetailsController.text =
-          serviceProviderData.taxDetails.toString();
+          serviceProviderData!.taxDetails.toString();
       controller.bankDetailsController.text =
-          serviceProviderData.bankDetails.toString();
+          serviceProviderData!.bankDetails.toString();
       controller.contractStartController.text =
-          toShowDateFormat(serviceProviderData.contractStartDate).toString();
+          toShowDateFormat(serviceProviderData!.contractStartDate).toString();
       controller.contractEndController.text =
-          toShowDateFormat(serviceProviderData.contractEndDate).toString();
-      controller.selectedIsActive(serviceProviderData.isActive);
+          toShowDateFormat(serviceProviderData!.contractEndDate).toString();
+      controller.selectedIsActive(serviceProviderData!.isActive);
     } else {
       controller.servicerProviderNameController.clear();
       controller.contactNameController.clear();
@@ -91,7 +88,7 @@ class AddServiceProviderScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    Get.arguments["slider"]
+                    Get.arguments["slider"] ?? true
                         ? Obx(
                             () => Container(
                               width: double.infinity,
@@ -408,7 +405,7 @@ class AddServiceProviderScreen extends StatelessWidget {
                                       btnColor: primaryColor,
                                       onTap: () {
                                         var data = {
-                                          "ServiceProviderID": controller.serviceProviderId
+                                          "ServiceProviderID":serviceProviderData?.serviceProviderID
                                                   ??
                                               0,
                                           "ServiceProviderName": controller
@@ -426,9 +423,9 @@ class AddServiceProviderScreen extends StatelessWidget {
                                           "BankDetails":
                                               controller.bankDetailsController.text,
                                           "ServiceIDs":
-                                              controller.serviceId ?? "0",
+                                              serviceProviderData?.serviceIDs ?? "0",
                                           "AreaIDs":
-                                              controller.areaId ?? "0",
+                                              serviceProviderData?.areaIDs ?? "0",
                                           "ContractStartDate": controller
                                               .contractStartController.text,
                                           "ContractEndDate":

@@ -1,6 +1,6 @@
 /// RtnStatus : true
 /// RtnMsg : "Profixer user's Details Loaded Successfully."
-/// RtnData : [{"AdminID":1,"UserID":1,"FirstName":"Admin","LastName":"Profixer","Desigination":"Controller","DOB":"2000-01-01T00:00:00","DOJ":"2022-01-01T00:00:00","MobileNo":"9894407062","CurrentAddress":"","PermanentAddress":"","IsRelived":false,"RelivedDate":null,"RelivedReason":null,"IsActive":true,"CUID":1,"CUDate":"2023-05-18T09:41:42.797","MUID":1,"MUDate":"2023-05-23T09:51:30.27","EmailId":"saktheeswaran.a@dbzeus.com","UserNAme":"9894407062","Password":"9894"}]
+/// RtnData : [{"AdminID":1,"UserID":1,"FirstName":"Admin","LastName":"Profixer","Desigination":"Controller","DOB":"2000-01-01T00:00:00","DOJ":"2022-01-01T00:00:00","MobileNo":"9894407062","CurrentAddress":"","PermanentAddress":"","IsRelived":false,"RelivedDate":"1900-01-01T00:00:00","RelivedReason":"","IsActive":true,"UserNAme":"9894407062","Password":"1234"},{"AdminID":2,"UserID":3,"FirstName":"Surya","LastName":"Balasubramani","Desigination":"Developer","DOB":"2000-05-22T00:00:00","DOJ":"2022-05-22T00:00:00","MobileNo":"9894306062","CurrentAddress":"Sample Street","PermanentAddress":"Confirm Street","IsRelived":false,"RelivedDate":"2000-01-01T00:00:00","RelivedReason":"","IsActive":true,"UserNAme":"Surya","Password":"9894"}]
 /// OtherMsg : null
 /// ID : null
 
@@ -55,16 +55,11 @@ class ProfixerResponse {
 /// CurrentAddress : ""
 /// PermanentAddress : ""
 /// IsRelived : false
-/// RelivedDate : null
-/// RelivedReason : null
+/// RelivedDate : "1900-01-01T00:00:00"
+/// RelivedReason : ""
 /// IsActive : true
-/// CUID : 1
-/// CUDate : "2023-05-18T09:41:42.797"
-/// MUID : 1
-/// MUDate : "2023-05-23T09:51:30.27"
-/// EmailId : "saktheeswaran.a@dbzeus.com"
 /// UserNAme : "9894407062"
-/// Password : "9894"
+/// Password : "1234"
 
 class ProfixerData {
   ProfixerData(
@@ -82,11 +77,6 @@ class ProfixerData {
       this.relivedDate, 
       this.relivedReason, 
       this.isActive, 
-      this.cuid, 
-      this.cUDate, 
-      this.muid, 
-      this.mUDate, 
-      this.emailId, 
       this.userNAme, 
       this.password,);
 
@@ -105,35 +95,25 @@ class ProfixerData {
     relivedDate = json['RelivedDate'];
     relivedReason = json['RelivedReason'];
     isActive = json['IsActive'];
-    cuid = json['CUID'];
-    cUDate = json['CUDate'];
-    muid = json['MUID'];
-    mUDate = json['MUDate'];
-    emailId = json['EmailId'];
     userNAme = json['UserNAme'];
     password = json['Password'];
   }
-  late int adminID;
-  late int userID;
-  late String firstName;
-  late String lastName;
-  late String desigination;
-  late String dob;
-  late String doj;
-  late String mobileNo;
-  late String currentAddress;
-  late String permanentAddress;
-  late bool isRelived;
-  late dynamic relivedDate;
-  late dynamic relivedReason;
-  late bool isActive;
-  late int cuid;
-  late String cUDate;
-  late int muid;
-  late String mUDate;
-  late String emailId;
-  late String userNAme;
-  late String password;
+ late int adminID;
+ late int userID;
+ late String firstName;
+ late String lastName;
+ late String desigination;
+ late String dob;
+ late String doj;
+ late String mobileNo;
+ late String currentAddress;
+ late String permanentAddress;
+ late bool isRelived;
+ late String relivedDate;
+ late String relivedReason;
+ late bool isActive;
+ late String userNAme;
+ late String password;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -151,11 +131,6 @@ class ProfixerData {
     map['RelivedDate'] = relivedDate;
     map['RelivedReason'] = relivedReason;
     map['IsActive'] = isActive;
-    map['CUID'] = cuid;
-    map['CUDate'] = cUDate;
-    map['MUID'] = muid;
-    map['MUDate'] = mUDate;
-    map['EmailId'] = emailId;
     map['UserNAme'] = userNAme;
     map['Password'] = password;
     return map;

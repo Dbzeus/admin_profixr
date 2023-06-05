@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
+import 'package:profixer_admin/helpers/utils.dart';
+import 'package:profixer_admin/model/profixer_response.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
 import 'package:profixer_admin/screens/profixer/profixer_controller.dart';
 
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 
 class ProfixerListScreen extends GetView<ProfixerController> {
+  final controller = Get.put(ProfixerController());
 
-  final controller= Get.put(ProfixerController());
-   ProfixerListScreen({Key? key}) : super(key: key);
+  ProfixerListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +62,11 @@ class ProfixerListScreen extends GetView<ProfixerController> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Get.toNamed(Routes.addProfixer,
-                        arguments: {"title": "Add Profixer", "buttonTitle": "Add"});
+                    Get.toNamed(Routes.addProfixer, arguments: {
+                      "title": "Add Profixer",
+                      "buttonTitle": "Add",
+                      "data": null
+                    });
                   },
                   child: Container(
                     height: 50,
@@ -80,28 +85,38 @@ class ProfixerListScreen extends GetView<ProfixerController> {
                 )
               ],
             ),
-            Expanded(
-              child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: 2,
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (_, index) => _buildList(),),
+            Obx(
+              () => Expanded(
+                child: controller.isLoading.value
+                    ? const Center(child: CircularProgressIndicator())
+                    : controller.profixers.isEmpty
+                        ? const Center(child: Text('No Profixers Found'))
+                        : ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: controller.profixers.length,
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (_, index) =>
+                                _buildList(controller.profixers[index]),
+                          ),
+              ),
             )
-
           ],
         ),
       ),
     );
   }
 
-  _buildList() {
+  _buildList(ProfixerData data) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.addProfixer,
-            arguments: {"title": "Edit Profixer", "buttonTitle": "Next"});
-       /* Get.toNamed(Routes.addService,
+        Get.toNamed(Routes.addProfixer, arguments: {
+          "title": "Edit Profixer",
+          "buttonTitle": "Next",
+          "data": data
+        });
+        /* Get.toNamed(Routes.addService,
             arguments: {
               "title": "Edit Service",
               "buttonTitle" : "Save Changes",
@@ -110,7 +125,7 @@ class ProfixerListScreen extends GetView<ProfixerController> {
       },
       child: Container(
         padding: const EdgeInsets.all(12),
-        margin:  const EdgeInsets.symmetric(vertical: 6),
+        margin: const EdgeInsets.symmetric(vertical: 6),
         decoration: BoxDecoration(
             color: Colors.white,
             border: Border.all(color: Colors.grey.shade100),
@@ -127,18 +142,19 @@ class ProfixerListScreen extends GetView<ProfixerController> {
             Row(
               children: [
                 Container(
-                  width: 50,
+                  width: 75,
+                  height: 75,
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: primaryColor.withAlpha(30),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Text(
-                      "Ra",
+                      data.firstName.substring(0, 2).toUpperCase().toString(),
                       style: const TextStyle(
                         color: primaryColor,
-                        fontSize: 18,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -151,11 +167,13 @@ class ProfixerListScreen extends GetView<ProfixerController> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Rahman", style: TextStyle(
-                          color: blackColor,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold
-                      ),),
+                      Text(
+                        data.firstName.toString(),
+                        style: TextStyle(
+                            color: blackColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
+                      ),
                       Row(
                         children: [
                           const Icon(
@@ -166,50 +184,61 @@ class ProfixerListScreen extends GetView<ProfixerController> {
                           const SizedBox(
                             width: 6,
                           ),
-                          Text("+966 1234567890", style: TextStyle(
+                          Text(
+                            data.mobileNo.toString(),
+                            style: TextStyle(
                               color: primaryColor,
                               fontSize: 12,
-
-                          ),),
+                            ),
+                          ),
                         ],
                       ),
                       Row(
                         children: [
                           const Icon(
-                            Icons.mail,
+                            Icons.person,
                             color: blackColor,
                             size: 12,
                           ),
                           const SizedBox(
                             width: 6,
                           ),
-                          Text("demo@gmail.com", style: TextStyle(
+                          Text(
+                            data.desigination,
+                            style: TextStyle(
                               color: blackColor,
                               fontSize: 12,
-
-                          ),),
+                            ),
+                          ),
                         ],
                       ),
                     ],
                   ),
                 ),
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text("Rahman125", style: TextStyle(
+                    Text(
+                      data.firstName.toString(),
+                      style: TextStyle(
                         color: blueTextColor,
-                        fontSize: 12,
-
-                    ),),
-                    Text("Rahman125", style: TextStyle(
-                      color: Colors.green,
-                      fontSize: 12,
-
-                    ),),Text("Rahman125", style: TextStyle(
-                      color: Colors.red,
-                      fontSize: 12,
-
-                    ),),
+                        fontSize: 10,
+                      ),
+                    ),
+                    Text(
+                      "DOB: ${toShowDateFormat(data.dob)}",
+                      style: TextStyle(
+                        color: Colors.green,
+                        fontSize: 10,
+                      ),
+                    ),
+                    Text(
+                      "DOJ: ${toShowDateFormat(data.doj)}",
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 10,
+                      ),
+                    ),
                   ],
                 )
               ],
@@ -218,100 +247,92 @@ class ProfixerListScreen extends GetView<ProfixerController> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Service Provider Name", style: TextStyle(
-                  color: blackColor,
-                  fontSize: 12,
-
-                ),),
-                Text("Surya (Ramon Electronics)", style: TextStyle(
-                  color: blackColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-
-                ),),
+                Text(
+                  "Relieve Status",
+                  style: TextStyle(
+                    color: blackColor,
+                    fontSize: 12,
+                  ),
+                ),
+                Text(
+                  data.isRelived.toString(),
+                  style: TextStyle(
+                    color: blackColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
+                ),
               ],
             ),
             const SizedBox(
               height: 4,
             ),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Date of Joining", style: TextStyle(
-                  color: blackColor,
-                  fontSize: 12,
-
-                ),),
-                Text("25-05-2023", style: TextStyle(
-                  color: blackColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-
-                ),),
-              ],
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Services", style: TextStyle(
-                  color: blackColor,
-                  fontSize: 12,
-
-                ),),
-                Chip(
-                  backgroundColor: cardStackColor,
-
-                  padding: EdgeInsets.symmetric(horizontal: 4),
-                  label:Text("Plumbing", style: TextStyle(
-                  color: primaryColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 10,
-
-                ),), ),
-
-              ],
-            ),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Area", style: TextStyle(
-                  color: blackColor,
-                  fontSize: 12,
-
-                ),),
-                Chip(
-                  backgroundColor: cardStackColor,
-
-                  padding: EdgeInsets.symmetric(horizontal: 4),
-                  label:Text("Muscat", style: TextStyle(
-                    color: primaryColor,
+                Text(
+                  "Relieve Date",
+                  style: TextStyle(
+                    color: blackColor,
+                    fontSize: 12,
+                  ),
+                ),
+                Text(
+                  "null", //toShowDateFormat(data.relivedDate).toString(),
+                  style: TextStyle(
+                    color: blackColor,
                     fontWeight: FontWeight.w600,
-                    fontSize: 10,
-
-                  ),), ),
+                    fontSize: 12,
+                  ),
+                ),
               ],
             ),
-
+            const SizedBox(
+              height: 4,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Permanent Address", style: TextStyle(
-                  color: blackColor,
-                  fontSize: 12,
-
-                ),),
-                Text("Surya (Ramon Electronics)",
+                Text(
+                  "Relieve Reason",
+                  style: TextStyle(
+                    color: blackColor,
+                    fontSize: 12,
+                  ),
+                ),
+                Text(
+                  data.relivedReason.toString(),
+                  style: TextStyle(
+                    color: blackColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 4,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Permanent Address",
+                  style: TextStyle(
+                    color: blackColor,
+                    fontSize: 12,
+                  ),
+                ),
+                Text(
+                  data.permanentAddress.toString(),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                  color: blackColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-
-                ),),
+                    color: blackColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
+                ),
               ],
             ),
             const SizedBox(
@@ -320,22 +341,25 @@ class ProfixerListScreen extends GetView<ProfixerController> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Current Address", style: TextStyle(
-                  color: blackColor,
-                  fontSize: 12,
-
-                ),),
-                Text("Surya (Ramon Electronics)", style: TextStyle(
-                  color: blackColor,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12,
-
-                ),),
+                Text(
+                  "Current Address",
+                  style: TextStyle(
+                    color: blackColor,
+                    fontSize: 12,
+                  ),
+                ),
+                Text(
+                  data.currentAddress.toString(),
+                  style: TextStyle(
+                    color: blackColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
+                ),
               ],
             ),
-
             const SizedBox(
-              height: 8,
+              height: 4,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -351,7 +375,13 @@ class ProfixerListScreen extends GetView<ProfixerController> {
                       const SizedBox(
                         width: 4,
                       ),
-                      Text("12345"),
+                      Text(
+                        data.mobileNo.toString(),
+                        style: TextStyle(
+                          color: blackColor,
+                          fontSize: 12,
+                        ),
+                      ),
                       const SizedBox(
                         width: 4,
                       ),
@@ -364,12 +394,10 @@ class ProfixerListScreen extends GetView<ProfixerController> {
                   ),
                 ),
                 Switch(
-                    value: true,
+                    value: data.isActive,
                     activeColor: Colors.green.shade200,
                     inactiveThumbColor: Colors.red.shade200,
-                    onChanged: (val) {
-
-                    })
+                    onChanged: (val) {})
               ],
             )
           ],

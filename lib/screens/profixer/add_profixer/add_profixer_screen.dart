@@ -7,6 +7,8 @@ import 'package:intl/intl.dart';
 
 import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/helpers/custom_dialog.dart';
+import 'package:profixer_admin/helpers/utils.dart';
+import 'package:profixer_admin/model/profixer_response.dart';
 import 'package:profixer_admin/screens/profixer/profixer_controller.dart';
 
 import 'package:profixer_admin/screens/technician/technician_controller.dart';
@@ -23,15 +25,58 @@ class AddProfixerScreen extends StatelessWidget {
 
   AddProfixerScreen({Key? key}) : super(key: key);
 
+
+  ProfixerData? profixerData = Get.arguments["data"];
   @override
   Widget build(BuildContext context) {
+    if (profixerData != null) {
+      controller.firstNameController.text =
+          profixerData!.firstName.toString();
+      controller.lastNameController.text =
+          profixerData!.lastName.toString();
+      controller.userNameController.text =
+          profixerData!.userNAme.toString();
+      controller.mobileController.text =
+          profixerData!.mobileNo.toString();
+      controller.permanentAddressController.text =
+          profixerData!.permanentAddress.toString();
+      controller.passwordController.text =
+          profixerData!.password.toString();
+      controller.relievedReasonController.text =
+          profixerData!.relivedReason.toString();
+      controller.currentAddressController.text =
+          profixerData!.currentAddress.toString();
+      controller.relievedDateController.text =
+          toShowDateFormat(profixerData!.relivedDate).toString();
+      controller.dojController.text =
+          toShowDateFormat(profixerData!.doj).toString();
+      controller.dobController.text =
+          toShowDateFormat(profixerData!.dob).toString();
+      controller.selectedIsActive(profixerData!.isActive);
+      controller.selectedRelieveIsActive(profixerData!.isRelived);
+
+    } else {
+      controller.firstNameController.clear();
+      controller.lastNameController.clear();
+      controller.userNameController.clear();
+      controller.mobileController.clear();
+      controller.dobController.clear();
+      controller.permanentAddressController.clear();
+      controller.passwordController.clear();
+      controller.dojController.clear();
+      controller.currentAddressController.clear();
+      controller.relievedDateController.clear();
+      controller.relievedReasonController.clear();
+
+    }
+
     return GestureDetector(
       onTap: () {
         Get.focusScope!.unfocus();
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: CustomAppBar(title: "Add Technician"),
+        appBar: CustomAppBar(title: Get.arguments["title"].toString(),),
         body: Obx(
           () => Padding(
             padding: const EdgeInsets.all(16.0),

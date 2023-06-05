@@ -59,6 +59,7 @@ class ProfixerController extends GetxController {
     getProfixer();
   }
 
+
     getProfixer() async {
     if (await isNetConnected()) {
       isLoading(true);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/helpers/utils.dart';
 import 'package:profixer_admin/model/serviceprovider_response.dart';
@@ -84,22 +85,22 @@ class ServiceProviderListScreen extends GetView<ServiceProviderController> {
                 )
               ],
             ),
-
-            Obx(
-              () =>Expanded(child:  controller.isLoading.value
-                  ? const Center(child: CircularProgressIndicator())
-                  : controller.serviceProviders.isEmpty
-                      ? const Center(child: Text('No Service Provider Found'))
-                      : ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        itemCount: controller.serviceProviders.length,
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (_, index) =>
-                            _buildList(controller.serviceProviders[index]),
-                      ),
-            ))
+            Obx(() => Expanded(
+                  child: controller.isLoading.value
+                      ? const Center(child: CircularProgressIndicator())
+                      : controller.serviceProviders.isEmpty
+                          ? const Center(
+                              child: Text('No Service Provider Found'))
+                          : ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemCount: controller.serviceProviders.length,
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              physics: const BouncingScrollPhysics(),
+                              itemBuilder: (_, index) => _buildList(
+                                  controller.serviceProviders[index]),
+                            ),
+                ))
           ],
         ),
       ),
@@ -109,13 +110,15 @@ class ServiceProviderListScreen extends GetView<ServiceProviderController> {
   _buildList(ServiceProviderData data) {
     return GestureDetector(
       onTap: () {
-         Get.toNamed(Routes.addServiceProvider,
-            arguments: {
-              "title": "Edit Service Provider",
-              "buttonTitle" : "Next",
-              "service":data,
-              "slider": true
-            });
+        controller.getServiceProviderAdmin(
+            data.serviceProviderID, 0);
+        controller.serviceProviderId= data.serviceProviderID;//controller.box.read(Session.userId));
+        Get.toNamed(Routes.addServiceProvider, arguments: {
+          "title": "Edit Service Provider",
+          "buttonTitle": "Next",
+          "service": data,
+          "slider": true
+        });
       },
       child: Container(
         padding: const EdgeInsets.all(12),
@@ -142,9 +145,12 @@ class ServiceProviderListScreen extends GetView<ServiceProviderController> {
                     borderRadius: BorderRadius.circular(12),
                     color: primaryColor.withAlpha(30),
                   ),
-                  child:  Center(
+                  child: Center(
                     child: Text(
-                      data.contactPerson.substring(0,2).toUpperCase().toString(),
+                      data.contactPerson
+                          .substring(0, 2)
+                          .toUpperCase()
+                          .toString(),
                       style: const TextStyle(
                         color: primaryColor,
                         fontSize: 18,
@@ -397,7 +403,12 @@ class ServiceProviderListScreen extends GetView<ServiceProviderController> {
                       const SizedBox(
                         width: 4,
                       ),
-                      Text(data.contactNumber.toString()),
+                      Text(data.contactNumber.toString(),
+                        style: TextStyle(
+                          color: blackColor,
+
+                          fontSize: 12,
+                        ),),
                       const SizedBox(
                         width: 4,
                       ),

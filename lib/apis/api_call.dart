@@ -5,6 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:profixer_admin/apis/urls.dart';
 import 'package:profixer_admin/main.dart';
+import 'package:profixer_admin/model/TicketHistoryResponse.dart';
+import 'package:profixer_admin/model/TicketListResponse.dart';
 import 'package:profixer_admin/model/customer_address_response.dart';
 import 'package:profixer_admin/model/MenuResponse.dart';
 import 'package:profixer_admin/model/admin_response.dart';
@@ -710,7 +712,7 @@ class ApiCall {
       * */
 
       final response = await _dio.post(insertCustomerUrl, data: body);
-      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+      log('response code ${response.requestOptions.path} ${body.toString()} ${response.statusCode} ${response.data}');
 
       return response.data;
     } on DioError catch (e) {
@@ -730,7 +732,7 @@ class ApiCall {
       };
       final response =
           await _dio.get(getCustomerAddressUrl, queryParameters: params);
-      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+      log('response code ${response.requestOptions.path}  ${response.statusCode} ${response.data}');
 
       return CustomerAddressResponse.fromJson(response.data);
     } on DioError catch (e) {
@@ -764,7 +766,7 @@ class ApiCall {
       * */
 
       final response = await _dio.post(insertCustomerAddressUrl, data: body);
-      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+      log('response code ${response.requestOptions.path} ${body.toString()} ${response.statusCode} ${response.data}');
 
       return response.data;
     } on DioError catch (e) {
@@ -780,15 +782,17 @@ class ApiCall {
   Future<dynamic> uploadAttachment(List<String> filePaths) async {
     debugPrint(filePaths.toString());
     try {
-      var files = filePaths
-          .map((e) async => await MultipartFile.fromFile(
-                e,
-              ))
-          .toList();
 
-      debugPrint('${files.length}');
+      List<MultipartFile> files = [];
+      for (var element in filePaths) {
+        if (element.isNotEmpty) {
+          files.add(await MultipartFile.fromFile(element,));
+        }
+      }
 
-      var data = FormData.fromMap({"files": files});
+      debugPrint('${files.length} ${files.first.toString()}');
+
+      var data =  FormData.fromMap({"files": files});
 
       final response = await _dio.post(uploadAttachmentUrl, data: data);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
@@ -970,6 +974,52 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<TicketListResponse?> getTicketList(
+      int userId, int ticketStatusId, String fromDate, String toDate) async {
+    try {
+      var params = {
+        "UserID": userId,
+        "TicketStatusID": ticketStatusId,
+        "FromDate": fromDate,
+        "ToDate": toDate,
+      };
+      final response =
+      await _dio.get(ticketListUrl, queryParameters: params);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return TicketListResponse.fromJson(response.data);
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
+  Future<TicketHistoryResponse?> getTicketHistory(
+      int userId, int ticketId,) async {
+    try {
+      var params = {
+        "UserID": userId,
+        "TicketID": ticketId,
+      };
+      final response =
+      await _dio.get(ticketHistoryUrl, queryParameters: params);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return TicketHistoryResponse.fromJson(response.data);
     } on DioError catch (e) {
       log(e.message);
       toast(e.message);

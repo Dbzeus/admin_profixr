@@ -55,9 +55,6 @@ class NewTicketController extends GetxController {
 
   RxString imagePath = ''.obs;
 
-  String dateFormat = "MM/dd/yyyy";
-  String timeFormat = 'hh:mm a';
-
   RxString amountDropDownValue = "SAR".obs;
   var amountItems = [
     'SAR',
@@ -122,8 +119,8 @@ class NewTicketController extends GetxController {
       if (response != null) {
         if (response['RtnStatus']) {
           for (var e in response['RtnData']) {
-            timeSlots.add(
-                {"id": '${e["TimeSlotID"]}', "value": "${e['TimeSlot']}"});
+            timeSlots
+                .add({"id": '${e["TimeSlotID"]}', "value": "${e['TimeSlot']}"});
           }
           if (timeSlots.isNotEmpty) {
             selectedTimeSlot('${timeSlots.first['id']}');
@@ -143,8 +140,10 @@ class NewTicketController extends GetxController {
       if (response != null) {
         if (response['RtnStatus']) {
           for (var e in response['RtnData']) {
-            types.add(
-                {"id": '${e["ServiceTypeID"]}', "value": "${e['ServiceTypeName']}"});
+            types.add({
+              "id": '${e["ServiceTypeID"]}',
+              "value": "${e['ServiceTypeName']}"
+            });
           }
           if (types.isNotEmpty) {
             selectedType('${types.first['id']}');
@@ -185,8 +184,10 @@ class NewTicketController extends GetxController {
       if (response != null) {
         if (response['RtnStatus']) {
           for (var e in response['RtnData']) {
-            cNatures.add(
-                {"id": '${e["ComplaintNatureID"]}', "value": "${e['ComplaintNatureName']}"});
+            cNatures.add({
+              "id": '${e["ComplaintNatureID"]}',
+              "value": "${e['ComplaintNatureName']}"
+            });
           }
           if (cNatures.isNotEmpty) {
             selectedCNature('${cNatures.first['id']}');
@@ -220,13 +221,13 @@ class NewTicketController extends GetxController {
         "TicketStatusID": 0,
         "CustomerID": customerId,
         "CustomerAddressID": customerAddressId,
-        "ServiceID": selectedService,
-        "ComplaintNatureID": selectedCNature,
-        "ServiceTypeID": selectedType,
+        "ServiceID": selectedService.value,
+        "ComplaintNatureID": selectedCNature.value,
+        "ServiceTypeID": selectedType.value,
         "ServiceProviderID": 0,
         "TechnicianID": 0,
-        "AppoinmentDate": "",
-        "TimeSlotID": selectedTimeSlot,
+        "AppoinmentDate": toSendDateFormat(serviceDateController.text.trim()),
+        "TimeSlotID": selectedTimeSlot.value,
         "Reason": "",
         "Remarks": bookingRemarksController.text.trim(),
         "Images": image,
@@ -261,10 +262,10 @@ class NewTicketController extends GetxController {
         "MobileNumber": customerMobileNoController.text.trim(),
         "EMailID": emailController.text.trim(),
         "CurrentAddress": "",
-        "DOB": dobController.text.trim(),
+        "DOB": toSendDateFormat(dobController.text.trim()),
         "Remarks": remarksController.text.trim(),
-        "Username": "",
-        "Password": "",
+        "Username": customerMobileNoController.text.trim(),
+        "Password": "1234",
         "IsActive": true,
         "CUID": _box.read(Session.userId)
       };

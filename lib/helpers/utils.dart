@@ -18,3 +18,13 @@ toSendDateFormat(String date){
 toShowDateFormat(String date){
   return DateFormat("dd-MM-yyyy").format(DateFormat("yyyy-MM-dd").parse(date));
 }
+
+dateTimeToString({
+  DateTime? dateTime
+}){
+  return DateFormat("dd-MM-yyyy").format(dateTime ?? DateTime.now());
+}
+
+String getLastSegment(String paths){
+  return paths.split("/").last;
+}

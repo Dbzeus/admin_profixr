@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import '../../apis/api_call.dart';
 import '../../helpers/constant_widgets.dart';
 import '../../helpers/custom_dialog.dart';
+import '../../helpers/utils.dart';
 
 class ServiceController extends GetxController{
   RxList services = RxList();
@@ -43,8 +44,7 @@ class ServiceController extends GetxController{
   createService(service,bool isUpdated) async {
     if (await isNetConnected()) {
       isLoading(true);
-
-      if(service['ServiceImg'].isNotEmpty && !("${service['ServiceImg']}".isURL)){
+      if(service['ServiceImg'].isNotEmpty && !(service['ServiceImg'].toString().isURL)){
         //upload Image
         var response=await ApiCall().uploadAttachment([service['ServiceImg']]);
         if(response!=null){
@@ -55,6 +55,7 @@ class ServiceController extends GetxController{
           }
         }
       }
+      service['ServiceImg'] = getLastSegment(service['ServiceImg']);
       debugPrint(service.toString());
       var response = await ApiCall().insertService(service);
       isLoading(false);

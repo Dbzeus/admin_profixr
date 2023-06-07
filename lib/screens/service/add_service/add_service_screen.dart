@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/constant_widgets.dart';
@@ -9,7 +10,6 @@ import 'package:profixer_admin/widgets/custom_appbar.dart';
 import 'package:profixer_admin/widgets/custom_button.dart';
 import 'package:profixer_admin/widgets/custom_edittext.dart';
 import 'package:profixer_admin/widgets/custom_loader.dart';
-import 'package:dotted_border/dotted_border.dart';
 
 import '../../../helpers/utils.dart';
 import '../service_controller.dart';
@@ -28,7 +28,10 @@ class AddServiceScreen extends StatelessWidget {
       controller.serviceNameController.text =
           Get.arguments['service']['ServiceName'];
       controller.remarkController.text = Get.arguments['service']['Remarks'];
-      controller.imagePath(Get.arguments['service']['ServiceImage']);
+      controller.imagePath(Get.arguments['service']['ServiceImg']);
+      debugPrint(
+          Get.arguments['service']['ServiceImg'].toString().isURL.toString());
+      debugPrint(Get.arguments['service']['ServiceImg'].toString());
       controller.selectedIsActive(Get.arguments['service']['IsActive']);
     } else {
       controller.serviceNameController.clear();
@@ -71,45 +74,6 @@ class AddServiceScreen extends StatelessWidget {
                     "Service Image",
                     style: TextStyle(color: hintColor, fontSize: 12),
                   ),
-
-                  /*Obx(() => controller.imagePath.value.isNotEmpty
-                      ? Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 150,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: controller.imagePath.value.isURL
-                                    ? CachedNetworkImage(
-                                            imageUrl: controller.imagePath.value)
-                                        as ImageProvider
-                                    : FileImage(File(controller.imagePath.value)),
-                                fit: BoxFit.cover),
-                            borderRadius: BorderRadius.circular(8),
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Colors.transparent,
-                                Colors.black12,
-                                Colors.black54,
-                                Colors.black87
-                              ],
-                            ),
-                          ),
-                          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                          child: Align(
-                            alignment: Alignment.topRight,
-                            child: GestureDetector(
-                                onTap: () {
-                                  controller.imagePath("");
-                                },
-                                child: Icon(
-                                  Icons.close,
-                                  color: Colors.white,
-                                )),
-                          ),
-                        )
-                      : const SizedBox()),*/
                   const SizedBox(
                     height: 16,
                   ),
@@ -122,25 +86,23 @@ class AddServiceScreen extends StatelessWidget {
                                   : Colors.black26,
                               strokeWidth: 1,
                               child: Container(
-                                height: 50,
+                                height: 70,
                                 decoration: BoxDecoration(
-                                  /* border: Border.all(
-                                    color: controller.imagePath.value.isNotEmpty
-                                        ? primaryColor
-                                        : Colors.black26,
-                                  ),*/
-                                  image: DecorationImage(
-                                      image: controller.imagePath.value.isURL
-                                          ? CachedNetworkImage(
-                                              imageUrl: controller.imagePath
-                                                  .value) as ImageProvider
-                                          : FileImage(
-                                              File(controller.imagePath.value)),
-                                      fit: BoxFit.cover),
+                                  image: controller.imagePath.isEmpty
+                                      ? null
+                                      : DecorationImage(
+                                          image: controller
+                                                  .imagePath.value.isURL
+                                              ? CachedNetworkImageProvider(
+                                                  controller.imagePath
+                                                      .value) as ImageProvider
+                                              : FileImage(File(
+                                                  controller.imagePath.value)),
+                                          fit: BoxFit.cover),
                                 ),
                                 child: controller.imagePath.value.isEmpty
                                     ? const Center(child: Text('Upload images'))
-                                    :const Center(child: Text(''))
+                                    : const Text(""),
                               ),
                             )),
                       ),
@@ -156,6 +118,7 @@ class AddServiceScreen extends StatelessWidget {
                                   controller.imagePath(
                                       await getImageFromGallery() ??
                                           controller.imagePath.value);
+                                  debugPrint(controller.imagePath.value);
                                 },
                                 child: Container(
                                   padding: EdgeInsets.all(12),
@@ -191,9 +154,7 @@ class AddServiceScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          const SizedBox(
-                            height: 6
-                          ),
+                          const SizedBox(height: 6),
                           Obx(() => controller.imagePath.isNotEmpty
                               ? InkWell(
                                   onTap: () => controller.imagePath(""),
@@ -218,9 +179,6 @@ class AddServiceScreen extends StatelessWidget {
                       )
                     ],
                   ),
-                  /*uploadButton(() async {
-                  controller.imagePath(await getImageFromGallery() ?? controller.imagePath.value);
-                }),*/
                   const SizedBox(
                     height: 32,
                   ),
@@ -322,7 +280,8 @@ class AddServiceScreen extends StatelessWidget {
                   CustomButton(
                       text: Get.arguments['buttonTitle'],
                       onTap: () {
-                        var area = {
+                        debugPrint(controller.imagePath.value);
+                        var service = {
                           "ServiceID": serviceId,
                           "ServiceName": controller.serviceNameController.text,
                           "ServiceImg": controller.imagePath.value,
@@ -331,7 +290,7 @@ class AddServiceScreen extends StatelessWidget {
                           "CUID": controller.box.read(Session.userId)
                         };
                         controller.createService(
-                            area, Get.arguments['service'] != null);
+                            service, Get.arguments['service'] != null);
                       }),
                 ],
               ),

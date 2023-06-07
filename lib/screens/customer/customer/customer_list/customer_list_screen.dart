@@ -7,8 +7,6 @@ import 'package:profixer_admin/routes/app_routes.dart';
 import 'package:profixer_admin/screens/customer/customer/customer_controller.dart';
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 
-
-
 class CustomerListScreen extends GetView<CustomerController> {
   @override
   final controller = Get.put(CustomerController());
@@ -147,7 +145,6 @@ class CustomerListScreen extends GetView<CustomerController> {
                   ),
                   child: Center(
                     child: Text(
-
                       '${data.firstName.substring(0, 1).toUpperCase()}${data.lastNAme.substring(0, 0).toUpperCase()}',
                       style: const TextStyle(
                         color: primaryColor,
@@ -172,52 +169,52 @@ class CustomerListScreen extends GetView<CustomerController> {
                             fontWeight: FontWeight.bold),
                       ),
                       Row(
-                        children: [
-                          Icon(
-                            Icons.wifi_calling_3,
-                            size: 14,
-                            color: primaryColor,
-                          ),
-                          const SizedBox(
-                            width: 6,
-                          ),
-                          Text(
-                            data.mobileNo,
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: primaryColor,
-                            ),
-                            maxLines: 1,
-                          ),
-                        ],
-                      ),
-                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
                             children: [
                               Icon(
-                                Icons.email,
+                                Icons.call,
                                 size: 14,
-                                color: blackColor,
+                                color: primaryColor,
                               ),
                               const SizedBox(
                                 width: 6,
                               ),
                               Text(
-                                data.emailID,
+                                data.mobileNo,
                                 style: const TextStyle(
                                   fontSize: 12,
-                                  color: blackColor,
+                                  color: primaryColor,
                                 ),
                                 maxLines: 1,
                               ),
                             ],
                           ),
                           Text(
-                           "DOB: ${toShowDateFormat(data.dob)}",
+                            "DOB: ${toShowDateFormat(data.dob)}",
                             style: const TextStyle(
                               fontSize: 10,
+                              color: blackColor,
+                            ),
+                            maxLines: 1,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.email,
+                            size: 14,
+                            color: blackColor,
+                          ),
+                          const SizedBox(
+                            width: 6,
+                          ),
+                          Text(
+                            data.emailID,
+                            style: const TextStyle(
+                              fontSize: 12,
                               color: blackColor,
                             ),
                             maxLines: 1,

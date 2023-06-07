@@ -43,7 +43,7 @@ class CustomDropDown extends StatelessWidget {
             ),
             items: items.map((items) {
               return DropdownMenuItem(
-                value: items["value"],
+                value: items["id"],
                 child: Text('${items['value']}'),
               );
             }).toList(),

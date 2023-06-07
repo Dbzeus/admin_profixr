@@ -28,6 +28,8 @@ class AddAddressScreen extends StatelessWidget {
       controller.doorNoController.text = address!.doorNo;
       controller.streetNameController.text = address!.streetName;
       controller.landmarkController.text = address!.landMark;
+      controller.selectedArea(address!.areaID.toString());
+      controller.selectedCity(address!.cityID.toString());
       controller.selectedIsActive(address!.isActive);
     } else {
       controller.addressTitleController.clear();
@@ -42,6 +44,7 @@ class AddAddressScreen extends StatelessWidget {
         Get.focusScope!.unfocus();
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: CustomAppBar(title: Get.arguments['title']),
         body: Padding(
           padding: const EdgeInsets.all(16.0),

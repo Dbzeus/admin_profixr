@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import '../../apis/api_call.dart';
 import '../../helpers/constant_widgets.dart';
 import '../../helpers/custom_dialog.dart';
+import '../../helpers/utils.dart';
 
 class ComplaintNatureController extends GetxController {
   RxList cNatures = RxList();
@@ -70,7 +71,7 @@ class ComplaintNatureController extends GetxController {
       isLoading(true);
 
       if (data['ComplaintNatureImg'].isNotEmpty &&
-          !("${data['ComplaintNatureImg']}".isURL)) {
+          !(data['ComplaintNatureImg'].toString().isURL)) {
         //upload Image
         var response =
             await ApiCall().uploadAttachment([data['ComplaintNatureImg']]);
@@ -82,6 +83,8 @@ class ComplaintNatureController extends GetxController {
           }
         }
       }
+      data['ComplaintNatureImg'] = getLastSegment(data['ComplaintNatureImg']);
+
       debugPrint(data.toString());
       var response = await ApiCall().insertComplaintNature(data);
       isLoading(false);

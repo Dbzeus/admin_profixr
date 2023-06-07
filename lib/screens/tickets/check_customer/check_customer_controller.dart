@@ -21,8 +21,7 @@ class CheckCustomerController extends GetxController {
   getCustomerList() async {
     if (await isNetConnected()) {
       isLoading(true);
-      var response = await ApiCall()
-          .getProfixerCustomer(userId: _box.read(Session.userId));
+      var response = await ApiCall().getProfixerCustomer();
       if(response!=null){
         if(response.rtnStatus){
           customers(response.rtnData);

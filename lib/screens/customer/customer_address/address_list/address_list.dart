@@ -16,6 +16,7 @@ class AddressList extends GetView<CustomerAddressController> {
 
   @override
   Widget build(BuildContext context) {
+    controller.getCustomerAddress(customerId);
     return Column(
       children: [
         const SizedBox(
@@ -85,7 +86,10 @@ class AddressList extends GetView<CustomerAddressController> {
             )
           ],
         ),
-        Obx(()=> controller.isLoading.value ? Center(child: CircularProgressIndicator(),) :ListView.builder(
+        Obx(()=> controller.isLoading.value ? const Padding(
+          padding: EdgeInsets.only(top: 32),
+          child: Center(child: CircularProgressIndicator(),),
+        ) :ListView.builder(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               itemCount: controller.customerAddress.length,

@@ -12,7 +12,7 @@ class CustomLoader extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
-      color: overlayColor ?? primaryColor.withOpacity(0.1),
+      color: overlayColor ?? Colors.black12,
       child: Center(
         child: Image.asset(
           "assets/loader.gif",

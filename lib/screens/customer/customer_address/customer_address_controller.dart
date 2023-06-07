@@ -41,7 +41,8 @@ class CustomerAddressController extends GetxController{
   @override
   void onInit() {
     super.onInit();
-    getCustomerAddress();
+    getCity();
+    getArea();
   }
 
   getArea() async {
@@ -84,7 +85,7 @@ class CustomerAddressController extends GetxController{
     }
   }
 
-  getCustomerAddress() async {
+  getCustomerAddress(int customerId) async {
     if (await isNetConnected()) {
       isLoading(true);
       CustomerAddressResponse? response = await ApiCall().getCustomerAddress(customerId: customerId);

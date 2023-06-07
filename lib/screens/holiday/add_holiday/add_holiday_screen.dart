@@ -8,6 +8,7 @@ import 'package:profixer_admin/widgets/custom_edittext.dart';
 import 'package:profixer_admin/widgets/custom_loader.dart';
 
 import '../../../helpers/utils.dart';
+import '../../../widgets/custom_dropdown.dart';
 import '../holiday_controller.dart';
 
 class AddHolidayScreen extends StatelessWidget {
@@ -25,15 +26,11 @@ class AddHolidayScreen extends StatelessWidget {
       controller.reasonController.text = Get.arguments['holiday']['Reason'];
       controller.remarkController.text = Get.arguments['holiday']['Remarks'];
       controller.dateController.text = toShowDateFormat(Get.arguments['holiday']['HolidayDate']);
-      controller.fromTimeController.text = Get.arguments['holiday']['TimeFrom'];
-      controller.toTimeController.text = Get.arguments['holiday']['TimeTo'];
       controller.isFullDay(Get.arguments['holiday']['IsFullDay']);
     } else {
       controller.reasonController.clear();
       controller.remarkController.clear();
       controller.dateController.clear();
-      controller.fromTimeController.clear();
-      controller.toTimeController.clear();
       controller.isFullDay(true);
     }
 
@@ -80,7 +77,7 @@ class AddHolidayScreen extends StatelessWidget {
                   Obx(
                     () => Row(
                       children: [
-                        const Expanded(child: Text('Fullday?')),
+                        const Expanded(child: Text('Full day?')),
                         InkWell(
                           onTap: () {
                             if (controller.isFullDay.value == false) {
@@ -172,40 +169,54 @@ class AddHolidayScreen extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  CustomEditText(
-                    hintText: "Time From",
-                    controller: controller.fromTimeController,
-                    showCursor: false,
-                    keyboardType: TextInputType.none,
-                    suffixIcon: const Icon(
-                      Icons.access_time_outlined,
-                      color: blackColor,
-                      size: 22,
+
+                  Obx(
+                        () => controller.isFullDay.value ? const SizedBox.shrink() : CustomDropDown(
+                      hintText: "Time Slot",
+                      dropDownValue: controller.selectedTimeSlot.value,
+                      items: controller.timeSlots,
+                      onSelected: (val) {
+                        controller.selectedTimeSlot(val);
+                      },
                     ),
-                    onTab: () async {
-                      controller.fromTimeController.text = await getTime();
-                    },
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  CustomEditText(
-                    hintText: "Time To",
-                    controller: controller.toTimeController,
-                    showCursor: false,
-                    keyboardType: TextInputType.none,
-                    suffixIcon: const Icon(
-                      Icons.access_time_outlined,
-                      color: blackColor,
-                      size: 22,
-                    ),
-                    onTab: () async {
-                      controller.toTimeController.text = await getTime();
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  // CustomEditText(
+                  //   hintText: "Time From",
+                  //   controller: controller.fromTimeController,
+                  //   showCursor: false,
+                  //   keyboardType: TextInputType.none,
+                  //   suffixIcon: const Icon(
+                  //     Icons.access_time_outlined,
+                  //     color: blackColor,
+                  //     size: 22,
+                  //   ),
+                  //   onTab: () async {
+                  //     controller.fromTimeController.text = await getTime();
+                  //   },
+                  // ),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+                  // CustomEditText(
+                  //   hintText: "Time To",
+                  //   controller: controller.toTimeController,
+                  //   showCursor: false,
+                  //   keyboardType: TextInputType.none,
+                  //   suffixIcon: const Icon(
+                  //     Icons.access_time_outlined,
+                  //     color: blackColor,
+                  //     size: 22,
+                  //   ),
+                  //   onTab: () async {
+                  //     controller.toTimeController.text = await getTime();
+                  //   },
+                  // ),
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
                   CustomEditText(
                       hintText: "Remarks",
                       maxLines: 4,
@@ -222,8 +233,8 @@ class AddHolidayScreen extends StatelessWidget {
                           "HolidayDate": toSendDateFormat(controller.dateController.text),
                           "Reason": controller.reasonController.text,
                           "IsFullDay": controller.isFullDay.value,
-                          "TimeFrom": controller.isFullDay.value ? "" : controller.fromTimeController.text,
-                          "TimeTo":controller.isFullDay.value ? "" : controller.toTimeController.text,
+                          "TimeFrom": controller.isFullDay.value ? "" : "",
+                          "TimeTo":controller.isFullDay.value ? "" : "",
                           "Remarks": controller.remarkController.text,
                           "CUID": controller.box.read(Session.userId)
                         };

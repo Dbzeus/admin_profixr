@@ -141,6 +141,7 @@ class CheckCustomerScreen extends GetView<CheckCustomerController> {
             color: primaryColor,
             size: 12,
           ),
+          const SizedBox(width: 8,),
           Text(
             customer.mobileNo,
             style: TextStyle(

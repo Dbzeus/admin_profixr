@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/constant_widgets.dart';
@@ -24,20 +25,20 @@ class AddComplaintNatureScreen extends StatelessWidget {
     int natureId = 0;
     debugPrint(Get.arguments['complaintNature'].toString());
     if (Get.arguments['complaintNature'] != null) {
+      natureId = Get.arguments['complaintNature']['ComplaintNatureID'];
+
       controller.natureNameController.text =
           Get.arguments['complaintNature']['ComplaintNatureName'];
       controller.remarkController.text =
           Get.arguments['complaintNature']['Remarks'];
-      /*controller
-          .selectedService('${Get.arguments['complaintNature']['CityID']}');*/
-      natureId = Get.arguments['complaintNature']['ComplaintNatureID'];
       controller.selectedIsActive(Get.arguments['complaintNature']['IsActive']);
+      controller.imagePath(Get.arguments['complaintNature']['ComplientNatureImg']);
 
     } else {
       controller.natureNameController.clear();
       controller.remarkController.clear();
       controller.selectedIsActive(true);
-
+      controller.imagePath("");
     }
 
     return GestureDetector(
@@ -90,104 +91,106 @@ class AddComplaintNatureScreen extends StatelessWidget {
                   const SizedBox(
                     height: 16,
                   ),
-                  Obx(() => controller.imagePath.value.isNotEmpty
-                      ? Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: 150,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: controller.imagePath.value.isURL
-                                    ? CachedNetworkImage(
-                                        imageUrl: controller
-                                            .imagePath.value) as ImageProvider
-                                    : FileImage(
-                                        File(controller.imagePath.value)),
-                                fit: BoxFit.cover),
-                            borderRadius: BorderRadius.circular(8),
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Colors.transparent,
-                                Colors.black12,
-                                Colors.black54,
-                                Colors.black87
-                              ],
-                            ),
-                          ),
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                          child: Align(
-                            alignment: Alignment.topRight,
-                            child: GestureDetector(
-                                onTap: () {
-                                  controller.imagePath("");
-                                },
-                                child: Icon(
-                                  Icons.close,
-                                  color: Colors.white,
-                                )),
-                          ),
-                        )
-                      : const SizedBox()),
-                  const SizedBox(
-                    height: 20,
-                  ),
                   Row(
                     children: [
                       Expanded(
-                        child: Obx(() => Container(
-                              height: 40,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: controller.imagePath.value.isNotEmpty
-                                      ? primaryColor
-                                      : Colors.black26,
-                                ),
-                              ),
-                              child: Center(child: Text('Upload images')),
-                            )),
+                        child: Obx(() => DottedBorder(
+                          color: controller.imagePath.value.isNotEmpty
+                              ? primaryColor
+                              : Colors.black26,
+                          strokeWidth: 1,
+                          child: Container(
+                            height: 70,
+                            decoration: BoxDecoration(
+                              image: controller.imagePath.isEmpty
+                                  ? null
+                                  : DecorationImage(
+                                  image: controller
+                                      .imagePath.value.isURL
+                                      ? CachedNetworkImageProvider(
+                                      controller.imagePath
+                                          .value) as ImageProvider
+                                      : FileImage(File(
+                                      controller.imagePath.value)),
+                                  fit: BoxFit.cover),
+                            ),
+                            child: controller.imagePath.value.isEmpty
+                                ? const Center(child: Text('Upload images'))
+                                : const Text(""),
+                          ),
+                        )),
                       ),
                       const SizedBox(
                         width: 8,
                       ),
-                      InkWell(
-                        onTap: () async {
-                          controller.imagePath(await getImageFromGallery() ??
-                              controller.imagePath.value);
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                              color: Colors.grey.shade100,
-                              borderRadius: BorderRadius.circular(8)),
-                          child: Icon(
-                            Icons.image,
-                            size: 15,
-                            color: primaryColor,
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              InkWell(
+                                onTap: () async {
+                                  controller.imagePath(
+                                      await getImageFromGallery() ??
+                                          controller.imagePath.value);
+                                  debugPrint(controller.imagePath.value);
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey.shade100,
+                                      borderRadius: BorderRadius.circular(8)),
+                                  child: Icon(
+                                    Icons.image,
+                                    size: 15,
+                                    color: primaryColor,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 12,
+                              ),
+                              InkWell(
+                                onTap: () async {
+                                  controller.imagePath(await getImageCamera() ??
+                                      controller.imagePath.value);
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey.shade100,
+                                      borderRadius: BorderRadius.circular(8)),
+                                  child: Icon(
+                                    Icons.camera_alt,
+                                    size: 15,
+                                    color: primaryColor,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 12,
-                      ),
-                      InkWell(
-                        onTap: () async {
-                          controller.imagePath(await getImageCamera() ??
-                              controller.imagePath.value);
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                              color: Colors.grey.shade100,
-                              borderRadius: BorderRadius.circular(8)),
-                          child: Icon(
-                            Icons.camera_alt,
-                            size: 15,
-                            color: primaryColor,
-                          ),
-                        ),
-                      ),
+                          const SizedBox(height: 6),
+                          Obx(() => controller.imagePath.isNotEmpty
+                              ? InkWell(
+                            onTap: () => controller.imagePath(""),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                                const SizedBox(
+                                  width: 6,
+                                ),
+                                Text(
+                                  'Delete',
+                                  style: TextStyle(color: Colors.red),
+                                )
+                              ],
+                            ),
+                          )
+                              : const SizedBox.shrink())
+                        ],
+                      )
                     ],
                   ),
                   const SizedBox(

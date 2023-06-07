@@ -54,17 +54,6 @@ class ExistingTicketController extends GetxController {
 
   RxString imagePath = ''.obs;
 
-  String dateFormat = "MM/dd/yyyy";
-  String timeFormat = 'hh:mm a';
-
-  RxString amountDropDownValue = "SAR".obs;
-  var amountItems = [
-    'SAR',
-    'RUPEES',
-    'DOLLAR',
-    'VAR',
-  ];
-
   RxString mobileNoDropDownValue = "+966".obs;
   var mobileItems = [
     '+966',
@@ -76,11 +65,17 @@ class ExistingTicketController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    setupCustomer();
     getCustomerAddress();
     getTimeSlots();
     getServiceType();
     getServices();
     getComplaintNature();
+  }
+
+  setupCustomer(){
+    customerNameController.text=customer.firstName;
+    customerMobileNoController.text=customer.mobileNo;
   }
 
   getCustomerAddress() async {
@@ -217,7 +212,7 @@ class ExistingTicketController extends GetxController {
         "ServiceTypeID": selectedType,
         "ServiceProviderID": 0,
         "TechnicianID": 0,
-        "AppoinmentDate": "",
+        "AppoinmentDate": toSendDateFormat(serviceDateController.text),
         "TimeSlotID": selectedTimeSlot,
         "Reason": "",
         "Remarks": bookingRemarksController.text.trim(),

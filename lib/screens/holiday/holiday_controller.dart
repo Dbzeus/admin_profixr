@@ -14,8 +14,11 @@ class HolidayController extends GetxController{
   TextEditingController reasonController = TextEditingController();
   TextEditingController remarkController = TextEditingController();
   TextEditingController dateController = TextEditingController();
-  TextEditingController fromTimeController = TextEditingController();
-  TextEditingController toTimeController = TextEditingController();
+
+
+  RxList<Map<String, String>> timeSlots = RxList();
+  RxString selectedTimeSlot = "".obs;
+
 
   RxBool isFullDay = true.obs;
 
@@ -25,6 +28,7 @@ class HolidayController extends GetxController{
   void onInit() {
     super.onInit();
     getHoliday();
+    getTimeSlots();
   }
 
   getHoliday() async {
@@ -41,6 +45,28 @@ class HolidayController extends GetxController{
       }
     }
   }
+
+  getTimeSlots() async {
+    if (await isNetConnected()) {
+      isLoading(true);
+      var response = await ApiCall().getTimeSlot();
+      isLoading(false);
+      if (response != null) {
+        if (response['RtnStatus']) {
+          for (var e in response['RtnData']) {
+            timeSlots
+                .add({"id": '${e["TimeSlotID"]}', "value": "${e['TimeSlot']}"});
+          }
+          if (timeSlots.isNotEmpty) {
+            selectedTimeSlot('${timeSlots.first['id']}');
+          }
+        } else {
+          toast(response['RtnMsg']);
+        }
+      }
+    }
+  }
+
 
   createHoliday(data,bool isUpdated) async {
     if (await isNetConnected()) {

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:profixer_admin/model/ticket_count_response.dart';
@@ -20,6 +21,10 @@ class MainController extends GetxController {
 
   RxBool isLoading = false.obs;
 
+  RxString startDate = "".obs, endDate = "".obs;
+  DateTimeRange? dateRange;
+
+
   @override
   void onInit() {
     userData = UserData.fromJson(box.read(Session.userData));
@@ -28,6 +33,8 @@ class MainController extends GetxController {
       menuData.add(MenuData.fromJson(v));
     });
     super.onInit();
+    startDate(dateTimeToString());
+    endDate(dateTimeToString());
     getTicketCounts();
     getMenu();
   }
@@ -36,7 +43,7 @@ class MainController extends GetxController {
     if (await isNetConnected()) {
       isLoading(true);
       TicketCountResponse? response = await ApiCall().getTicketCount(
-          box.read(Session.userId), 0, "05-01-2023", "06-30-2023");
+          box.read(Session.userId), 0, toSendDateFormat(startDate.value), toSendDateFormat(endDate.value));
       isLoading(false);
       if (response != null) {
         if (response.rtnStatus) {
@@ -44,6 +51,20 @@ class MainController extends GetxController {
         }
       }
     }
+  }
+
+  void selectDates() async {
+    dateRange = await showDateRangePicker(
+        context: Get.context!,
+        initialDateRange: dateRange,
+        firstDate: DateTime(2023),
+        lastDate: DateTime.now());
+
+    if (dateRange == null) return;
+
+    startDate(dateTimeToString(dateTime: dateRange!.start));
+    endDate(dateTimeToString(dateTime: dateRange!.end));
+    getTicketCounts();
   }
 
   getMenu() async {

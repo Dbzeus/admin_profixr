@@ -13,9 +13,11 @@ import 'package:profixer_admin/widgets/custom_button.dart';
 import 'package:profixer_admin/widgets/custom_edittext.dart';
 
 import '../../../widgets/custom_dropdown.dart';
+import '../../../widgets/custom_loader.dart';
 import 'existing_ticket_controller.dart';
 
 class ExistingTicketScreen extends GetView<ExistingTicketController> {
+  @override
   final controller = Get.put(ExistingTicketController());
 
   ExistingTicketScreen({Key? key}) : super(key: key);
@@ -32,60 +34,67 @@ class ExistingTicketScreen extends GetView<ExistingTicketController> {
           appBar: CustomAppBar(
             title: "New Ticket",
           ),
-          body: Obx(
-            () => Column(
-              children: [
-                CustomEditText(
-                    hintText: "Customer Name",
-                    controller: controller.customerNameController),
-                const SizedBox(
-                  height: 10,
-                ),
-                CustomEditText(
-                  hintText: "Customer Mobile Number",
-                  controller: controller.customerMobileNoController,
-                  maxLength: 10,
-                  keyboardType: TextInputType.phone,
-                  prefixIcon: Obx(
-                        () => DropdownButton(
-                        value: controller.mobileNoDropDownValue.value,
-                        style: const TextStyle(color: primaryColor, fontSize: 16),
-                        underline: const SizedBox(),
-                        icon: const Icon(
-                          Icons.keyboard_arrow_down,
-                          color: primaryColor,
-                          size: 16,
-                        ),
-                        items: controller.mobileItems.map((String items) {
-                          return DropdownMenuItem(
-                            value: items,
-                            child: Text(items),
-                          );
-                        }).toList(),
-                        onChanged: (val) {
-                          controller.mobileNoDropDownValue(val.toString());
-                        }),
-                  ),
-                ),
-                const SizedBox(
-                  height: 12,
-                ),
-                Obx(
-                      () => CustomDropDown(
-                    hintText: "Customer Address",
-                    dropDownValue: controller.selectedAddress.value,
-                    items: controller.addresses,
-                    onSelected: (val) {
-                      controller.selectedAddress(val);
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                bookingForm(),
-              ],
-            )
+          body: Stack(
+            children: [
+              Obx(
+                () => Column(
+                  children: [
+                    CustomEditText(
+                        hintText: "Customer Name",
+                        controller: controller.customerNameController),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    CustomEditText(
+                      hintText: "Customer Mobile Number",
+                      controller: controller.customerMobileNoController,
+                      maxLength: 10,
+                      keyboardType: TextInputType.phone,
+                      prefixIcon: Obx(
+                            () => DropdownButton(
+                            value: controller.mobileNoDropDownValue.value,
+                            style: const TextStyle(color: primaryColor, fontSize: 16),
+                            underline: const SizedBox(),
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: primaryColor,
+                              size: 16,
+                            ),
+                            items: controller.mobileItems.map((String items) {
+                              return DropdownMenuItem(
+                                value: items,
+                                child: Text(items),
+                              );
+                            }).toList(),
+                            onChanged: (val) {
+                              controller.mobileNoDropDownValue(val.toString());
+                            }),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 12,
+                    ),
+                    Obx(
+                          () => CustomDropDown(
+                        hintText: "Customer Address",
+                        dropDownValue: controller.selectedAddress.value,
+                        items: controller.addresses,
+                        onSelected: (val) {
+                          controller.selectedAddress(val);
+                        },
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    bookingForm(),
+                  ],
+                )
+              ),
+              Obx(() => controller.isLoading.value
+                  ? CustomLoader()
+                  : const SizedBox.shrink())
+            ],
           ),
         ));
   }
@@ -148,16 +157,11 @@ class ExistingTicketScreen extends GetView<ExistingTicketController> {
                   size: 22,
                 ),
                 onTab: () async {
-                  var date = await showDatePicker(
-                      context: Get.context!,
+                  controller.serviceDateController.text = await getDate(
                       initialDate: DateTime.now(),
                       firstDate: DateTime.now(),
-                      lastDate: DateTime(DateTime.now().year + 1, 12, 31));
-                  if (date != null) {
-                    debugPrint(date.toString());
-                    controller.serviceDateController.text =
-                        DateFormat(controller.dateFormat).format(date);
-                  }
+                      lastDate: DateTime(DateTime.now().year + 1, 12, 31)
+                  );
                 },
               ),
             ),
@@ -204,13 +208,8 @@ class ExistingTicketScreen extends GetView<ExistingTicketController> {
                         : Colors.black26,
                     strokeWidth: 1,
                     child: Container(
-                        height: 50,
+                        height: 80,
                         decoration: BoxDecoration(
-                          /* border: Border.all(
-                                    color: controller.imagePath.value.isNotEmpty
-                                        ? primaryColor
-                                        : Colors.black26,
-                                  ),*/
                           image: DecorationImage(
                               image: controller.imagePath.value.isURL
                                   ? CachedNetworkImage(
@@ -221,7 +220,7 @@ class ExistingTicketScreen extends GetView<ExistingTicketController> {
                         ),
                         child: controller.imagePath.value.isEmpty
                             ? const Center(child: Text('Upload images'))
-                            : const Center(child: Text(''))),
+                            : const SizedBox.shrink()),
                   )),
             ),
             const SizedBox(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/helpers/hexcolor.dart';
+import 'package:profixer_admin/helpers/utils.dart';
 import 'package:profixer_admin/model/ticket_count_response.dart';
 
 import '../../../routes/app_routes.dart';
@@ -71,12 +72,31 @@ class HomeScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'Overview',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Overview',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 6,),
+                      InkWell(
+                        onTap: () {
+                          Get.focusScope!.unfocus();
+                          controller.selectDates();
+                        },
+                        child: Obx(
+                              () => Text('${controller.startDate} - ${controller.endDate}',
+                              style: TextStyle(
+                                  color: primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12)),
+                        ),
+                      ),
+                    ],
                   ),
                   GestureDetector(
                     onTap: () {
@@ -168,7 +188,11 @@ class HomeScreen extends StatelessWidget {
   _buildDashboard(TicketCount dashboard) {
     return GestureDetector(
       onTap: () {
-        Get.toNamed(Routes.bookedTicket, arguments: {"data": "$dashboard"});
+        Get.toNamed(Routes.bookedTicket, arguments: {
+          'data' : dashboard,
+          'startDate': toSendDateFormat(controller.startDate.value),
+          'endDate': toSendDateFormat(controller.endDate.value),
+        });
       },
       child: Container(
         margin: const EdgeInsets.only(top: 12),

@@ -13,6 +13,7 @@ import 'package:profixer_admin/widgets/custom_button.dart';
 import 'package:profixer_admin/widgets/custom_edittext.dart';
 
 import '../../../widgets/custom_dropdown.dart';
+import '../../../widgets/custom_loader.dart';
 
 class NewTicketScreen extends GetView<NewTicketController> {
   final controller = Get.put(NewTicketController());
@@ -23,21 +24,21 @@ class NewTicketScreen extends GetView<NewTicketController> {
   Widget build(BuildContext context) {
     List<Step> stepList() => [
           Step(
-              title: Text('Personal'),
+              title: const Text('Personal'),
               content: personalForm(),
               isActive: controller.currentStep.value == 0,
               state: controller.currentStep.value > 0
                   ? StepState.complete
                   : StepState.indexed),
           Step(
-              title: Text('Address'),
+              title: const Text('Address'),
               content: addressForm(),
               isActive: controller.currentStep.value == 1,
               state: controller.currentStep.value > 1
                   ? StepState.complete
                   : StepState.indexed),
           Step(
-              title: Text('Booking'),
+              title: const Text('Booking'),
               content: bookingForm(),
               isActive: controller.currentStep.value == 2,
               state: controller.currentStep.value > 2
@@ -53,26 +54,33 @@ class NewTicketScreen extends GetView<NewTicketController> {
           appBar: CustomAppBar(
             title: "New Ticket",
           ),
-          body: Obx(
-            () => Stepper(
-              steps: stepList(),
-              currentStep: controller.currentStep.value,
-              type: StepperType.horizontal,
-              controlsBuilder: (_, __) {
-                return Obx(() => CustomButton(
-                      text: controller.currentStep.value == 2 ? 'Book' : 'Next',
-                      onTap: () {
-                        if (controller.currentStep.value == 0) {
-                          controller.saveCustomer();
-                        } else if (controller.currentStep.value == 1) {
-                          controller.saveCustomerAddress();
-                        } else {
-                          controller.bookATicket();
-                        }
-                      },
-                    ));
-              },
-            ),
+          body: Stack(
+            children: [
+              Obx(
+                () =>Stepper(
+                  steps: stepList(),
+                  currentStep: controller.currentStep.value,
+                  type: StepperType.horizontal,
+                  controlsBuilder: (_, __) {
+                    return Obx(() => CustomButton(
+                          text: controller.currentStep.value == 2 ? 'Book' : 'Next',
+                          onTap: () {
+                            if (controller.currentStep.value == 0) {
+                              controller.saveCustomer();
+                            } else if (controller.currentStep.value == 1) {
+                              controller.saveCustomerAddress();
+                            } else {
+                              controller.bookATicket();
+                            }
+                          },
+                        ));
+                  },
+                ),
+              ),
+              Obx(() => controller.isLoading.value
+                  ? CustomLoader()
+                  : const SizedBox.shrink())
+            ],
           ),
         ));
   }
@@ -90,6 +98,7 @@ class NewTicketScreen extends GetView<NewTicketController> {
           hintText: "Customer Mobile Number",
           controller: controller.customerMobileNoController,
           keyboardType: TextInputType.phone,
+          maxLength: 10,
           prefixIcon: Obx(
             () => DropdownButton(
                 value: controller.mobileNoDropDownValue.value,
@@ -130,16 +139,11 @@ class NewTicketScreen extends GetView<NewTicketController> {
             size: 22,
           ),
           onTab: () async {
-            var date = await showDatePicker(
-                context: Get.context!,
-                initialDate: DateTime.now(),
-                firstDate: DateTime.now(),
-                lastDate: DateTime(DateTime.now().year + 1, 12, 31));
-            if (date != null) {
-              debugPrint(date.toString());
-              controller.dobController.text =
-                  DateFormat(controller.dateFormat).format(date);
-            }
+            controller.dobController.text = await getDate(
+                initialDate: DateTime(DateTime.now().year -18, 12, 31),
+                firstDate: DateTime(DateTime.now().year -80, 12, 31),
+                lastDate: DateTime(DateTime.now().year -18, 12, 31)
+            );
           },
         ),
         const SizedBox(
@@ -164,7 +168,7 @@ class NewTicketScreen extends GetView<NewTicketController> {
           height: 10,
         ),
         CustomEditText(
-            hintText: "Door No / Plot N0",
+            hintText: "Door No / Plot No",
             controller: controller.doorNoController),
         const SizedBox(
           height: 10,
@@ -217,7 +221,7 @@ class NewTicketScreen extends GetView<NewTicketController> {
             const SizedBox(
               width: 12,
             ),
-            Text(
+            const Text(
               "set my location",
               style: TextStyle(
                 color: primaryColor,
@@ -276,50 +280,36 @@ class NewTicketScreen extends GetView<NewTicketController> {
         const SizedBox(
           height: 10,
         ),
-        Row(
-          children: [
-            Expanded(
-              child: CustomEditText(
-                hintText: "Service Date",
-                showCursor: false,
-                keyboardType: TextInputType.none,
-                controller: controller.serviceDateController,
-                suffixIcon: const Icon(
-                  Icons.calendar_month_rounded,
-                  color: blackColor,
-                  size: 22,
-                ),
-                onTab: () async {
-                  var date = await showDatePicker(
-                      context: Get.context!,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime(DateTime.now().year + 1, 12, 31));
-                  if (date != null) {
-                    debugPrint(date.toString());
-                    controller.serviceDateController.text =
-                        DateFormat(controller.dateFormat).format(date);
-                  }
-                },
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              child:
-                Obx(
-                      () => CustomDropDown(
-                    hintText: "Service Time Slot",
-                    dropDownValue: controller.selectedArea.value,
-                    items: controller.areas,
-                    onSelected: (val) {
-                      controller.selectedArea(val);
-                    },
-                  ),
-                ),
-            ),
-          ],
+        CustomEditText(
+          hintText: "Service Date",
+          showCursor: false,
+          keyboardType: TextInputType.none,
+          controller: controller.serviceDateController,
+          suffixIcon: const Icon(
+            Icons.calendar_month_rounded,
+            color: blackColor,
+            size: 22,
+          ),
+          onTab: () async {
+            controller.serviceDateController.text = await getDate(
+                initialDate: DateTime.now(),
+                firstDate: DateTime.now(),
+                lastDate: DateTime(DateTime.now().year + 1, 12, 31)
+            );
+          },
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Obx(
+              () => CustomDropDown(
+            hintText: "Service Time Slot",
+            dropDownValue: controller.selectedTimeSlot.value,
+            items: controller.timeSlots,
+            onSelected: (val) {
+              controller.selectedTimeSlot(val);
+            },
+          ),
         ),
         const SizedBox(
           height: 10,
@@ -341,30 +331,25 @@ class NewTicketScreen extends GetView<NewTicketController> {
           children: [
             Expanded(
               child: Obx(() => DottedBorder(
-                    color: controller.imagePath.value.isNotEmpty
-                        ? primaryColor
-                        : Colors.black26,
-                    strokeWidth: 1,
-                    child: Container(
-                        height: 50,
-                        decoration: BoxDecoration(
-                          /* border: Border.all(
-                                    color: controller.imagePath.value.isNotEmpty
-                                        ? primaryColor
-                                        : Colors.black26,
-                                  ),*/
-                          image: DecorationImage(
-                              image: controller.imagePath.value.isURL
-                                  ? CachedNetworkImage(
-                                          imageUrl: controller.imagePath.value)
-                                      as ImageProvider
-                                  : FileImage(File(controller.imagePath.value)),
-                              fit: BoxFit.cover),
-                        ),
-                        child: controller.imagePath.value.isEmpty
-                            ? const Center(child: Text('Upload images'))
-                            : const Center(child: Text(''))),
-                  )),
+                color: controller.imagePath.value.isNotEmpty
+                    ? primaryColor
+                    : Colors.black26,
+                strokeWidth: 1,
+                child: Container(
+                    height: 80,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: controller.imagePath.value.isURL
+                              ? CachedNetworkImage(
+                              imageUrl: controller.imagePath.value)
+                          as ImageProvider
+                              : FileImage(File(controller.imagePath.value)),
+                          fit: BoxFit.cover),
+                    ),
+                    child: controller.imagePath.value.isEmpty
+                        ? const Center(child: Text('Upload images'))
+                        : const SizedBox.shrink()),
+              )),
             ),
             const SizedBox(
               width: 8,
@@ -379,11 +364,11 @@ class NewTicketScreen extends GetView<NewTicketController> {
                             controller.imagePath.value);
                       },
                       child: Container(
-                        padding: EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
                             color: Colors.grey.shade100,
                             borderRadius: BorderRadius.circular(8)),
-                        child: Icon(
+                        child: const Icon(
                           Icons.image,
                           size: 15,
                           color: primaryColor,
@@ -399,11 +384,11 @@ class NewTicketScreen extends GetView<NewTicketController> {
                             controller.imagePath.value);
                       },
                       child: Container(
-                        padding: EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
                             color: Colors.grey.shade100,
                             borderRadius: BorderRadius.circular(8)),
-                        child: Icon(
+                        child: const Icon(
                           Icons.camera_alt,
                           size: 15,
                           color: primaryColor,
@@ -418,14 +403,14 @@ class NewTicketScreen extends GetView<NewTicketController> {
                         onTap: () => controller.imagePath(""),
                         child: Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.delete,
                               color: Colors.red,
                             ),
                             const SizedBox(
                               width: 6,
                             ),
-                            Text(
+                            const Text(
                               'Delete',
                               style: TextStyle(color: Colors.red),
                             )

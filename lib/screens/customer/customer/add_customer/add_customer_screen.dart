@@ -167,7 +167,11 @@ class AddCustomerScreen extends StatelessWidget {
                               size: 22,
                             ),
                             onTab: () async {
-                              controller.dateController.text = await getDate();
+                              controller.dateController.text = await getDate(
+                                  initialDate: DateTime(DateTime.now().year -18, 12, 31),
+                                  firstDate: DateTime(DateTime.now().year -80, 12, 31),
+                                  lastDate: DateTime(DateTime.now().year -18, 12, 31)
+                              );
                             },
                           ),
                           const SizedBox(
@@ -198,8 +202,8 @@ class AddCustomerScreen extends StatelessWidget {
                                   "DOB":
                                       toSendDateFormat(controller.dateController.text),
                                   "Remarks": controller.remarkController.text.trim(),
-                                  "Username": "",
-                                  "Password": "",
+                                  "Username": controller.mobileController.text.trim(),
+                                  "Password": "1234",
                                   "IsActive": true,
                                   "CUID": controller.box.read(Session.userId)
                                 };

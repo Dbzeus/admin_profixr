@@ -54,7 +54,7 @@ class LoginScreen extends GetView<LoginController> {
                     height: 12,
                   ),
                   const Text(
-                    "Amet minim mollit non deserunt ullamcoei sitaliqua dolor do amet sintelit officia.",
+                    "Fill the Details to Login a Account",
                     maxLines: 2,
                     style: TextStyle(
                       fontSize: 14,

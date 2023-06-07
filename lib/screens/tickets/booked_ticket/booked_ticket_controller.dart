@@ -2,91 +2,46 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:profixer_admin/apis/api_call.dart';
+import 'package:profixer_admin/helpers/utils.dart';
+import 'package:profixer_admin/model/TicketListResponse.dart';
+import 'package:profixer_admin/model/ticket_count_response.dart';
+
+import '../../../helpers/constant_widgets.dart';
 
 class BookedTicketController extends GetxController{
   TextEditingController searchController = TextEditingController();
 
-  RxString dropDownValue = "InProgress".obs;
+  TicketCount data=Get.arguments['data'];
+  var startDate = Get.arguments['startDate'];
+  var endDate = Get.arguments['endDate'];
 
-  String title=Get.arguments['title'] ?? 'Tickets';
+  final box=GetStorage();
 
-  var ticketList= [
-    {
-      "no" : "#1224678299399",
-      "place" : "Madurai",
-      "techName" : "surya",
-      "role" : "AC Mechanic",
-      "cusName" : "Ram",
-      "cusNo" : "9876453241",
-      "issue" : "Ac full Service",
-      "date" : "01/05/2023 09.00 ",
-      "ticket" : "open",
-    },
-    {
-      "no" : "#1535378393933",
-      "place" : "Madurai",
-      "techName" : "Dinesh",
-      "role" : "Plumber",
-      "cusName" : "Sathish",
-      "cusNo" : "6789012435",
-      "issue" : "Tap Fixing",
-      "date" : "25/04/2023 12.00 ",
-    "ticket" : "closed",
-    },
-    {
-      "no" : "#567890235678",
-      "place" : "Madurai",
-      "techName" : "Saravanan",
-      "role" : "Electrician",
-      "cusName" : "Sid",
-      "cusNo" : "8765438789",
-      "issue" : "Meter box complaint",
-      "date" : "01/05/2023 09.00 ",
-      "ticket" : "Assign",
-    },
-    {
-      "no" : "#3456789111",
-      "place" : "Madurai",
-      "techName" : "Vaasu",
-      "role" : "Plumber",
-      "cusName" : "Chrishtopher",
-      "cusNo" : "8892992999",
-      "issue" : "Borewell service",
-      "date" : "01/05/2023 09.00 ",
-    "ticket" : "open",
-    },
-    {
-      "no" : "#1535378393933",
-      "place" : "Madurai",
-      "techName" : "Dinesh",
-      "role" : "Plumber",
-      "cusName" : "Sathish",
-      "cusNo" : "6789012435",
-      "issue" : "Tap Fixing",
-      "date" : "25/04/2023 12.00 ",
-      "ticket" : "open",
-    },
-    {
-      "no" : "#1224678299399",
-      "place" : "Madurai",
-      "techName" : "Santhosh",
-      "role" : "AC Mechanic",
-      "cusName" : "Ram",
-      "cusNo" : "9876453241",
-      "issue" : "Ac Replacement",
-      "date" : "01/05/2023 09.00 ",
-      "ticket" : "open",
-    },
-    {
-      "no" : "#1224678299399",
-      "place" : "Madurai",
-      "techName" : "Sam",
-      "role" : "Electrician",
-      "cusName" : "Ram",
-      "cusNo" : "9645256363",
-      "issue" : "New meter connection",
-      "date" : "01/05/2023 09.00 ",
-      "ticket" : "open",
-    },
-  ];
+  RxList<Ticket> ticketList=RxList();
+  RxBool isLoading=true.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    getTicketList();
+  }
+
+  getTicketList()async{
+    if(await isNetConnected()){
+      isLoading(true);
+      var response=await ApiCall().getTicketList(box.read(Session.userId), data.ticketStatusID, startDate, endDate);
+      if(response!=null){
+        if(response.rtnStatus){
+          ticketList(response.rtnData);
+        }else{
+          toast(response.rtnMsg);
+        }
+      }
+      isLoading(false);
+    }
+  }
+
 }
+

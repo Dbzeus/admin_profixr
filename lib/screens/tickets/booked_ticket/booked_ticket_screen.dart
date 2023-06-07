@@ -1,16 +1,17 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
+import 'package:profixer_admin/helpers/hexcolor.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
-
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 
+import '../../../model/TicketListResponse.dart';
 import 'booked_ticket_controller.dart';
 
-
-
 class BookedTicketScreen extends GetView<BookedTicketController> {
+  @override
   final controller = Get.put(BookedTicketController());
 
   BookedTicketScreen({Key? key}) : super(key: key);
@@ -20,10 +21,10 @@ class BookedTicketScreen extends GetView<BookedTicketController> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: CustomAppBar(
-        title: controller.title,
+        title: controller.data.statusName,
       ),
       body: GestureDetector(
-        onTap: ()=>Get.focusScope?.unfocus(),
+        onTap: () => Get.focusScope?.unfocus(),
         child: Padding(
           padding: const EdgeInsets.only(
             top: 16.0,
@@ -92,45 +93,37 @@ class BookedTicketScreen extends GetView<BookedTicketController> {
                 height: 16,
               ),
               Expanded(
-                child: ListView.builder(
-                  padding: EdgeInsets.only(bottom: 70),
-                    itemCount: controller.ticketList.length,
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemBuilder: (_, index) {
-                      return _buildTickets2(controller.ticketList[index]);
-                    }),
-              ),
-
+                child: Obx(
+                  () => controller.isLoading.value
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : controller.ticketList.isEmpty
+                          ? Center(
+                              child: Text('No Tickets Found'),
+                            )
+                          : ListView.builder(
+                              padding: EdgeInsets.only(bottom: 70),
+                              itemCount: controller.ticketList.length,
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemBuilder: (_, index) {
+                                return _buildTickets(
+                                    controller.ticketList[index]);
+                              }),
+                ),
+              )
             ],
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: (){
-            Get.focusScope?.unfocus();
-            Get.toNamed(Routes.newTicket);
-          },
-          elevation: 4,
-          backgroundColor: primaryColor,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-                Radius.circular(8)
-            ),
-          ),
-          child: const Icon(
-            Icons.add,
-            color: whiteColor,
-          )
-      ),
     );
   }
 
-
-  _buildTickets2(ticketList) {
+  _buildTickets(Ticket item) {
     return GestureDetector(
-      onTap: (){
-          Get.toNamed(Routes.ticketDetails);
+      onTap: () {
+        Get.toNamed(Routes.ticketDetails,arguments: item);
       },
       child: Container(
         width: MediaQuery.of(Get.context!).size.width,
@@ -161,11 +154,9 @@ class BookedTicketScreen extends GetView<BookedTicketController> {
                     color: const Color.fromRGBO(0, 169, 206, 1),
                   ),
                   child: Center(
-                    child: SvgPicture.asset(
-                      'assets/icon/waterdrop.svg',
-                      height: 25,
-                      width: 25,
-                    ),
+                    child: CachedNetworkImage(
+                      imageUrl: item.complientNatureImg,
+                    )
                   ),
                 ),
                 const SizedBox(
@@ -175,23 +166,30 @@ class BookedTicketScreen extends GetView<BookedTicketController> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Text(
+                        "Ticket No: ${item.ticketNo}",
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            color: blackColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600),
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
+                        children: [
                           Text(
-                            "Ticket No: 123456789",
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                                color: blackColor,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600),
-                          ),
-                          Text(
-                            "Home Plumbing",
+                            item.serviceName,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                             style: const TextStyle(
                               color: blueTextColor,
+                              fontSize: 10,
+                            ),
+                          ),
+                          Text(
+                            item.createdDate,
+                            style: const TextStyle(
+                              color: blackColor,
                               fontSize: 10,
                             ),
                           ),
@@ -201,55 +199,42 @@ class BookedTicketScreen extends GetView<BookedTicketController> {
                         height: 4,
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                ticketList["cusName"].toString(),
-                                style: const TextStyle(
-                                  color: blackColor,
-                                  fontSize: 10,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 3,
-                              ),
-                              Container(
-                                height: 3,
-                                width: 3,
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: primaryColor,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 3,
-                              ),
-                              const Icon(
-                                Icons.wifi_calling_3,
-                                color: primaryColor,
-                                size: 12,
-                              ),
-                              const SizedBox(
-                                width: 3,
-                              ),
-                              Text(
-                                ticketList["cusNo"].toString(),
-                                style: const TextStyle(
-                                    color: primaryColor,
-                                    fontSize: 10,
-                                    decoration: TextDecoration.underline),
-                              ),
-                            ],
+                          Text(
+                            item.customerName,
+                            style: const TextStyle(
+                              color: blackColor,
+                              fontSize: 10,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 3,
+                          ),
+                          Container(
+                            height: 3,
+                            width: 3,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: primaryColor,
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 3,
+                          ),
+                          const Icon(
+                            Icons.call,
+                            color: primaryColor,
+                            size: 12,
+                          ),
+                          const SizedBox(
+                            width: 4,
                           ),
                           Text(
-                            ticketList["date"].toString(),
+                            item.mobileNo,
                             style: const TextStyle(
-                                color: blackColor,
+                                color: primaryColor,
                                 fontSize: 10,
-                                ),
+                                decoration: TextDecoration.underline),
                           ),
                         ],
                       ),
@@ -261,7 +246,7 @@ class BookedTicketScreen extends GetView<BookedTicketController> {
                         children: [
                           Expanded(
                             child: Text(
-                              "1/3, North Street, North Town, Arabia - 03",
+                              item.complientNatureName,
                               style: const TextStyle(
                                 color: blackColor,
                                 fontSize: 10,
@@ -271,7 +256,7 @@ class BookedTicketScreen extends GetView<BookedTicketController> {
                             ),
                           ),
                           Text(
-                            "10 - 11 pm",
+                            item.timeSlotID.toString(),
                             style: const TextStyle(
                               color: blackColor,
                               fontSize: 10,
@@ -287,105 +272,65 @@ class BookedTicketScreen extends GetView<BookedTicketController> {
             const SizedBox(
               height: 10,
             ),
-            RichText(
-                text: const TextSpan(
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: blackColor,
-                    ),
-                    children: [
-                  TextSpan(text: "Amount: "),
-                  TextSpan(
-                    text: "250",
-                    style: TextStyle(
-                        fontSize: 22,
-                        color: primaryColor,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  TextSpan(text: " SAR"),
-                ])),
+            // RichText(
+            //     text: const TextSpan(
+            //         style: TextStyle(
+            //           fontSize: 15,
+            //           color: blackColor,
+            //         ),
+            //         children: [
+            //       TextSpan(text: "Amount: "),
+            //       TextSpan(
+            //         text: "250",
+            //         style: TextStyle(
+            //             fontSize: 22,
+            //             color: primaryColor,
+            //             fontWeight: FontWeight.bold),
+            //       ),
+            //       TextSpan(text: " SAR"),
+            //     ])),
             const Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const SizedBox(
-                  width: 10,
-                ),
-                Container(
-                  width: 90,
-                  height: 30,
-                  decoration: BoxDecoration(
-                      color: whiteColor,
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(
-                        color: primaryColor,
-
-                      )),
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: const [
-                         Icon(
-                          Icons.check,
-                          color: primaryColor,
-                          size: 18,
-                        ),
-                        Text(
-                          "Accept",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12, color: primaryColor),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 90,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Icon(
-                          Icons.delete,
+            SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: List.generate(item.childStatus.length, (index) =>  Row(
+                  children: [
+                    Container(
+                      width: 90,
+                      height: 30,
+                      decoration: BoxDecoration(
                           color: whiteColor,
-                          size: 18,
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(
+                            color: HexColor.fromHex(item.childStatus[index].colorCode,),
+                          )),
+                      child: Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            CachedNetworkImage(imageUrl: item.childStatus[index].statusImage,width: 18,height: 18,),
+                            Text(
+                              item.childStatus[index].childStatusName,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 12,
+                                  color: HexColor.fromHex(item.childStatus[index].colorCode,),),
+                            )
+                          ],
                         ),
-                        Text(
-                          "Reject",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,fontSize: 12, color: whiteColor),
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-              ],
-            )
+                    const SizedBox(width: 12,),
+                  ],
+                ),),
+              ),
+            ),
+
           ],
         ),
       ),
     );
   }
 
- /* Widget showDropDown(String item) {
-    return Row(
-      children: [
-        Icon(
-          Icons.downloading,
-          color: primaryColor,
-        ),
-        const SizedBox(width: 8),
-        Text(item),
-      ],
-    );
-  }*/
 }

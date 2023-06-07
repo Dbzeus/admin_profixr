@@ -46,5 +46,7 @@ const deleteHolidayUrl="Master/DeleteHoliday";
 //tickets
 const ticketCountUrl="Supportdesk/GetTicketCount";
 const bookATicketUrl="Supportdesk/TicketUpdate";
+const ticketListUrl="Supportdesk/GetTicketList";
+const ticketHistoryUrl="Supportdesk/GetTicketHistory";
 
 

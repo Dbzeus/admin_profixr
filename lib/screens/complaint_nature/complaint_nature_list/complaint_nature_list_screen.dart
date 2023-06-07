@@ -164,9 +164,9 @@ class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
                 borderRadius: BorderRadius.circular(16),
                 child: CachedNetworkImage(
                   imageUrl: "${data['ComplientNatureImg']}",
-                  height: 85,
+                  height: 50,
                   fit: BoxFit.cover,
-                  width: 85,
+                  width: 50,
                 ),
               ),
               const SizedBox(
@@ -180,7 +180,7 @@ class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
                       "${data['ComplaintNatureName']}",
                       style: TextStyle(
                           color: blackColor,
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(

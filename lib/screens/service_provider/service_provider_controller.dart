@@ -81,10 +81,10 @@ class ServiceProviderController extends GetxController {
     }
   }
 
-  insertUpdateServiceProvider(data) async {
+  insertUpdateServiceProvider(bool val,data) async {
     if (await isNetConnected()) {
       isLoading(true);
-
+      data.isActive = val;
       var response = await ApiCall().insertServiceProvider(data);
       isLoading(false);
       if (response != null) {
@@ -118,10 +118,10 @@ class ServiceProviderController extends GetxController {
   }
 
   //for admin
-  insertUpdateServiceProviderAdmin(data) async {
+  insertUpdateServiceProviderAdmin(bool val,data) async {
     if (await isNetConnected()) {
       isLoading(true);
-
+    data.isActive = val;
       var response = await ApiCall().insertServiceProviderAdmin(data);
       isLoading(false);
       if (response != null) {

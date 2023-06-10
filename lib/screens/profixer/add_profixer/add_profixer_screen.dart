@@ -505,10 +505,10 @@ class AddProfixerScreen extends StatelessWidget {
                                   "RelivedReason": controller.relievedReasonController.text,
                                   "UserName": controller.userNameController.text,
                                   "Password": controller.passwordController.text,
-                                  "IsActive": controller.selectedIsActive,
+                                  "IsActive": controller.selectedIsActive.value,
                                   "CUID": controller.box.read(Session.userData),
                                 };
-                                controller.insertUpdateProfixer(data);
+                                controller.insertUpdateProfixer(controller.selectedIsActive.value ,data);
                               },
                             ),
                           ],

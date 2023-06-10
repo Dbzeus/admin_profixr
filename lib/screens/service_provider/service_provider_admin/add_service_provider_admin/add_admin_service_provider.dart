@@ -343,7 +343,7 @@ class AddAdminServiceProvider extends StatelessWidget {
                                   "IsActive": controller.selectedIsActive.value,
                                   "CUID": controller.box.read(Session.userId),
                                 };
-                                controller.insertUpdateServiceProviderAdmin(data);
+                                controller.insertUpdateServiceProviderAdmin(controller.selectedIsActive.value,data);
                               }),
                         ],
                       ),

@@ -123,7 +123,7 @@ class TechnicainData {
   late String serviceName;
   late String areaIDs;
   late String areaName;
-  late int isActive;
+  late bool isActive;
   late String userNAme;
   late String password;
 

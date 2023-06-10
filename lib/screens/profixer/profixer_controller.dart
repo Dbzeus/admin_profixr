@@ -80,9 +80,10 @@ final box = GetStorage();
     }
   }
 
-  insertUpdateProfixer(data) async {
+  insertUpdateProfixer(bool val,data) async {
     if (await isNetConnected()) {
       isLoading(true);
+      data.isActive = val;
       var response = await ApiCall().insertProfixerUser(data);
       isLoading(false);
       if (response != null) {

@@ -435,7 +435,7 @@ class AddServiceProviderScreen extends StatelessWidget {
                                               controller.box.read(Session.userId),
                                         };
                                         controller
-                                            .insertUpdateServiceProvider(data);
+                                            .insertUpdateServiceProvider(controller.selectedIsActive.value,data);
 
                                       },
                                     ),

@@ -189,15 +189,46 @@ class AddTechnicianScreen extends StatelessWidget {
                         children: [
                           const SizedBox(
                             height: 10,
+                          ),/*
+                          Obx(()=>
+                             CustomDropDown(
+                                hintText: "Service Provider",
+                                dropDownValue:
+                                    controller.serviceProviderDropDownValue.value,
+                                items: controller.serviceProviderDropDownItems,
+                                onSelected: (value) {
+                                  controller.serviceProviderDropDownValue(value);
+                                }),
+                          ),*/
+                          const SizedBox(
+                            height: 10,
                           ),
-                          CustomDropDown(
-                              hintText: "Service Provider",
-                              dropDownValue:
-                                  controller.serviceProviderDropDownValue.value,
-                              items: controller.serviceProviderDropDownItems,
-                              onSelected: (value) {
-                                controller.serviceProviderDropDownValue(value);
-                              }),
+                          CustomEditText(
+                            hintText: "Date of Joining",
+                            showCursor: false,
+                            isDense: true,
+                            keyboardType: TextInputType.none,
+                            controller: controller.dojController,
+                            suffixIcon: const Icon(
+                              Icons.calendar_month_rounded,
+                              color: blackColor,
+                              size: 22,
+                            ),
+                            onTab: () async {
+                              var date = await showDatePicker(
+                                  context: Get.context!,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime.now(),
+                                  lastDate: DateTime(
+                                      DateTime.now().year + 1, 12, 31));
+                              if (date != null) {
+                                debugPrint(date.toString());
+                                controller.dojController.text =
+                                    DateFormat(controller.dateFormat)
+                                        .format(date);
+                              }
+                            },
+                          ),
                           const SizedBox(
                             height: 10,
                           ),
@@ -371,10 +402,10 @@ class AddTechnicianScreen extends StatelessWidget {
                                "AreaIDs": technicianData?.areaIDs ?? 0,
                                "Username": controller.userNameController.text,
                                "Password": controller.passwordController.text,
-                               "IsActive": true,
+                               "IsActive": controller.selectedIsActive.value,
                                "CUID": controller.box.read(Session.userData),
                              };
-                             controller.insertUpdateTechnician(data);
+                             controller.insertUpdateTechnician(controller.selectedIsActive.value,data);
                             },
                           ),
                         ],

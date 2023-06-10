@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:profixer_admin/apis/api_call.dart';
-import 'package:profixer_admin/apis/urls.dart';
 import 'package:profixer_admin/helpers/constant_widgets.dart';
 import 'package:profixer_admin/screens/main/main_controller.dart';
 
@@ -16,9 +15,8 @@ class ExistingTicketController extends GetxController {
 
   final _box = GetStorage();
 
-  Customer customer=Get.arguments;
+  Customer customer = Get.arguments['customer'];
 
-  int customerId = 0;
   int customerAddressId = 0;
 
   RxList<Map<String, String>> cities = RxList();
@@ -30,7 +28,6 @@ class ExistingTicketController extends GetxController {
 //Personal details TextEditingController
   TextEditingController customerNameController = TextEditingController();
   TextEditingController customerMobileNoController = TextEditingController();
-
 
   //Address TextEditingController
   RxList<Map<String, String>> addresses = RxList();
@@ -73,21 +70,21 @@ class ExistingTicketController extends GetxController {
     getComplaintNature();
   }
 
-  setupCustomer(){
-    customerNameController.text=customer.firstName;
-    customerMobileNoController.text=customer.mobileNo;
+  setupCustomer() {
+    customerNameController.text = customer.firstName;
+    customerMobileNoController.text = customer.mobileNo;
   }
 
   getCustomerAddress() async {
     if (await isNetConnected()) {
       isLoading(true);
-      CustomerAddressResponse? response = await ApiCall().getCustomerAddress(customerId: customerId);
+      CustomerAddressResponse? response =
+          await ApiCall().getCustomerAddress(customerId: customer.customerID);
       isLoading(false);
       if (response != null) {
         if (response.rtnStatus) {
           for (var e in response.rtnData) {
-            addresses.add(
-                {"id": '${e.addressID}', "value": e.addressTitle});
+            addresses.add({"id": '${e.addressID}', "value": e.addressTitle});
           }
           if (addresses.isNotEmpty) {
             selectedAddress('${addresses.first['id']}');
@@ -99,8 +96,6 @@ class ExistingTicketController extends GetxController {
     }
   }
 
-
-
   getTimeSlots() async {
     if (await isNetConnected()) {
       isLoading(true);
@@ -109,8 +104,8 @@ class ExistingTicketController extends GetxController {
       if (response != null) {
         if (response['RtnStatus']) {
           for (var e in response['RtnData']) {
-            timeSlots.add(
-                {"id": '${e["TimeSlotID"]}', "value": "${e['TimeSlot']}"});
+            timeSlots
+                .add({"id": '${e["TimeSlotID"]}', "value": "${e['TimeSlot']}"});
           }
           if (timeSlots.isNotEmpty) {
             selectedTimeSlot('${timeSlots.first['id']}');
@@ -130,8 +125,10 @@ class ExistingTicketController extends GetxController {
       if (response != null) {
         if (response['RtnStatus']) {
           for (var e in response['RtnData']) {
-            types.add(
-                {"id": '${e["ServiceTypeID"]}', "value": "${e['ServiceTypeName']}"});
+            types.add({
+              "id": '${e["ServiceTypeID"]}',
+              "value": "${e['ServiceTypeName']}"
+            });
           }
           if (types.isNotEmpty) {
             selectedType('${types.first['id']}');
@@ -172,8 +169,10 @@ class ExistingTicketController extends GetxController {
       if (response != null) {
         if (response['RtnStatus']) {
           for (var e in response['RtnData']) {
-            cNatures.add(
-                {"id": '${e["ComplaintNatureID"]}', "value": "${e['ComplaintNatureName']}"});
+            cNatures.add({
+              "id": '${e["ComplaintNatureID"]}',
+              "value": "${e['ComplaintNatureName']}"
+            });
           }
           if (cNatures.isNotEmpty) {
             selectedCNature('${cNatures.first['id']}');
@@ -187,54 +186,60 @@ class ExistingTicketController extends GetxController {
 
   bookATicket() async {
     if (await isNetConnected()) {
-      isLoading(true);
+      try {
+        debugPrint("is book called");
+        isLoading(true);
 
-      var image = "";
-      if (imagePath.isNotEmpty) {
-        //upload Image
-        var response = await ApiCall().uploadAttachment([imagePath.value]);
-        if (response != null) {
-          if (response['RtnStatus']) {
-            image = response['RtnMsg'];
-          } else {
-            toast('${response['RtnMsg']}');
+        var image = "";
+        if (imagePath.isNotEmpty) {
+          //upload Image
+          var response = await ApiCall().uploadAttachment([imagePath.value]);
+          if (response != null) {
+            if (response['RtnStatus']) {
+              image = response['RtnMsg'];
+            } else {
+              toast('${response['RtnMsg']}');
+            }
           }
         }
-      }
 
-      var data = {
-        "TicketID": 0,
-        "TicketStatusID": 0,
-        "CustomerID": customerId,
-        "CustomerAddressID": customerAddressId,
-        "ServiceID": selectedService,
-        "ComplaintNatureID": selectedCNature,
-        "ServiceTypeID": selectedType,
-        "ServiceProviderID": 0,
-        "TechnicianID": 0,
-        "AppoinmentDate": toSendDateFormat(serviceDateController.text),
-        "TimeSlotID": selectedTimeSlot,
-        "Reason": "",
-        "Remarks": bookingRemarksController.text.trim(),
-        "Images": image,
-        "CUID": _box.read(Session.userId)
-      };
+        var data = {
+          "TicketID": 0,
+          "TicketStatusID": 0,
+          "CustomerID": customer.customerID,
+          "CustomerAddressID": customerAddressId,
+          "ServiceID": selectedService,
+          "ComplaintNatureID": selectedCNature,
+          "ServiceTypeID": selectedType,
+          "ServiceProviderID": 0,
+          "TechnicianID": 0,
+          "AppoinmentDate": toSendDateFormat(serviceDateController.text),
+          "TimeSlotID": selectedTimeSlot,
+          "Reason": "",
+          "Remarks": bookingRemarksController.text.trim(),
+          "Images": image,
+          "CUID": _box.read(Session.userId)
+        };
 
-      var response = await ApiCall().bookATicket(data);
-      if (response != null) {
-        customDialog(
-            Get.context,
-            response['RtnStatus']
-                ? "Booking Successful!"
-                : "Booking Unsuccessful!",
-            "${response['RtnMsg']}", () {
-          final con = Get.find<MainController>();
-          con.getTicketCounts();
-          Get.back();
-        }, isDismissable: false);
+        var response = await ApiCall().bookATicket(data);
+        isLoading(false);
+
+        if (response != null) {
+          customDialog(
+              Get.context,
+              response['RtnStatus']
+                  ? "Booking Successful!"
+                  : "Booking Unsuccessful!",
+              "${response['RtnMsg']}", () {
+            final con = Get.find<MainController>();
+            con.getTicketCounts();
+            Get.back();
+          }, isDismissable: false);
+        }
+      } catch (e) {
+        //ignore
+        isLoading(false);
       }
-      isLoading(false);
     }
   }
-
 }

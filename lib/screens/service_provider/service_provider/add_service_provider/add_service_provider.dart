@@ -12,6 +12,7 @@ import 'package:profixer_admin/widgets/custom_edittext.dart';
 
 import '../../../../model/serviceprovider_response.dart';
 import '../../../../widgets/custom_appbar.dart';
+import '../../../../widgets/custom_dropdown.dart';
 import '../../../../widgets/custom_loader.dart';
 import '../../service_provider_admin/service_provider_admin_list/service_provider_admin_list.dart';
 
@@ -227,6 +228,19 @@ class AddServiceProviderScreen extends StatelessWidget {
                                         maxLines: 2,
                                         controller:
                                             controller.bankDetailsController),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Obx(
+                                          () => CustomDropDown(
+                                        hintText: "What kind of service you Provide?",
+                                        dropDownValue: controller.selectedService.value,
+                                        items: controller.serviceList,
+                                        onSelected: (val) {
+                                          controller.selectedService(val);
+                                        },
+                                      ),
+                                    ),
                                     const SizedBox(
                                       height: 10,
                                     ),

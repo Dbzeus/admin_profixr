@@ -62,6 +62,7 @@ class ServiceProviderListScreen extends GetView<ServiceProviderController> {
                 ),
                 GestureDetector(
                   onTap: () {
+
                     Get.toNamed(Routes.addServiceProvider, arguments: {
                       "title": "Add Service Provider",
                       "buttonTitle": "Next",
@@ -112,6 +113,8 @@ class ServiceProviderListScreen extends GetView<ServiceProviderController> {
       onTap: () {
         controller.getServiceProviderAdmin(
             data.serviceProviderID, 0);
+        controller.getServiceProviderArea(data.serviceProviderID);
+        controller.getServiceProviderService(data.serviceProviderID);
         controller.serviceProviderId= data.serviceProviderID;//controller.box.read(Session.userId));
         Get.toNamed(Routes.addServiceProvider, arguments: {
           "title": "Edit Service Provider",

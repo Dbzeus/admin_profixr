@@ -985,6 +985,43 @@ class ApiCall {
     return null;
   }
 
+  Future<dynamic> updateATicket(var body) async {
+    try {
+      /*
+      *
+{
+  "TicketID": 0,
+  "TicketStatusID": 0,
+  "CustomerID": 0,
+  "CustomerAddressID": 0,
+  "ServiceID": 0,
+  "ComplaintNatureID": 0,
+  "ServiceTypeID": 0,
+  "ServiceProviderID": 0,
+  "TechnicianID": 0,
+  "AppoinmentDate": "2023-06-05T15:42:25.563Z",
+  "TimeSlotID": 0,
+  "Reason": "string",
+  "Remarks": "string",
+  "Images": "string",
+  "CUID": 0
+}
+      * */
+
+      final response = await _dio.post(updateATicketUrl, data: body);
+      log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
+
+      return response.data;
+    } on DioError catch (e) {
+      log(e.message);
+      toast(e.message);
+    } catch (e) {
+      log(e.toString());
+      toast(null);
+    }
+    return null;
+  }
+
   Future<TicketListResponse?> getTicketList(
       int userId, int ticketStatusId, String fromDate, String toDate) async {
     try {

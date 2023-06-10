@@ -42,6 +42,7 @@ import '../screens/service/add_service/add_service_screen.dart';
 import '../screens/service/service_list/service_list_screen.dart';
 
 import '../screens/tickets/check_customer/check_customer_screen.dart';
+import '../screens/tickets/ticket_details/updation/ticket_updation.dart';
 import 'app_routes.dart';
 
 class AppPages {
@@ -100,7 +101,7 @@ class AppPages {
     ),
     GetPage(
       name: Routes.ticketDetails,
-      page: () => const TicketDetailsScreen(),
+      page: () => TicketDetailsScreen(),
     ),
     GetPage(
       name: Routes.technicianList,
@@ -178,11 +179,10 @@ class AppPages {
       name: Routes.existingNewTicket,
       page: () => ExistingTicketScreen(),
     ),
-
     GetPage(
-
       name: Routes.customerList,
       page: () => CustomerListScreen(),
     ),
+
   ];
 }

@@ -36,64 +36,75 @@ class ExistingTicketScreen extends GetView<ExistingTicketController> {
           ),
           body: Stack(
             children: [
-              Obx(
-                () => Column(
-                  children: [
-                    CustomEditText(
-                        hintText: "Customer Name",
-                        controller: controller.customerNameController),
-                    const SizedBox(
-                      height: 10,
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  child: Column(
+                      children: [
+                        CustomEditText(
+                            hintText: "Customer Name",
+                            readOnly: true,
+                            controller: controller.customerNameController),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        CustomEditText(
+                          hintText: "Customer Mobile Number",
+                          controller: controller.customerMobileNoController,
+                          maxLength: 10,
+                          readOnly: true,
+                          keyboardType: TextInputType.phone,
+                          prefixIcon: Obx(
+                                () => DropdownButton(
+                                value: controller.mobileNoDropDownValue.value,
+                                style: const TextStyle(color: primaryColor, fontSize: 16),
+                                underline: const SizedBox(),
+                                icon: const Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: primaryColor,
+                                  size: 16,
+                                ),
+                                items: controller.mobileItems.map((String items) {
+                                  return DropdownMenuItem(
+                                    value: items,
+                                    child: Text(items),
+                                  );
+                                }).toList(),
+                                onChanged: (val) {
+                                  controller.mobileNoDropDownValue(val.toString());
+                                }),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Obx(
+                              () => CustomDropDown(
+                            hintText: "Customer Address",
+                            dropDownValue: controller.selectedAddress.value,
+                            items: controller.addresses,
+                            onSelected: (val) {
+                              controller.selectedAddress(val);
+                            },
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        bookingForm(),
+                        const SizedBox(height: 64,),
+                        CustomButton(text: 'Book', onTap: ()=> controller.bookATicket()),
+                        const SizedBox(
+                          height: 64,
+                        ),
+                      ],
                     ),
-                    CustomEditText(
-                      hintText: "Customer Mobile Number",
-                      controller: controller.customerMobileNoController,
-                      maxLength: 10,
-                      keyboardType: TextInputType.phone,
-                      prefixIcon: Obx(
-                            () => DropdownButton(
-                            value: controller.mobileNoDropDownValue.value,
-                            style: const TextStyle(color: primaryColor, fontSize: 16),
-                            underline: const SizedBox(),
-                            icon: const Icon(
-                              Icons.keyboard_arrow_down,
-                              color: primaryColor,
-                              size: 16,
-                            ),
-                            items: controller.mobileItems.map((String items) {
-                              return DropdownMenuItem(
-                                value: items,
-                                child: Text(items),
-                              );
-                            }).toList(),
-                            onChanged: (val) {
-                              controller.mobileNoDropDownValue(val.toString());
-                            }),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 12,
-                    ),
-                    Obx(
-                          () => CustomDropDown(
-                        hintText: "Customer Address",
-                        dropDownValue: controller.selectedAddress.value,
-                        items: controller.addresses,
-                        onSelected: (val) {
-                          controller.selectedAddress(val);
-                        },
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    bookingForm(),
-                  ],
-                )
+                ),
               ),
               Obx(() => controller.isLoading.value
                   ? CustomLoader()
-                  : const SizedBox.shrink())
+                  : const SizedBox.shrink()),
             ],
           ),
         ));
@@ -115,7 +126,7 @@ class ExistingTicketScreen extends GetView<ExistingTicketController> {
           ),
         ),
         const SizedBox(
-          height: 10,
+          height: 12,
         ),
         Obx(
               () => CustomDropDown(
@@ -128,7 +139,7 @@ class ExistingTicketScreen extends GetView<ExistingTicketController> {
           ),
         ),
         const SizedBox(
-          height: 10,
+          height: 12,
         ),
         Obx(
               () => CustomDropDown(
@@ -141,50 +152,41 @@ class ExistingTicketScreen extends GetView<ExistingTicketController> {
           ),
         ),
         const SizedBox(
-          height: 10,
+          height: 12,
         ),
-        Row(
-          children: [
-            Expanded(
-              child: CustomEditText(
-                hintText: "Service Date",
-                showCursor: false,
-                keyboardType: TextInputType.none,
-                controller: controller.serviceDateController,
-                suffixIcon: const Icon(
-                  Icons.calendar_month_rounded,
-                  color: blackColor,
-                  size: 22,
-                ),
-                onTab: () async {
-                  controller.serviceDateController.text = await getDate(
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime(DateTime.now().year + 1, 12, 31)
-                  );
-                },
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              child:
-                Obx(
-                      () => CustomDropDown(
-                    hintText: "Service Time Slot",
-                    dropDownValue: controller.selectedArea.value,
-                    items: controller.areas,
-                    onSelected: (val) {
-                      controller.selectedArea(val);
-                    },
-                  ),
-                ),
-            ),
-          ],
+        CustomEditText(
+          hintText: "Service Date",
+          showCursor: false,
+          keyboardType: TextInputType.none,
+          controller: controller.serviceDateController,
+          suffixIcon: const Icon(
+            Icons.calendar_month_rounded,
+            color: blackColor,
+            size: 22,
+          ),
+          onTab: () async {
+            controller.serviceDateController.text = await getDate(
+                initialDate: DateTime.now(),
+                firstDate: DateTime.now(),
+                lastDate: DateTime(DateTime.now().year + 1, 12, 31)
+            );
+          },
         ),
         const SizedBox(
-          height: 10,
+          height: 12,
+        ),
+        Obx(
+              () => CustomDropDown(
+            hintText: "Service Time Slot",
+            dropDownValue: controller.selectedTimeSlot.value,
+            items: controller.timeSlots,
+            onSelected: (val) {
+              controller.selectedTimeSlot(val);
+            },
+          ),
+        ),
+        const SizedBox(
+          height: 12,
         ),
         CustomEditText(
             hintText: "Remarks",
@@ -197,7 +199,7 @@ class ExistingTicketScreen extends GetView<ExistingTicketController> {
           style: TextStyle(color: hintColor, fontSize: 12),
         ),
         const SizedBox(
-          height: 10,
+          height: 12,
         ),
         Row(
           children: [
@@ -289,13 +291,10 @@ class ExistingTicketScreen extends GetView<ExistingTicketController> {
                           ],
                         ),
                       )
-                    : const SizedBox.shrink())
+                    : const SizedBox.shrink()),
               ],
             )
           ],
-        ),
-        const SizedBox(
-          height: 64,
         ),
       ],
     );

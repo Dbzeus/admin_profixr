@@ -160,7 +160,7 @@ class HomeScreen extends StatelessWidget {
                         )
                       : GridView.builder(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 0),
+                              horizontal: 12, vertical: 4),
                           itemCount: controller.dashboards.length,
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
@@ -169,8 +169,8 @@ class HomeScreen extends StatelessWidget {
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 3,
                                   crossAxisSpacing: 10,
-                                  childAspectRatio: 0.8,
-                                  mainAxisSpacing: 15),
+                                  childAspectRatio: 0.9,
+                                  mainAxisSpacing: 10),
                           itemBuilder: (_, index) {
                             return _buildDashboard(
                                 controller.dashboards[index]);
@@ -246,7 +246,7 @@ class HomeScreen extends StatelessWidget {
                   height: 40,
                 )),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -274,7 +274,7 @@ class HomeScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(
-                    height: 8,
+                    height: 2,
                   ),
                 ],
               ),

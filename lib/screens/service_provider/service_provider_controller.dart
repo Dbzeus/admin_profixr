@@ -44,7 +44,11 @@ class ServiceProviderController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool selectedIsActive = true.obs;
   RxInt selectedTag = 0.obs;
+RxList<Map<String,String>> serviceList = RxList();
+RxString selectedService = "".obs;
 
+  RxList<Map<String,String>> areaList = RxList();
+  RxString selectedArea = "".obs;
 
   //RxBool selectedTag = false.obs;
 
@@ -63,6 +67,7 @@ class ServiceProviderController extends GetxController {
   void onInit() {
     super.onInit();
     getServiceProvider();
+
   }
 
   getServiceProvider() async {
@@ -74,6 +79,49 @@ class ServiceProviderController extends GetxController {
         if (response.rtnStatus) {
           serviceProviders(response.rtnData);
           // searchList = response['RtnData'];
+        } else {
+          toast(response.rtnMsg);
+        }
+      }
+    }
+  }
+
+
+  getServiceProviderService(int serviceProviderId) async {
+    if (await isNetConnected()) {
+      isLoading(true);
+      final response = await ApiCall().getServiceProviderService(providerId: serviceProviderId );
+      isLoading(false);
+      if (response != null) {
+        if (response["RtnStatus"]) {
+          for (var e in response['RtnData']) {
+            serviceList.add({"id": '${e["ServiceProviderID"]}', "value": "${e['ServiceName']}"});
+
+          }
+          if (serviceList.isNotEmpty) {
+            selectedService('${serviceList.first['id']}');
+          }
+        } else {
+          toast(response.rtnMsg);
+        }
+      }
+    }
+  }
+
+  getServiceProviderArea(int serviceProviderId) async {
+    if (await isNetConnected()) {
+      isLoading(true);
+      var response = await ApiCall().getServiceProviderArea(providerId: serviceProviderId);
+      isLoading(false);
+      if (response != null) {
+        if (response["RtnStatus"]) {
+          for (var e in response['RtnData']) {
+            areaList.add({"id": '${e["ServiceProviderID"]}', "value": "${e['AreaName']}"});
+
+          }
+          if (areaList.isNotEmpty) {
+            selectedArea('${serviceList.first['id']}');
+          }
         } else {
           toast(response.rtnMsg);
         }

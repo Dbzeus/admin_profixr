@@ -49,12 +49,12 @@ class AreaController extends GetxController {
       var response = await ApiCall().getCity();
       if (response != null) {
         if (response['RtnStatus']) {
-          for (var e in response['RtnData']) {
-            cities.add({"id": '${e["CityID"]}', "value": "${e['CityName']}"});
-          }
-          if (cities.isNotEmpty) {
-            selectedCity('${cities.first['id']}');
-          }
+            for (var e in response['RtnData']) {
+              cities.add({"id": '${e["CityID"]}', "value": "${e['CityName']}"});
+            }
+            if (cities.isNotEmpty) {
+              selectedCity('${cities.first['id']}');
+            }
         } else {
           toast(response['RtnMsg']);
         }

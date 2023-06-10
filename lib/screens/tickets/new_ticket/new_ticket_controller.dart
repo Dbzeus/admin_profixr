@@ -201,53 +201,58 @@ class NewTicketController extends GetxController {
 
   bookATicket() async {
     if (await isNetConnected()) {
-      isLoading(true);
+      try {
+        isLoading(true);
 
-      var image = "";
-      if (imagePath.isNotEmpty) {
-        //upload Image
-        var response = await ApiCall().uploadAttachment([imagePath.value]);
-        if (response != null) {
-          if (response['RtnStatus']) {
-            image = response['RtnMsg'];
-          } else {
-            toast('${response['RtnMsg']}');
+        var image = "";
+        if (imagePath.isNotEmpty) {
+          //upload Image
+          var response = await ApiCall().uploadAttachment([imagePath.value]);
+          if (response != null) {
+            if (response['RtnStatus']) {
+              image = response['RtnMsg'];
+            } else {
+              toast('${response['RtnMsg']}');
+            }
           }
         }
-      }
 
-      var data = {
-        "TicketID": 0,
-        "TicketStatusID": 0,
-        "CustomerID": customerId,
-        "CustomerAddressID": customerAddressId,
-        "ServiceID": selectedService.value,
-        "ComplaintNatureID": selectedCNature.value,
-        "ServiceTypeID": selectedType.value,
-        "ServiceProviderID": 0,
-        "TechnicianID": 0,
-        "AppoinmentDate": toSendDateFormat(serviceDateController.text.trim()),
-        "TimeSlotID": selectedTimeSlot.value,
-        "Reason": "",
-        "Remarks": bookingRemarksController.text.trim(),
-        "Images": image,
-        "CUID": _box.read(Session.userId)
-      };
+        var data = {
+          "TicketID": 0,
+          "TicketStatusID": 0,
+          "CustomerID": customerId,
+          "CustomerAddressID": customerAddressId,
+          "ServiceID": selectedService.value,
+          "ComplaintNatureID": selectedCNature.value,
+          "ServiceTypeID": selectedType.value,
+          "ServiceProviderID": 0,
+          "TechnicianID": 0,
+          "AppoinmentDate": toSendDateFormat(serviceDateController.text.trim()),
+          "TimeSlotID": selectedTimeSlot.value,
+          "Reason": "",
+          "Remarks": bookingRemarksController.text.trim(),
+          "Images": image,
+          "CUID": _box.read(Session.userId)
+        };
 
-      var response = await ApiCall().bookATicket(data);
-      if (response != null) {
-        customDialog(
-            Get.context,
-            response['RtnStatus']
-                ? "Booking Successful!"
-                : "Booking Unsuccessful!",
-            "${response['RtnMsg']}", () {
-          final con = Get.find<MainController>();
-          con.getTicketCounts();
-          Get.back();
-        }, isDismissable: false);
+        var response = await ApiCall().bookATicket(data);
+        isLoading(false);
+
+        if (response != null) {
+          customDialog(
+              Get.context,
+              response['RtnStatus']
+                  ? "Booking Successful!"
+                  : "Booking Unsuccessful!",
+              "${response['RtnMsg']}", () {
+            final con = Get.find<MainController>();
+            con.getTicketCounts();
+            Get.back();
+          }, isDismissable: false);
+        }
+      }catch(e){
+        isLoading(false);
       }
-      isLoading(false);
     }
   }
 

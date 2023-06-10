@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:profixer_admin/apis/api_call.dart';
 import 'package:profixer_admin/helpers/constant_widgets.dart';
 import 'package:profixer_admin/model/profixer_response.dart';
+
+import '../../helpers/custom_dialog.dart';
 
 class ProfixerController extends GetxController {
   TextEditingController firstNameController = TextEditingController();
@@ -52,6 +55,7 @@ class ProfixerController extends GetxController {
     }
   ];
 
+final box = GetStorage();
 
   @override
   void onInit() {
@@ -72,6 +76,24 @@ class ProfixerController extends GetxController {
         } else {
           toast(response.rtnMsg);
         }
+      }
+    }
+  }
+
+  insertUpdateProfixer(data) async {
+    if (await isNetConnected()) {
+      isLoading(true);
+      var response = await ApiCall().insertProfixerUser(data);
+      isLoading(false);
+      if (response != null) {
+        if (response['RtnStatus']) {
+          customDialog(Get.context, "Success", response['RtnMsg'].toString(),
+                  () {
+                Get.back();
+                getProfixer();
+              },isDismissable: false);
+        }
+        toast(response['RtnMsg']);
       }
     }
   }

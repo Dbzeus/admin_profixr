@@ -13,6 +13,7 @@ import 'package:profixer_admin/model/admin_response.dart';
 import 'package:profixer_admin/model/customer_response.dart';
 import 'package:profixer_admin/model/profixer_response.dart';
 import 'package:profixer_admin/model/serviceprovider_response.dart';
+import 'package:profixer_admin/model/technician_response.dart';
 import 'package:profixer_admin/model/ticket_count_response.dart';
 import 'package:profixer_admin/model/userResponse.dart';
 
@@ -631,7 +632,7 @@ class ApiCall {
     return null;
   }
 
-  Future<dynamic> insertServiceProviderTechnician(var body) async {
+  Future<dynamic> insertTechnician(var body) async {
     try {
       /*
       *
@@ -657,7 +658,7 @@ class ApiCall {
       * */
 
       final response =
-          await _dio.post(getTechnicianUrl, data: body);
+          await _dio.post(insertTechnicianUrl, data: body);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
@@ -690,7 +691,7 @@ class ApiCall {
     return null;
   }
 
-  Future<dynamic> insertProfixerCustomer(var body) async {
+  Future<dynamic> insertCustomer(var body) async {
     try {
       /*
       *
@@ -899,7 +900,7 @@ class ApiCall {
   }
 
   //techinican
-  Future<dynamic> getTechnician(int userId,int serviceProviderId) async {
+  Future<TechnicianResponse?> getTechnician(int userId,int serviceProviderId) async {
     try {
       var params = {
         "ServiceProviderID" : serviceProviderId,
@@ -908,7 +909,7 @@ class ApiCall {
       final response = await _dio.get(getTechnicianUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
-      return response.data;
+      return TechnicianResponse.fromJson(response.data);
     } on DioError catch (e) {
       log(e.message);
       toast(e.message);

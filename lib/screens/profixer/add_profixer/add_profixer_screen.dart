@@ -489,12 +489,26 @@ class AddProfixerScreen extends StatelessWidget {
                               text: "Add",
                               btnColor: primaryColor,
                               onTap: () {
-                                customDialog(
-                                    Get.context, "Success", "Added Successfull",
-                                    () {
-                                  controller
-                                      .isConfirm(!controller.isConfirm.value);
-                                });
+
+                                var data ={
+                                  "UserID": controller.box.read(Session.userData),
+                                  "FirstName": controller.firstNameController.text,
+                                  "LastName": controller.lastNameController.text,
+                                  "Desigination": controller.designationDropDownValue,
+                                  "DOB": controller.dobController.text,
+                                  "DOJ":controller.dojController.text,
+                                  "MobileNo": controller.mobileController.text,
+                                  "CurrentAddress": controller.currentAddressController.text,
+                                  "PermanentAddress": controller.permanentAddressController.text,
+                                  "IsRelived": controller.selectedRelieveIsActive,
+                                  "RelivedDate": controller.relievedDateController.text,
+                                  "RelivedReason": controller.relievedReasonController.text,
+                                  "UserName": controller.userNameController.text,
+                                  "Password": controller.passwordController.text,
+                                  "IsActive": controller.selectedIsActive,
+                                  "CUID": controller.box.read(Session.userData),
+                                };
+                                controller.insertUpdateProfixer(data);
                               },
                             ),
                           ],

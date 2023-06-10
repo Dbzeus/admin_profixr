@@ -270,7 +270,7 @@ class NewTicketController extends GetxController {
         "CUID": _box.read(Session.userId)
       };
 
-      var response = await ApiCall().insertProfixerCustomer(data);
+      var response = await ApiCall().insertCustomer(data);
       if (response != null) {
         if (response['RtnStatus']) {
           customerId = response['ID'];

@@ -7,6 +7,8 @@ import 'package:intl/intl.dart';
 
 import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/helpers/custom_dialog.dart';
+import 'package:profixer_admin/helpers/utils.dart';
+import 'package:profixer_admin/model/technician_response.dart';
 
 import 'package:profixer_admin/screens/technician/technician_controller.dart';
 
@@ -22,15 +24,57 @@ class AddTechnicianScreen extends StatelessWidget {
 
   AddTechnicianScreen({Key? key}) : super(key: key);
 
+  TechnicainData? technicianData = Get.arguments["data"];
   @override
   Widget build(BuildContext context) {
+
+    if (technicianData != null) {
+      controller.firstNameController.text =
+          technicianData!.firstName.toString();
+      controller.lastNameController.text =
+          technicianData!.lastName.toString();
+      controller.mobileController.text =
+          technicianData!.mobileNumber.toString();
+      controller.emailController.text =
+          technicianData!.mailID.toString();
+      controller.dobController.text =
+          toShowDateFormat(technicianData!.dob).toString();
+      controller.userNameController.text =
+          technicianData!.userNAme.toString();
+      controller.passwordController.text =
+          technicianData!.password.toString();
+      controller.serviceProviderDropDownValue (
+          technicianData!.serviceProviderName.toString());
+      controller.dojController.text =
+          toShowDateFormat(technicianData!.doj).toString();
+
+      controller.currentAddressController.text =
+          technicianData!.contactAddress.toString();
+      controller.permanentAddressController.text =
+          technicianData!.permanentAddress.toString();
+
+
+      //controller.selectedIsActive(TechnicianData!.isActive);
+    } else {
+      controller.firstNameController.clear();
+      controller.lastNameController.clear();
+      controller.userNameController.clear();
+      controller.mobileController.clear();
+      controller.emailController.clear();
+      controller.dobController.clear();
+      controller.passwordController.clear();
+      controller.permanentAddressController.clear();
+      controller.currentAddressController.clear();
+      controller.dojController.clear();
+
+    }
     return GestureDetector(
       onTap: () {
         Get.focusScope!.unfocus();
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: CustomAppBar(title: "Add Technician"),
+        appBar: CustomAppBar(title: Get.arguments["title"]),
         body: Obx(
           () => Padding(
             padding: const EdgeInsets.all(16.0),
@@ -298,8 +342,7 @@ class AddTechnicianScreen extends StatelessWidget {
                                                     .selectedIsActive.value
                                                 ? Colors.red
                                                 : Colors.black54,
-                                          ),
-                                        )
+                                          ),                                        )
                                       ],
                                     ),
                                   ),
@@ -312,10 +355,26 @@ class AddTechnicianScreen extends StatelessWidget {
                             text: "Add",
                             btnColor: primaryColor,
                             onTap: () {
-                              customDialog(Get.context, "Success",
-                                  "Added Successfull", () {
-                                    controller.isConfirm(!controller.isConfirm.value);
-                                  });
+                             var data = {
+                               "TechnicianID":technicianData?.technicianID ?? 0 ,
+                               "UserID": controller.box.read(Session.userData),
+                               "ServiceProviderID": technicianData?.serviceProviderID ?? 0,
+                               "FirstName": controller.firstNameController.text,
+                               "LastName":controller.lastNameController.text,
+                               "MobileNumber": controller.mobileController.text,
+                               "MailID": controller.emailController.text,
+                               "ContactAddress":controller.currentAddressController.text,
+                             "PermanentAddress": controller.permanentAddressController.text,
+                               "DOB": controller.dobController.text,
+                               "DOJ": controller.dojController.text,
+                               "ServiceIDs": technicianData?.serviceIDs ?? 0,
+                               "AreaIDs": technicianData?.areaIDs ?? 0,
+                               "Username": controller.userNameController.text,
+                               "Password": controller.passwordController.text,
+                               "IsActive": true,
+                               "CUID": controller.box.read(Session.userData),
+                             };
+                             controller.insertUpdateTechnician(data);
                             },
                           ),
                         ],

@@ -55,7 +55,7 @@ class CustomerController extends GetxController{
       isLoading(true);
 
       debugPrint(data.toString());
-      var response = await ApiCall().insertProfixerCustomer(data);
+      var response = await ApiCall().insertCustomer(data);
       isLoading(false);
       if (response != null) {
         if (response['RtnStatus']) {

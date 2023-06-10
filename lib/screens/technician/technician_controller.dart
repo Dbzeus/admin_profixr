@@ -5,6 +5,8 @@ import 'package:profixer_admin/apis/api_call.dart';
 import 'package:profixer_admin/helpers/utils.dart';
 
 import '../../helpers/constant_widgets.dart';
+import '../../helpers/custom_dialog.dart';
+import '../../model/technician_response.dart';
 
 class TechnicianController extends GetxController {
   TextEditingController firstNameController = TextEditingController();
@@ -27,7 +29,7 @@ class TechnicianController extends GetxController {
   RxBool selectedIsActive = true.obs;
   RxBool isLoading = false.obs;
   String dateFormat = "MM/dd/yyyy";
-  var technicain;
+  RxList<TechnicainData> technicianList = RxList();
   RxString mobileNoDropDownValue = "+966".obs;
   List<String> mobileItems = ["+966", "+967", "+968"];
 
@@ -47,20 +49,45 @@ class TechnicianController extends GetxController {
     }
   ];
 
-  final _box = GetStorage();
+  final box = GetStorage();
 
-getTechnician() async {
+  @override
+  void onInit() {
+    super.onInit();
+    getTechnician();
+  }
+
+  getTechnician() async {
     if (await isNetConnected()) {
       isLoading(true);
-      var response = await ApiCall().getTechnician(_box.read(Session.userId), 1);
+      TechnicianResponse? response =
+          await ApiCall().getTechnician(0,0);//_box.read(Session.userId), 1
+      isLoading(false);
+      if (response != null) {
+        if (response.rtnStatus) {
+          technicianList(response.rtnData);
+          //searchList = response['RtnData'];
+        } else {
+          toast(response.rtnMsg);
+        }
+      }
+    }
+  }
+
+  insertUpdateTechnician(data) async {
+    if (await isNetConnected()) {
+      isLoading(true);
+      var response = await ApiCall().insertTechnician(data);
       isLoading(false);
       if (response != null) {
         if (response['RtnStatus']) {
-          technicain(response['RtnData']);
-          //searchList = response['RtnData'];
-        } else {
-          toast(response['RtnMsg']);
+          customDialog(Get.context, "Success", response['RtnMsg'].toString(),
+                  () {
+                Get.back();
+                getTechnician();
+              },isDismissable: false);
         }
+        toast(response['RtnMsg']);
       }
     }
   }

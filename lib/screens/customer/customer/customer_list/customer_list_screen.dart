@@ -46,6 +46,9 @@ class CustomerListScreen extends GetView<CustomerController> {
                         fontSize: 16,
                         color: textColor,
                       ),
+                      onChanged: (text){
+                        controller.onSearchChanged(text);
+                      },
                       decoration: const InputDecoration(
                           hintText: 'Search',
                           border: InputBorder.none,

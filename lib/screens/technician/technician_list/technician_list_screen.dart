@@ -63,12 +63,12 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                 ),
                 GestureDetector(
                   onTap: () {
-
                     Get.toNamed(Routes.addTechnician, arguments: {
                       "title": "Add Technician",
                       "buttonTitle": "Add",
                       "data": null,
                     });
+
 
                   },
                   child: Container(

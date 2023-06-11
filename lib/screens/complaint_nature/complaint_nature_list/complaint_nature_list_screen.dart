@@ -55,6 +55,9 @@ class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
                           fontSize: 16,
                           color: textColor,
                         ),
+                        onChanged: (text){
+                          controller.onSearchChanged(text);
+                        },
                         decoration: InputDecoration(
                           hintText: 'Search',
                           border: InputBorder.none,
@@ -177,7 +180,7 @@ class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "${data['ComplaintNatureName']}",
+                      "${data['ServiceName']}",
                       style: TextStyle(
                           color: blackColor,
                           fontSize: 14,
@@ -187,11 +190,21 @@ class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
                       height: 8,
                     ),
                     Text(
+                      "${data['ComplaintNatureName']}",
+                      style: TextStyle(
+                          color: blackColor,
+                          fontSize: 12,
+                          ),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(
                       "${data['Remarks']}",
                       overflow: TextOverflow.ellipsis,
                       maxLines: 4,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 10,
                         color: blackColor,
                       ),
                     ),

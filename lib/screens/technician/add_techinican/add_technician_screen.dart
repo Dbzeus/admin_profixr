@@ -25,6 +25,7 @@ class AddTechnicianScreen extends StatelessWidget {
   AddTechnicianScreen({Key? key}) : super(key: key);
 
   TechnicainData? technicianData = Get.arguments["data"];
+  String title = Get.arguments["title"];
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +75,7 @@ class AddTechnicianScreen extends StatelessWidget {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: CustomAppBar(
-          title: Get.arguments["title"],
+          title: title,
           onTap: () {
             if (controller.isConfirm.value == false) {
               controller.isConfirm(!controller.isConfirm.value);
@@ -415,8 +416,8 @@ class AddTechnicianScreen extends StatelessWidget {
                                           controller.currentAddressController.text,
                                       "PermanentAddress": controller
                                           .permanentAddressController.text,
-                                      "DOB": controller.dobController.text,
-                                      "DOJ": controller.dojController.text,
+                                      "DOB": toSendDateFormat(controller.dobController.text),
+                                      "DOJ": toSendDateFormat(controller.dojController.text),
                                       "ServiceIDs": technicianData?.serviceIDs ?? "0",
                                       "AreaIDs": technicianData?.areaIDs ?? "0",
                                       "Username":

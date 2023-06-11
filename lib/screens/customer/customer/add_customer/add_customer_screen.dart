@@ -32,7 +32,7 @@ class AddCustomerScreen extends StatelessWidget {
 
       controller.nameController.text = customerData!.firstName.toString();
       controller.remarkController.text = customerData!.remarks.toString();
-      controller.dateController.text =
+      controller.dobController.text =
           toShowDateFormat(customerData!.dob.toString());
       controller.mobileController.text =customerData!.mobileNo.toString();
       controller.emailController.text = customerData!.emailID.toString();
@@ -41,7 +41,7 @@ class AddCustomerScreen extends StatelessWidget {
     } else {
       controller.nameController.clear();
       controller.remarkController.clear();
-      controller.dateController.clear();
+      controller.dobController.clear();
       controller.mobileController.clear();
       controller.emailController.clear();
       controller.permanentAddressController.clear();
@@ -160,14 +160,14 @@ class AddCustomerScreen extends StatelessWidget {
                             hintText: "Date Of Birth",
                             showCursor: false,
                             keyboardType: TextInputType.none,
-                            controller: controller.dateController,
+                            controller: controller.dobController,
                             suffixIcon: const Icon(
                               Icons.calendar_month_rounded,
                               color: blackColor,
                               size: 22,
                             ),
                             onTab: () async {
-                              controller.dateController.text = await getDate(
+                              controller.dobController.text = await getDate(
                                   initialDate: DateTime(DateTime.now().year -18, 12, 31),
                                   firstDate: DateTime(DateTime.now().year -80, 12, 31),
                                   lastDate: DateTime(DateTime.now().year -18, 12, 31)
@@ -200,7 +200,7 @@ class AddCustomerScreen extends StatelessWidget {
                                   "CurrentAddress":
                                       controller.permanentAddressController.text.trim(),
                                   "DOB":
-                                      toSendDateFormat(controller.dateController.text),
+                                      toSendDateFormat(controller.dobController.text),
                                   "Remarks": controller.remarkController.text.trim(),
                                   "Username": controller.mobileController.text.trim(),
                                   "Password": "1234",

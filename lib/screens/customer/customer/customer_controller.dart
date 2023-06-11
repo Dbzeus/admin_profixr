@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -8,14 +7,15 @@ import '../../../apis/api_call.dart';
 import '../../../helpers/constant_widgets.dart';
 import '../../../helpers/custom_dialog.dart';
 
-class CustomerController extends GetxController{
+class CustomerController extends GetxController {
   RxList<Customer> customers = RxList();
+  RxList<Customer> searchList = RxList();
   RxBool isLoading = false.obs;
 
   TextEditingController searchController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController remarkController = TextEditingController();
-  TextEditingController dateController = TextEditingController();
+  TextEditingController dobController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController permanentAddressController = TextEditingController();
@@ -43,6 +43,7 @@ class CustomerController extends GetxController{
       if (response != null) {
         if (response.rtnStatus) {
           customers(response.rtnData);
+          searchList(response.rtnData);
         } else {
           toast(response.rtnMsg);
         }
@@ -50,27 +51,73 @@ class CustomerController extends GetxController{
     }
   }
 
-  createCustomer(data,bool isUpdated) async {
-    if (await isNetConnected()) {
-      isLoading(true);
+  createCustomer(data, bool isUpdated) async {
+    if (nameController.text.isEmpty &&
+        mobileController.text.isEmpty &&
+        emailController.text.isEmpty &&
+        permanentAddressController.text.isEmpty &&
+        dobController.text.isEmpty &&
+        remarkController.text.isEmpty) {
+      toast("Please Enter All Fields");
+    } else if (nameController.text.isEmpty) {
+      toast("Please Enter Customer Name");
+    } else if (mobileController.text.isEmpty) {
+      toast("Please Enter Mobile Number");
+    } else if (emailController.text.isEmpty) {
+      toast("Please Enter Email ID");
+    } else if (permanentAddressController.text.isEmpty) {
+      toast("Please Enter Your Permanent Address");
+    } else if (dobController.text.isEmpty) {
+      toast("Please Enter Date of Birth");
+    } else if (remarkController.text.isEmpty) {
+      toast("Please Enter Remarks");
+    } else {
+      if (await isNetConnected()) {
+        isLoading(true);
 
-      debugPrint(data.toString());
-      var response = await ApiCall().insertCustomer(data);
-      isLoading(false);
-      if (response != null) {
-        if (response['RtnStatus']) {
-          customDialog(
-              Get.context, isUpdated ? "Updated Successful!": "Added Successful!", "${response['RtnMsg']}", () {
-            Get.back();
-            getCustomers();
-          }, isDismissable: false);
-        } else {
-          toast('${response['RtnMsg']}');
+        debugPrint(data.toString());
+        var response = await ApiCall().insertCustomer(data);
+        isLoading(false);
+        if (response != null) {
+          if (response['RtnStatus']) {
+            customDialog(
+                Get.context,
+                isUpdated ? "Updated Successful!" : "Added Successful!",
+                "${response['RtnMsg']}", () {
+              Get.back();
+              getCustomers();
+            }, isDismissable: false);
+          } else {
+            toast('${response['RtnMsg']}');
+          }
         }
       }
     }
   }
 
-
-
+  onSearchChanged(String text) {
+    if (text.isEmpty) {
+      customers(searchList);
+    } else {
+      customers(searchList
+          .where((element) =>
+              element.userName
+                  .toString()
+                  .toLowerCase()
+                  .contains(text.toLowerCase()) ||
+              element.firstName
+                  .toString()
+                  .toLowerCase()
+                  .contains(text.toLowerCase()) ||
+              element.mobileNo
+                  .toString()
+                  .toLowerCase()
+                  .contains(text.toLowerCase()) ||
+              element.emailID
+                  .toString()
+                  .toLowerCase()
+                  .contains(text.toLowerCase()))
+          .toList());
+    }
+  }
 }

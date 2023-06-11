@@ -20,6 +20,7 @@ class AddAdminServiceProvider extends StatelessWidget {
   AddAdminServiceProvider({Key? key}) : super(key: key);
 
   AdminData? adminData = Get.arguments["service"];
+  String title = Get.arguments["title"];
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +62,7 @@ class AddAdminServiceProvider extends StatelessWidget {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: CustomAppBar(
-          title: Get.arguments["title"].toString(),
+          title: title,
           onTap: () {
             if (controller.isConfirm.value == false) {
               controller.isConfirm(!controller.isConfirm.value);

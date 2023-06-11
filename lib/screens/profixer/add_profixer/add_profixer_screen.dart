@@ -11,7 +11,7 @@ import 'package:profixer_admin/helpers/utils.dart';
 import 'package:profixer_admin/model/profixer_response.dart';
 import 'package:profixer_admin/screens/profixer/profixer_controller.dart';
 
-import 'package:profixer_admin/screens/technician/technician_controller.dart';
+
 
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 import 'package:profixer_admin/widgets/custom_button.dart';
@@ -29,6 +29,7 @@ class AddProfixerScreen extends StatelessWidget {
 
 
   ProfixerData? profixerData = Get.arguments["data"];
+  RxString title = Get.arguments["title"].obs;
   @override
   Widget build(BuildContext context) {
     if (profixerData != null) {
@@ -79,7 +80,7 @@ class AddProfixerScreen extends StatelessWidget {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: CustomAppBar(title: Get.arguments["title"].toString(),),
+        appBar: CustomAppBar(title: title.value),
         body: Stack(
           children: [
             Obx(
@@ -502,13 +503,13 @@ class AddProfixerScreen extends StatelessWidget {
                                       "FirstName": controller.firstNameController.text,
                                       "LastName": controller.lastNameController.text,
                                       "Desigination": controller.designationDropDownValue.value,
-                                      "DOB": controller.dobController.text,
-                                      "DOJ":controller.dojController.text,
+                                      "DOB": toSendDateFormat(controller.dobController.text),
+                                      "DOJ":toSendDateFormat(controller.dojController.text),
                                       "MobileNo": controller.mobileController.text,
                                       "CurrentAddress": controller.currentAddressController.text,
                                       "PermanentAddress": controller.permanentAddressController.text,
                                       "IsRelived": controller.selectedRelieveIsActive.value,
-                                      "RelivedDate": controller.relievedDateController.text,
+                                      "RelivedDate":toSendDateFormat( controller.relievedDateController.text),
                                       "RelivedReason": controller.relievedReasonController.text,
                                       "UserName": controller.userNameController.text,
                                       "Password": controller.passwordController.text,

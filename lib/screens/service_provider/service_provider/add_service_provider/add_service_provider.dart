@@ -22,6 +22,7 @@ class AddServiceProviderScreen extends StatelessWidget {
   AddServiceProviderScreen({Key? key}) : super(key: key);
 
   ServiceProviderData? serviceProviderData = Get.arguments["service"];
+  String title = Get.arguments["title"];
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +59,6 @@ class AddServiceProviderScreen extends StatelessWidget {
       controller.bankDetailsController.clear();
       controller.contractStartController.clear();
       controller.contractEndController.clear();
-
     }
     return GestureDetector(
       onTap: () {
@@ -67,7 +67,7 @@ class AddServiceProviderScreen extends StatelessWidget {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: CustomAppBar(
-          title: Get.arguments["title"].toString(),
+          title: title,
           onTap: () {
             if (controller.isConfirm.value == false) {
               controller.isConfirm(!controller.isConfirm.value);
@@ -449,10 +449,10 @@ class AddServiceProviderScreen extends StatelessWidget {
                                               serviceProviderData?.serviceIDs ?? "0",
                                           "AreaIDs":
                                               serviceProviderData?.areaIDs ?? "0",
-                                          "ContractStartDate": controller
-                                              .contractStartController.text,
-                                          "ContractEndDate":
-                                              controller.contractEndController.text,
+                                          "ContractStartDate":toSendDateFormat( controller
+                                              .contractStartController.text),
+                                          "ContractEndDate":toSendDateFormat(
+                                              controller.contractEndController.text),
                                           "IsActive": controller.selectedIsActive.value,
                                           "CUID":
                                               controller.box.read(Session.userId),

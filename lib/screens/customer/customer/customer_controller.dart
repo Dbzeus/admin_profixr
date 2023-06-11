@@ -6,6 +6,7 @@ import 'package:profixer_admin/model/customer_response.dart';
 import '../../../apis/api_call.dart';
 import '../../../helpers/constant_widgets.dart';
 import '../../../helpers/custom_dialog.dart';
+import '../../../helpers/utils.dart';
 
 class CustomerController extends GetxController {
   RxList<Customer> customers = RxList();
@@ -23,6 +24,9 @@ class CustomerController extends GetxController {
   RxBool selectedIsActive = true.obs;
 
   final box = GetStorage();
+
+  int customerId = 0;
+  int userId = 0;
 
   RxString mobileNoDropDownValue = "+966".obs;
   List<String> mobileItems = ["+966", "+967", "+968"];
@@ -51,7 +55,7 @@ class CustomerController extends GetxController {
     }
   }
 
-  createCustomer(data, bool isUpdated) async {
+  validation(bool isUpdated){
     if (nameController.text.isEmpty &&
         mobileController.text.isEmpty &&
         emailController.text.isEmpty &&
@@ -71,10 +75,34 @@ class CustomerController extends GetxController {
       toast("Please Enter Date of Birth");
     } else if (remarkController.text.isEmpty) {
       toast("Please Enter Remarks");
-    } else {
+    }else{
+      var data = {
+        "CustomerID": customerId,
+        "UserID": userId,
+        "FirstName": nameController.text.trim(),
+        "LastName": "",
+        "MobileNumber":
+        mobileController.text.trim(),
+        "EMailID": emailController.text.trim(),
+        "CurrentAddress":
+        permanentAddressController.text.trim(),
+        "DOB":
+        toSendDateFormat(dobController.text),
+        "Remarks": remarkController.text.trim(),
+        "Username": mobileController.text.trim(),
+        "Password": "1234",
+        "IsActive": true,
+        "CUID": box.read(Session.userId)
+      };
+      createCustomer(
+          data, isUpdated);
+    }
+  }
+
+  createCustomer(data, bool isUpdated) async {
+
       if (await isNetConnected()) {
         isLoading(true);
-
         debugPrint(data.toString());
         var response = await ApiCall().insertCustomer(data);
         isLoading(false);
@@ -93,7 +121,7 @@ class CustomerController extends GetxController {
         }
       }
     }
-  }
+
 
   onSearchChanged(String text) {
     if (text.isEmpty) {

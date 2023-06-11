@@ -35,6 +35,7 @@ class _AddressListState extends State<AddressList> {
           height: 16,
         ),
         Row(
+
           children: [
             Expanded(
               child: Container(
@@ -57,6 +58,9 @@ class _AddressListState extends State<AddressList> {
                     fontSize: 16,
                     color: textColor,
                   ),
+                  onChanged: (text){
+                    controller.onSearchChanged(text);
+                  },
                   decoration: const InputDecoration(
                       hintText: 'Search',
                       border: InputBorder.none,
@@ -64,10 +68,7 @@ class _AddressListState extends State<AddressList> {
                         Icons.search,
                         color: textColor,
                       ),
-                      suffix: Icon(
-                        Icons.filter_alt_rounded,
-                        color: textColor,
-                      )),
+                     ),
                 ),
               ),
             ),
@@ -209,8 +210,10 @@ class _AddressListState extends State<AddressList> {
                   activeColor: Colors.green.shade200,
                   inactiveThumbColor: Colors.red.shade200,
                   onChanged: (val) {
+                    debugPrint(val.toString());
                     data.isActive = val;
-                    controller.insertCustomerAddress(data, !data.isActive,
+                    debugPrint(data.isActive.toString());
+                    controller.enalbeDisableAddress(data, data.isActive,
                         showDialog: false);
                   })
             ],

@@ -22,13 +22,11 @@ class AddCustomerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int customerId = 0;
-    int userId = 0;
 
 
     if (customerData!=null)  {
-      customerId = customerData!.customerID;
-      userId = customerData!.userID;
+     controller.customerId = customerData!.customerID;
+      controller.userId = customerData!.userID;
 
       controller.nameController.text = customerData!.firstName.toString();
       controller.remarkController.text = customerData!.remarks.toString();
@@ -191,27 +189,7 @@ class AddCustomerScreen extends StatelessWidget {
                           CustomButton(
                               text: Get.arguments['buttonTitle'],
                               onTap: () {
-                                var data = {
-                                  "CustomerID": customerId,
-                                  "UserID": userId,
-                                  "FirstName": controller.nameController.text.trim(),
-                                  "LastName": "",
-                                  "MobileNumber":
-                                      controller.mobileController.text.trim(),
-                                  "EMailID": controller.emailController.text.trim(),
-                                  "CurrentAddress":
-                                      controller.permanentAddressController.text.trim(),
-                                  "DOB":
-                                      toSendDateFormat(controller.dobController.text),
-                                  "Remarks": controller.remarkController.text.trim(),
-                                  "Username": controller.mobileController.text.trim(),
-                                  "Password": "1234",
-                                  "IsActive": true,
-                                  "CUID": controller.box.read(Session.userId)
-                                };
-
-                                controller.createCustomer(
-                                    data, Get.arguments['customer'] != null);
+                                controller.validation(Get.arguments['customer'] != null);
                               }),
                         ],
                       ),

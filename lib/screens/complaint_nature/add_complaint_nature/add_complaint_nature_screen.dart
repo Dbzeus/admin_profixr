@@ -302,7 +302,7 @@ class AddComplaintNatureScreen extends StatelessWidget {
                           "ComplaintNatureImg": controller.imagePath.value,
                           "Remarks": controller.remarkController.text.trim(),
                           "IsActive": controller.selectedIsActive.value,
-                          "CUID": controller.box.read(Session.userId)
+                          "CUID":  controller.box.read(Session.userId)
                         };
                         controller.createComplaintNature(
                             data, Get.arguments['complaintNature'] != null);

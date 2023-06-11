@@ -56,10 +56,7 @@ class CustomerListScreen extends GetView<CustomerController> {
                             Icons.search,
                             color: textColor,
                           ),
-                          suffix: Icon(
-                            Icons.filter_alt_rounded,
-                            color: textColor,
-                          )),
+                         ),
                     ),
                   ),
                 ),

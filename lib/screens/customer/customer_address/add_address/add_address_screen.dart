@@ -77,7 +77,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                     height: 10,
                   ),
                   CustomEditText(
-                      hintText: "Door No/ Plot No title",
+                      hintText: "Door No/ Plot Nos",
                       controller: controller.doorNoController),
                   const SizedBox(
                     height: 10,
@@ -231,23 +231,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                   CustomButton(
                       text: Get.arguments['buttonTitle'],
                       onTap: () {
-                        var data = {
-                          "AddressID": address?.addressID ?? 0,
-                          "CustomerID": address?.customerID ?? controller.customerId,
-                          "AddressTitle": controller.addressTitleController.text
-                              .trim(),
-                          "DoorNo": controller.doorNoController.text.trim(),
-                          "StreetName": controller.streetNameController.text.trim(),
-                          "CityID": controller.selectedCity.value,
-                          "AreaID": controller.selectedArea.value,
-                          "LandMark": controller.landmarkController.text.trim(),
-                          "Latitude": "",
-                          "Longitude": "",
-                          "IsActive": true,
-                          "CUID": controller.box.read(Session.userId)
-                        };
-                        controller.insertCustomerAddress(
-                            data, Get.arguments['address'] != null);
+                          controller.validation(Get.arguments['address'] != null,address);
                       }),
                 ],
               ),

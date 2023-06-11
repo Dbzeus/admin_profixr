@@ -206,126 +206,193 @@ class NewTicketController extends GetxController {
   }
 
   bookATicket() async {
-    if (await isNetConnected()) {
-      try {
-        isLoading(true);
+    if(selectedService.isEmpty &&
+        selectedCNature.isEmpty &&
+        selectedService.isEmpty&&
+        serviceDateController.text.isEmpty &&
+        selectedTimeSlot.isEmpty &&
+        bookingRemarksController.text.isEmpty
+    ){
+      toast("Please fill all the fields");
+    }else if(selectedService.isEmpty){
+      toast("Please Select the service");
+    }else if(selectedCNature.isEmpty){
+      toast("Please Select the Complaint Nature");
+    }else if(selectedService.isEmpty){
+      toast("Please Select the Service Type");
+    }else if(serviceDateController.text.isEmpty){
+      toast("Please select the service date");
+    }else if(selectedTimeSlot.isEmpty){
+      toast("Please select the TimeSlot");
+    }else if(bookingRemarksController.text.isEmpty){
+      toast("Please Enter Remarks");
+    }else {
+      if (await isNetConnected()) {
+        try {
+          isLoading(true);
 
-        var image = "";
-        if (imagePath.value.isNotEmpty) {
-          //upload Image
-          var response = await ApiCall().uploadAttachment([imagePath.value]);
-          if (response != null) {
-            if (response['RtnStatus']) {
-              image = response['RtnMsg'];
-            } else {
-              toast('${response['RtnMsg']}');
+          var image = "";
+          if (imagePath.value.isNotEmpty) {
+            //upload Image
+            var response = await ApiCall().uploadAttachment([imagePath.value]);
+            if (response != null) {
+              if (response['RtnStatus']) {
+                image = response['RtnMsg'];
+              } else {
+                toast('${response['RtnMsg']}');
+              }
             }
           }
+
+          var data = {
+            "TicketID": 0,
+            "TicketStatusID": 0,
+            "CustomerID": customerId,
+            "CustomerAddressID": customerAddressId,
+            "ServiceID": selectedService.value,
+            "ComplaintNatureID": selectedCNature.value,
+            "ServiceTypeID": selectedType.value,
+            "ServiceProviderID": 0,
+            "TechnicianID": 0,
+            "AppoinmentDate": toSendDateFormat(serviceDateController.text.trim()),
+            "TimeSlotID": selectedTimeSlot.value,
+            "Reason": "",
+            "Remarks": bookingRemarksController.text.trim(),
+            "Images": image,
+            "CUID": _box.read(Session.userId)
+          };
+
+          var response = await ApiCall().bookATicket(data);
+          isLoading(false);
+
+          if (response != null) {
+            customDialog(
+                Get.context,
+                response['RtnStatus']
+                    ? "Booking Successful!"
+                    : "Booking Unsuccessful!",
+                "${response['RtnMsg']}", () {
+              final con = Get.find<MainController>();
+              con.getTicketCounts();
+              Get.back();
+            }, isDismissable: false);
+          }
+        }catch(e){
+          isLoading(false);
         }
-
-        var data = {
-          "TicketID": 0,
-          "TicketStatusID": 0,
-          "CustomerID": customerId,
-          "CustomerAddressID": customerAddressId,
-          "ServiceID": selectedService.value,
-          "ComplaintNatureID": selectedCNature.value,
-          "ServiceTypeID": selectedType.value,
-          "ServiceProviderID": 0,
-          "TechnicianID": 0,
-          "AppoinmentDate": toSendDateFormat(serviceDateController.text.trim()),
-          "TimeSlotID": selectedTimeSlot.value,
-          "Reason": "",
-          "Remarks": bookingRemarksController.text.trim(),
-          "Images": image,
-          "CUID": _box.read(Session.userId)
-        };
-
-        var response = await ApiCall().bookATicket(data);
-        isLoading(false);
-
-        if (response != null) {
-          customDialog(
-              Get.context,
-              response['RtnStatus']
-                  ? "Booking Successful!"
-                  : "Booking Unsuccessful!",
-              "${response['RtnMsg']}", () {
-            final con = Get.find<MainController>();
-            con.getTicketCounts();
-            Get.back();
-          }, isDismissable: false);
-        }
-      }catch(e){
-        isLoading(false);
       }
     }
+
   }
 
   saveCustomer() async {
-    if (await isNetConnected()) {
-      isLoading(true);
-      var data = {
-        "CustomerID": 0,
-        "UserID": 0,
-        "FirstName": customerNameController.text.trim(),
-        "LastName": "",
-        "MobileNumber": customerMobileNoController.text.trim(),
-        "EMailID": emailController.text.trim(),
-        "CurrentAddress": "",
-        "DOB": toSendDateFormat(dobController.text.trim()),
-        "Remarks": remarksController.text.trim(),
-        "Username": customerMobileNoController.text.trim(),
-        "Password": "1234",
-        "IsActive": true,
-        "CUID": _box.read(Session.userId)
-      };
+    if(customerNameController.text.isEmpty &&
+        customerMobileNoController.text.isEmpty &&
+        emailController.text.isEmpty&&
+        customerMobileNoController.text.isEmpty &&
+        dobController.text.isEmpty &&
+        remarksController.text.isEmpty
+    ){
+      toast("Please fill all the fields");
+    }else if(customerNameController.text.isEmpty){
+      toast("Please Enter Customer Name");
+    }else if(customerMobileNoController.text.isEmpty){
+      toast("Please Enter Customer Mobile Number");
+    }else if(emailController.text.isEmpty){
+      toast("Please Enter Email Id");
+    }else if(customerMobileNoController.text.isEmpty){
+      toast("Please Enter Customer Mobile Number");
+    }else if(dobController.text.isEmpty){
+      toast("Please Enter date of birth");
+    }else if(remarksController.text.isEmpty){
+      toast("Please Enter Remarks field");
+    }else{
+      if (await isNetConnected()) {
+        isLoading(true);
+        var data = {
+          "CustomerID": 0,
+          "UserID": 0,
+          "FirstName": customerNameController.text.trim(),
+          "LastName": "",
+          "MobileNumber": customerMobileNoController.text.trim(),
+          "EMailID": emailController.text.trim(),
+          "CurrentAddress": "",
+          "DOB": toSendDateFormat(dobController.text.trim()),
+          "Remarks": remarksController.text.trim(),
+          "Username": customerMobileNoController.text.trim(),
+          "Password": "1234",
+          "IsActive": true,
+          "CUID": _box.read(Session.userId)
+        };
 
-      var response = await ApiCall().insertCustomer(data);
-      if (response != null) {
-        if (response['RtnStatus']) {
-          customerId = response['ID'];
-          getCity();
-          currentStep(1);
-        } else {
-          toast(response['RtnMsg']);
+        var response = await ApiCall().insertCustomer(data);
+        if (response != null) {
+          if (response['RtnStatus']) {
+            customerId = response['ID'];
+            getCity();
+            currentStep(1);
+          } else {
+            toast(response['RtnMsg']);
+          }
         }
+        isLoading(false);
       }
-      isLoading(false);
     }
+
   }
 
   saveCustomerAddress() async {
-    if (await isNetConnected()) {
-      isLoading(true);
-      var data = {
-        "AddressID": 0,
-        "CustomerID": customerId,
-        "AddressTitle": customerAddressTitleController.text.trim(),
-        "DoorNo": doorNoController.text.trim(),
-        "StreetName": streetNameController.text.trim(),
-        "CityID": selectedCity.value,
-        "AreaID": selectedArea.value,
-        "LandMark": landmarkController.text.trim(),
-        "Latitude": "",
-        "Longitude": "",
-        "IsActive": true,
-        "CUID": _box.read(Session.userId)
-      };
 
-      var response = await ApiCall().insertCustomerAddress(data);
-      if (response != null) {
-        if (response['RtnStatus']) {
-          customerAddressId = response['ID'];
-          getServices();
-          getServiceType();
-          getTimeSlots();
-          currentStep(2);
-        } else {
-          toast(response['RtnMsg']);
+    if(customerAddressTitleController.text.isEmpty &&
+        doorNoController.text.isEmpty &&
+        streetNameController.text.isEmpty&&
+        selectedCity.isEmpty &&
+        selectedArea.isEmpty
+    ){
+      toast("Please fill all the fields");
+    }else if(customerAddressTitleController.text.isEmpty){
+      toast("Please Enter Customer Address");
+    }else if(doorNoController.text.isEmpty){
+      toast("Please Enter Customer Door or Plot Number");
+    }else if(streetNameController.text.isEmpty){
+      toast("Please Enter Street name ");
+    }else if(selectedCity.isEmpty){
+      toast("Please select the city ");
+    }else if(selectedArea.isEmpty){
+      toast("Please select the are");
+    }else{
+      if (await isNetConnected()) {
+        isLoading(true);
+        var data = {
+          "AddressID": 0,
+          "CustomerID": customerId,
+          "AddressTitle": customerAddressTitleController.text.trim(),
+          "DoorNo": doorNoController.text.trim(),
+          "StreetName": streetNameController.text.trim(),
+          "CityID": selectedCity.value,
+          "AreaID": selectedArea.value,
+          "LandMark": landmarkController.text.trim(),
+          "Latitude": "",
+          "Longitude": "",
+          "IsActive": true,
+          "CUID": _box.read(Session.userId)
+        };
+
+        var response = await ApiCall().insertCustomerAddress(data);
+        if (response != null) {
+          if (response['RtnStatus']) {
+            customerAddressId = response['ID'];
+            getServices();
+            getServiceType();
+            getTimeSlots();
+            currentStep(2);
+          } else {
+            toast(response['RtnMsg']);
+          }
         }
+        isLoading(false);
       }
-      isLoading(false);
     }
+
   }
 }

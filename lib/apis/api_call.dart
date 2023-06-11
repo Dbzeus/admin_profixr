@@ -566,7 +566,7 @@ class ApiCall {
           await _dio.get(getServiceProviderAreaUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
-      return MenuResponse.fromJson(response.data);
+      return response.data;
     } on DioError catch (e) {
       log(e.message);
       toast(e.message);

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
-import 'package:profixer_admin/helpers/custom_dialog.dart';
+
 import 'package:profixer_admin/helpers/utils.dart';
 import 'package:profixer_admin/model/admin_response.dart';
 
@@ -11,10 +11,11 @@ import 'package:profixer_admin/widgets/custom_button.dart';
 import 'package:profixer_admin/widgets/custom_edittext.dart';
 import 'package:profixer_admin/widgets/custom_loader.dart';
 
-import '../../service_provider_controller.dart';
+
+import '../service_provider_admin_controller.dart';
 
 class AddAdminServiceProvider extends StatelessWidget {
-  final controller = Get.find<ServiceProviderController>();
+  final controller = Get.find<ServiceProviderAdminController>();
 
   AddAdminServiceProvider({Key? key}) : super(key: key);
 
@@ -39,6 +40,7 @@ class AddAdminServiceProvider extends StatelessWidget {
       controller.adminDojController.text =
           toShowDateFormat(adminData!.doj).toString();
       controller.selectedIsActive(adminData!.isActive);
+      controller.isConfirm(true);
     } else {
       controller.adminFirstNameController.clear();
       controller.adminLastNameController.clear();
@@ -50,8 +52,8 @@ class AddAdminServiceProvider extends StatelessWidget {
       controller.adminPermenantAddressController.clear();
       controller.adminDobController.clear();
       controller.adminDojController.clear();
+      controller.isConfirm(true);
     }
-
     return GestureDetector(
       onTap: () {
         Get.focusScope!.unfocus();
@@ -95,12 +97,6 @@ class AddAdminServiceProvider extends StatelessWidget {
                             height: 10,
                           ),
                           CustomEditText(
-                              hintText: "Create Password",
-                              controller: controller.adminPasswordController),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CustomEditText(
                             hintText: "Mobile Number",
                             controller: controller.adminMobNoController,
                             prefixIcon: Obx(
@@ -126,6 +122,12 @@ class AddAdminServiceProvider extends StatelessWidget {
                                   }),
                             ),
                           ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          CustomEditText(
+                              hintText: "Create Password",
+                              controller: controller.adminPasswordController),
                           const SizedBox(
                             height: 10,
                           ),
@@ -343,7 +345,7 @@ class AddAdminServiceProvider extends StatelessWidget {
                                   "IsActive": controller.selectedIsActive.value,
                                   "CUID": controller.box.read(Session.userId),
                                 };
-                                controller.insertUpdateServiceProviderAdmin(data);
+                                controller.insertUpdateServiceProviderAdmin(controller.selectedIsActive.value,data);
                               }),
                         ],
                       ),

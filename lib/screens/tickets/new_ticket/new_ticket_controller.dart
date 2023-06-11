@@ -74,7 +74,7 @@ class NewTicketController extends GetxController {
   getArea() async {
     if (await isNetConnected()) {
       isLoading(true);
-      var response = await ApiCall().getArea();
+      var response = await ApiCall().getArea( cityId: int.parse(selectedCity.value));
       isLoading(false);
       if (response != null) {
         if (response['RtnStatus']) {
@@ -103,6 +103,7 @@ class NewTicketController extends GetxController {
           }
           if (cities.isNotEmpty) {
             selectedCity('${cities.first['id']}');
+            getArea();
           }
         } else {
           toast(response['RtnMsg']);
@@ -118,6 +119,7 @@ class NewTicketController extends GetxController {
       isLoading(false);
       if (response != null) {
         if (response['RtnStatus']) {
+          timeSlots.clear();
           for (var e in response['RtnData']) {
             timeSlots
                 .add({"id": '${e["TimeSlotID"]}', "value": "${e['TimeSlot']}"});
@@ -139,6 +141,7 @@ class NewTicketController extends GetxController {
       isLoading(false);
       if (response != null) {
         if (response['RtnStatus']) {
+          types.clear();
           for (var e in response['RtnData']) {
             types.add({
               "id": '${e["ServiceTypeID"]}',
@@ -147,6 +150,7 @@ class NewTicketController extends GetxController {
           }
           if (types.isNotEmpty) {
             selectedType('${types.first['id']}');
+            getComplaintNature();
           }
         } else {
           toast(response['RtnMsg']);
@@ -162,6 +166,7 @@ class NewTicketController extends GetxController {
       isLoading(false);
       if (response != null) {
         if (response['RtnStatus']) {
+          services.clear();
           for (var e in response['RtnData']) {
             services.add(
                 {"id": '${e["ServiceID"]}', "value": "${e['ServiceName']}"});
@@ -179,10 +184,11 @@ class NewTicketController extends GetxController {
   getComplaintNature() async {
     if (await isNetConnected()) {
       isLoading(true);
-      var response = await ApiCall().getComplaintNature();
+      var response = await ApiCall().getComplaintNature(serviceId: int.parse(selectedService.value));
       isLoading(false);
       if (response != null) {
         if (response['RtnStatus']) {
+          cNatures.clear();
           for (var e in response['RtnData']) {
             cNatures.add({
               "id": '${e["ComplaintNatureID"]}',
@@ -205,7 +211,7 @@ class NewTicketController extends GetxController {
         isLoading(true);
 
         var image = "";
-        if (imagePath.isNotEmpty) {
+        if (imagePath.value.isNotEmpty) {
           //upload Image
           var response = await ApiCall().uploadAttachment([imagePath.value]);
           if (response != null) {
@@ -279,7 +285,6 @@ class NewTicketController extends GetxController {
       if (response != null) {
         if (response['RtnStatus']) {
           customerId = response['ID'];
-          getArea();
           getCity();
           currentStep(1);
         } else {
@@ -314,7 +319,6 @@ class NewTicketController extends GetxController {
           customerAddressId = response['ID'];
           getServices();
           getServiceType();
-          getComplaintNature();
           getTimeSlots();
           currentStep(2);
         } else {

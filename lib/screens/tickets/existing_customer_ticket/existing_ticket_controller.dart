@@ -17,8 +17,6 @@ class ExistingTicketController extends GetxController {
 
   Customer customer = Get.arguments['customer'];
 
-  int customerAddressId = 0;
-
   RxList<Map<String, String>> cities = RxList();
   RxString selectedCity = "".obs;
 
@@ -191,7 +189,7 @@ class ExistingTicketController extends GetxController {
         isLoading(true);
 
         var image = "";
-        if (imagePath.isNotEmpty) {
+        if (imagePath.value.isNotEmpty) {
           //upload Image
           var response = await ApiCall().uploadAttachment([imagePath.value]);
           if (response != null) {
@@ -207,14 +205,14 @@ class ExistingTicketController extends GetxController {
           "TicketID": 0,
           "TicketStatusID": 0,
           "CustomerID": customer.customerID,
-          "CustomerAddressID": customerAddressId,
-          "ServiceID": selectedService,
-          "ComplaintNatureID": selectedCNature,
-          "ServiceTypeID": selectedType,
+          "CustomerAddressID": selectedAddress.value,
+          "ServiceID": selectedService.value,
+          "ComplaintNatureID": selectedCNature.value,
+          "ServiceTypeID": selectedType.value,
           "ServiceProviderID": 0,
           "TechnicianID": 0,
           "AppoinmentDate": toSendDateFormat(serviceDateController.text),
-          "TimeSlotID": selectedTimeSlot,
+          "TimeSlotID": selectedTimeSlot.value,
           "Reason": "",
           "Remarks": bookingRemarksController.text.trim(),
           "Images": image,

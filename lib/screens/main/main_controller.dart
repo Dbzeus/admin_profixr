@@ -33,18 +33,25 @@ class MainController extends GetxController {
       menuData.add(MenuData.fromJson(v));
     });
     super.onInit();
-    startDate(dateTimeToString());
+    startDate(dateTimeToString(dateTime: DateTime(DateTime.now().year,DateTime.now().month)));
     endDate(dateTimeToString());
+    dateRange=DateTimeRange(start:  DateTime(DateTime.now().year,DateTime.now().month), end: DateTime.now());
     getTicketCounts();
     getMenu();
   }
 
-  getTicketCounts() async {
+  getTicketCounts({
+    bool isShowLoader=true
+}) async {
     if (await isNetConnected()) {
-      isLoading(true);
+      if(isShowLoader) {
+        isLoading(true);
+      }
       TicketCountResponse? response = await ApiCall().getTicketCount(
           box.read(Session.userId), 0, toSendDateFormat(startDate.value), toSendDateFormat(endDate.value));
-      isLoading(false);
+      if(isShowLoader) {
+        isLoading(false);
+      }
       if (response != null) {
         if (response.rtnStatus) {
           dashboards(response.rtnData);

@@ -186,6 +186,7 @@ class NewTicketScreen extends GetView<NewTicketController> {
             items: controller.cities,
             onSelected: (val) {
               controller.selectedCity(val);
+              controller.getArea();
             },
           ),
         ),
@@ -248,6 +249,7 @@ class NewTicketScreen extends GetView<NewTicketController> {
             items: controller.services,
             onSelected: (val) {
               controller.selectedService(val);
+              controller.getComplaintNature();
             },
           ),
         ),

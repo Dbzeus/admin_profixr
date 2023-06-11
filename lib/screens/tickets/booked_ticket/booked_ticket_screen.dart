@@ -187,7 +187,7 @@ class BookedTicketScreen extends GetView<BookedTicketController> {
                             ),
                           ),
                           Text(
-                            item.createdDate,
+                            item.createdDate.split(" ")[0],
                             style: const TextStyle(
                               color: blackColor,
                               fontSize: 10,
@@ -241,6 +241,16 @@ class BookedTicketScreen extends GetView<BookedTicketController> {
                       const SizedBox(
                         height: 4,
                       ),
+                      Text(
+                        item.customerAddress,
+                        style: const TextStyle(
+                          color: blackColor,
+                          fontSize: 10,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -256,7 +266,7 @@ class BookedTicketScreen extends GetView<BookedTicketController> {
                             ),
                           ),
                           Text(
-                            item.timeSlotID.toString(),
+                            item.createdDate.split(" ")[1],
                             style: const TextStyle(
                               color: blackColor,
                               fontSize: 10,
@@ -289,44 +299,48 @@ class BookedTicketScreen extends GetView<BookedTicketController> {
             //       ),
             //       TextSpan(text: " SAR"),
             //     ])),
-            const Divider(),
-            SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: List.generate(item.childStatus.length, (index) =>  Row(
+            item.childStatus.isEmpty ? const SizedBox.shrink() :
+                Column(
                   children: [
-                    Container(
-                      width: 90,
-                      height: 30,
-                      decoration: BoxDecoration(
-                          color: whiteColor,
-                          borderRadius: BorderRadius.circular(4),
-                          border: Border.all(
-                            color: HexColor.fromHex(item.childStatus[index].colorCode,),
-                          )),
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    const Divider(),
+                    SingleChildScrollView(
+                      physics: BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: List.generate(item.childStatus.length, (index) =>  Row(
                           children: [
-                            CachedNetworkImage(imageUrl: item.childStatus[index].statusImage,width: 18,height: 18,),
-                            Text(
-                              item.childStatus[index].childStatusName,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12,
-                                  color: HexColor.fromHex(item.childStatus[index].colorCode,),),
-                            )
+                            Container(
+                              width: 90,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                  color: whiteColor,
+                                  borderRadius: BorderRadius.circular(4),
+                                  border: Border.all(
+                                    color: HexColor.fromHex(item.childStatus[index].colorCode,),
+                                  )),
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    CachedNetworkImage(imageUrl: item.childStatus[index].statusImage,width: 18,height: 18,),
+                                    Text(
+                                      item.childStatus[index].childStatusName,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 12,
+                                        color: HexColor.fromHex(item.childStatus[index].colorCode,),),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 12,),
                           ],
-                        ),
+                        ),),
                       ),
                     ),
-                    const SizedBox(width: 12,),
                   ],
-                ),),
-              ),
-            ),
-
+                ),
           ],
         ),
       ),

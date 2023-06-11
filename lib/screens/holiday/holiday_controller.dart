@@ -28,7 +28,6 @@ class HolidayController extends GetxController{
   void onInit() {
     super.onInit();
     getHoliday();
-    getTimeSlots();
   }
 
   getHoliday() async {

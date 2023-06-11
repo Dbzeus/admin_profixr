@@ -109,149 +109,137 @@ class HolidayListScreen extends GetView<HolidayController> {
   }
 
   _buildMenu(data) {
-    return GestureDetector(
-      onTap: () {
-        Get.toNamed(Routes.addService, arguments: {
-          "title": "Edit Holiday",
-          "buttonTitle": "Save Changes",
-          "holiday": data
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        margin: const EdgeInsets.symmetric(vertical: 6),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: Colors.grey.shade100),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.grey.shade100,
-                  spreadRadius: 1,
-                  blurRadius: 3,
-                  offset: const Offset(0, 2))
-            ],
-            borderRadius: BorderRadius.circular(16)),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Container(
-                  width: 50,
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: primaryColor.withAlpha(30),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "${data["HolidayDate"]}".substring(0, 2),
-                      style: const TextStyle(
-                        color: primaryColor,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+    return Container(
+      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.symmetric(vertical: 6),
+      decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.grey.shade100),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.grey.shade100,
+                spreadRadius: 1,
+                blurRadius: 3,
+                offset: const Offset(0, 2))
+          ],
+          borderRadius: BorderRadius.circular(16)),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 50,
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  color: primaryColor.withAlpha(30),
+                ),
+                child: Center(
+                  child: Text(
+                    data["HolidayDate"].toString().split("T")[0].substring(9),
+                    style: const TextStyle(
+                      color: primaryColor,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-                const SizedBox(
-                  width: 12,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        data["Reason"],
-                        style: const TextStyle(
-                            fontSize: 14,
-                            color: blackColor,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.calendar_month_outlined,
-                            size: 14,
-                            color: primaryColor,
-                          ),
-                          Text(
-                            data["HolidayDate"],
-                            style: const TextStyle(
-                              fontSize: 12,
-                              color: primaryColor,
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Column(
+              ),
+              const SizedBox(
+                width: 12,
+              ),
+              Expanded(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      data["IsFullDay"] ? "Full Day" : "No Full Day",
-                      style: const TextStyle(fontSize: 14, color: Colors.blue),
-                    ),
-                    Text(
-                      data["TimeFrom"],
+                      data["Reason"],
                       style: const TextStyle(
-                        fontSize: 12,
-                        color: blackColor,
-                      ),
+                          fontSize: 14,
+                          color: blackColor,
+                          fontWeight: FontWeight.bold),
                     ),
-                    Text(
-                      data["TimeTo"],
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: blackColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    Text(
-                      'Remark',
-                      style: TextStyle(
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.calendar_month_outlined,
+                          size: 14,
                           color: primaryColor,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 13),
-                    ),
-                    Text(
-                      '${data["Remarks"]}',
-                      style: TextStyle(fontSize: 13),
+                        ),
+                        const SizedBox(width: 4,),
+                        Text(
+                          data["HolidayDate"].toString().split("T")[0],
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: primaryColor,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                InkWell(
-                  onTap: () async {
-                    controller.deleteHoliday(data);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(8)),
-                    child: Icon(
-                      Icons.delete,
-                      size: 15,
-                      color: Colors.white,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    'From: ${data["TimeSlot"].toString().split("-")[0].trim()}',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: blackColor,
                     ),
                   ),
+                  Text(
+                    'To: ${data["TimeSlot"].toString().split("-")[1].trim()}',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: blackColor,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    'Remark',
+                    style: TextStyle(
+                        color: primaryColor,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 13),
+                  ),
+                  Text(
+                    '${data["Remarks"]}',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                ],
+              ),
+              InkWell(
+                onTap: () async {
+                  controller.deleteHoliday(data);
+                },
+                child: Container(
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Icon(
+                    Icons.delete,
+                    size: 15,
+                    color: Colors.white,
+                  ),
                 ),
-              ],
-            )
-          ],
-        ),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }

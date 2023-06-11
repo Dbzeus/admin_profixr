@@ -80,6 +80,7 @@ class Ticket {
     statusColor = json['StatusColor'];
     customerID = json['CustomerID'];
     customerName = json['CustomerName'];
+    customerAddress = json['CustomerAddress'];
     mobileNo = json['MobileNo'];
     serviceID = json['ServiceID'];
     serviceName = json['ServiceName'];
@@ -111,6 +112,7 @@ class Ticket {
   late String statusColor;
   late int customerID;
   late String customerName;
+  late String customerAddress;
   late String mobileNo;
   late int serviceID;
   late String serviceName;
@@ -146,6 +148,7 @@ class Ticket {
     map['StatusColor'] = statusColor;
     map['CustomerID'] = customerID;
     map['CustomerName'] = customerName;
+    map['CustomerAddress'] = customerAddress;
     map['MobileNo'] = mobileNo;
     map['ServiceID'] = serviceID;
     map['ServiceName'] = serviceName;

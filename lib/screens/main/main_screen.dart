@@ -28,6 +28,41 @@ class MainScreen extends GetView<MainController> {
       body: Obx(
         () => pages[index.value],
       ),
+      /*bottomNavigationBar: Obx(() => Container(
+            width: MediaQuery.of(context).size.width,
+            height: 65,
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12), color: primaryColor),
+            child: Row(
+              children: [
+                Expanded(
+                  child: SvgPicture.asset(
+                    'assets/icon/menu/home.svg',
+                    width: 20,
+                    height: 20,
+                    color: Colors.white,
+                  ),
+                ),
+                Expanded(
+                  child: SvgPicture.asset(
+                    'assets/icon/menu/shop.svg',
+                    width: 20,
+                    height: 20,
+                    color: Colors.white,
+                  ),
+                ),
+                Expanded(
+                  child: SvgPicture.asset(
+                    'assets/icon/menu/profile.svg',
+                    width: 20,
+                    height: 20,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          )),*/
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(
             elevation: 12,

@@ -11,12 +11,22 @@ class Session{
 
 }
 
-toSendDateFormat(String date){
-  return DateFormat("MM-dd-yyyy").format(DateFormat("dd-MM-yyyy").parse(date));
+const String dmy="dd-MM-yyyy";
+const String ymd="yyyy-MM-dd";
+const String mdy="MM-dd-yyyy";
+
+toSendDateFormat(String date,{
+  String fromFormat=dmy,
+  String toFormat=mdy
+}){
+  return DateFormat(toFormat).format(DateFormat(fromFormat).parse(date));
 }
 
-toShowDateFormat(String date){
-  return DateFormat("dd-MM-yyyy").format(DateFormat("yyyy-MM-dd").parse(date));
+toShowDateFormat(String date,{
+  String fromFormat=ymd,
+  String toFormat=dmy
+}){
+  return toSendDateFormat(date,fromFormat: fromFormat,toFormat: toFormat);
 }
 
 dateTimeToString({

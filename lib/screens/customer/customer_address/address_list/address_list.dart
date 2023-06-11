@@ -6,17 +6,29 @@ import 'package:profixer_admin/screens/customer/customer_address/customer_addres
 
 import '../../../../model/customer_address_response.dart';
 
-class AddressList extends GetView<CustomerAddressController> {
+class AddressList extends StatefulWidget {
   int customerId;
 
-  AddressList(this.customerId,{Key? key}) : super(key: key);
+  AddressList(this.customerId, {Key? key}) : super(key: key);
 
   @override
+  State<AddressList> createState() => _AddressListState();
+}
+
+class _AddressListState extends State<AddressList> {
   final controller = Get.put(CustomerAddressController());
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller.customerId = widget.customerId;
+    controller.getCustomerAddress();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    controller.getCustomerAddress(customerId);
+    // controller.getCustomerAddress(widget.customerId);
     return Column(
       children: [
         const SizedBox(
@@ -86,17 +98,30 @@ class AddressList extends GetView<CustomerAddressController> {
             )
           ],
         ),
-        Obx(()=> controller.isLoading.value ? const Padding(
-          padding: EdgeInsets.only(top: 32),
-          child: Center(child: CircularProgressIndicator(),),
-        ) :ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: controller.customerAddress.length,
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              physics: const BouncingScrollPhysics(),
-              itemBuilder: (_, index) => _buildList(controller.customerAddress[index])),),
-
+        Obx(
+          () => controller.isLoading.value
+              ? const Padding(
+                  padding: EdgeInsets.only(top: 32),
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : controller.customerAddress.isEmpty
+                  ? const Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 64),
+                        child: Text('No Addresses Found'),
+                      ),
+                    )
+                  : ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: controller.customerAddress.length,
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      physics: const BouncingScrollPhysics(),
+                      itemBuilder: (_, index) =>
+                          _buildList(controller.customerAddress[index])),
+        ),
       ],
     );
   }
@@ -125,7 +150,6 @@ class AddressList extends GetView<CustomerAddressController> {
               ],
               borderRadius: BorderRadius.circular(16)),
           child: Row(
-
             children: [
               Container(
                 width: 70,
@@ -142,9 +166,9 @@ class AddressList extends GetView<CustomerAddressController> {
                   color: primaryColor,
                 )),
               ),
-            const SizedBox(
-              width:  16,
-            ),
+              const SizedBox(
+                width: 16,
+              ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,17 +190,16 @@ class AddressList extends GetView<CustomerAddressController> {
                     Text(
                       '${data.streetName}',
                       style: const TextStyle(
-                          fontSize: 12,
-                          color: blackColor,
-                          ),
+                        fontSize: 12,
+                        color: blackColor,
+                      ),
                     ),
-
                     Text(
                       '${data.landMark}',
                       style: const TextStyle(
-                          fontSize: 12,
-                          color: blackColor,
-                          ),
+                        fontSize: 12,
+                        color: blackColor,
+                      ),
                     ),
                   ],
                 ),
@@ -186,8 +209,9 @@ class AddressList extends GetView<CustomerAddressController> {
                   activeColor: Colors.green.shade200,
                   inactiveThumbColor: Colors.red.shade200,
                   onChanged: (val) {
-                    data.isActive=val;
-                    controller.insertCustomerAddress(data, !data.isActive,showDialog: false);
+                    data.isActive = val;
+                    controller.insertCustomerAddress(data, !data.isActive,
+                        showDialog: false);
                   })
             ],
           )),

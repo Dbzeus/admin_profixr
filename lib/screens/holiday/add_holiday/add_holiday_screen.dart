@@ -11,10 +11,23 @@ import '../../../helpers/utils.dart';
 import '../../../widgets/custom_dropdown.dart';
 import '../holiday_controller.dart';
 
-class AddHolidayScreen extends StatelessWidget {
-  final controller = Get.find<HolidayController>();
+class AddHolidayScreen extends StatefulWidget {
 
   AddHolidayScreen({Key? key}) : super(key: key);
+
+  @override
+  State<AddHolidayScreen> createState() => _AddHolidayScreenState();
+}
+
+class _AddHolidayScreenState extends State<AddHolidayScreen> {
+  final controller = Get.find<HolidayController>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller.timeSlots();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,103 +88,7 @@ class AddHolidayScreen extends StatelessWidget {
                     height: 10,
                   ),
                   Obx(
-                    () => Row(
-                      children: [
-                        const Expanded(child: Text('Full day?')),
-                        InkWell(
-                          onTap: () {
-                            if (controller.isFullDay.value == false) {
-                              controller.isFullDay(!controller.isFullDay.value);
-                            }
-                          },
-                          child: AnimatedContainer(
-                            width: 80,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: controller.isFullDay.value
-                                  ? greenColor
-                                  : Colors.grey.shade100,
-                            ),
-                            duration: Duration(milliseconds: 100),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.done_rounded,
-                                  size: 16,
-                                  color: controller.isFullDay.value
-                                      ? Colors.green
-                                      : Colors.black54,
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Text(
-                                  'Yes',
-                                  style: TextStyle(
-                                    color: controller.isFullDay.value
-                                        ? Colors.green
-                                        : Colors.black54,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 12,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            if (controller.isFullDay.value == true) {
-                              controller.isFullDay(!controller.isFullDay.value);
-                            }
-                          },
-                          child: AnimatedContainer(
-                            width: 80,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              color: !controller.isFullDay.value
-                                  ? Colors.red.shade100
-                                  : Colors.grey.shade100,
-                            ),
-                            duration: Duration(milliseconds: 100),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.close,
-                                  size: 16,
-                                  color: !controller.isFullDay.value
-                                      ? Colors.red
-                                      : Colors.black54,
-                                ),
-                                const SizedBox(
-                                  width: 8,
-                                ),
-                                Text(
-                                  'No',
-                                  style: TextStyle(
-                                    color: !controller.isFullDay.value
-                                        ? Colors.red
-                                        : Colors.black54,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-
-                  Obx(
-                        () => controller.isFullDay.value ? const SizedBox.shrink() : CustomDropDown(
+                        () =>CustomDropDown(
                       hintText: "Time Slot",
                       dropDownValue: controller.selectedTimeSlot.value,
                       items: controller.timeSlots,
@@ -181,7 +98,7 @@ class AddHolidayScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(
-                    height: 10,
+                    height: 16,
                   ),
                   // CustomEditText(
                   //   hintText: "Time From",
@@ -232,9 +149,7 @@ class AddHolidayScreen extends StatelessWidget {
                           "HolidayID": holidayId,
                           "HolidayDate": toSendDateFormat(controller.dateController.text),
                           "Reason": controller.reasonController.text,
-                          "IsFullDay": controller.isFullDay.value,
-                          "TimeFrom": controller.isFullDay.value ? "" : "",
-                          "TimeTo":controller.isFullDay.value ? "" : "",
+                          "TimeSlotID": controller.selectedTimeSlot.value,
                           "Remarks": controller.remarkController.text,
                           "CUID": controller.box.read(Session.userId)
                         };

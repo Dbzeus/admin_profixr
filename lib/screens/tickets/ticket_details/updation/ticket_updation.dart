@@ -15,29 +15,29 @@ import 'tikcet_updation_controller.dart';
 
 enum UpdationType { ASSIGN, REMARK, REMARK_REASON }
 
-getUpdationType(String type) {
+getUpdationType(int type) {
   switch (type) {
-    case "assign":
+    case 2:
       return UpdationType.ASSIGN;
-    case "remark":
+    case 1:
       return UpdationType.REMARK;
-    case "reason":
+    case 3:
       return UpdationType.REMARK_REASON;
   }
 }
 
-ticketUpdationDialog(
+Future<dynamic> ticketUpdationDialog(
   context,
   UpdationType type, {
   isDismissable = true,
-}) {
+}) async{
   final controller = Get.put(TicketUpdationController());
 
   if(type==UpdationType.ASSIGN){
     controller.getServiceProviders();
   }
 
-  showDialog(
+  return showDialog(
       context: context,
       barrierDismissible: isDismissable,
       builder: (context) {
@@ -240,6 +240,7 @@ ticketUpdationDialog(
                               borderRadius: 4,
                               text: 'OK',
                               onTap: () {
+                                debugPrint('ok clicked');
                                 var result = {
                                   'providerId':
                                       controller.selectedProvider.value,

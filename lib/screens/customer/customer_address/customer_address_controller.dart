@@ -13,10 +13,9 @@ class CustomerAddressController extends GetxController{
   RxList<CustomerAddress> customerAddress = RxList();
   RxBool isLoading = false.obs;
 
-  var customerId=Get.arguments['customerId'] ?? 0;
-
   TextEditingController  searchController= TextEditingController();
 
+  int customerId=0;
 
   //address form
   TextEditingController  addressTitleController= TextEditingController();
@@ -41,14 +40,12 @@ class CustomerAddressController extends GetxController{
   @override
   void onInit() {
     super.onInit();
-    getCity();
-    getArea();
   }
 
   getArea() async {
     if (await isNetConnected()) {
       isLoading(true);
-      var response = await ApiCall().getArea();
+      var response = await ApiCall().getArea(cityId: int.parse(selectedCity.value));
       isLoading(false);
       if (response != null) {
         if (response['RtnStatus']) {
@@ -58,7 +55,10 @@ class CustomerAddressController extends GetxController{
           }
           if (areas.isNotEmpty) {
             selectedArea('${areas.first['id']}');
+          }else{
+            selectedArea('');
           }
+          areas.refresh();
         } else {
           toast(response['RtnMsg']);
         }
@@ -68,7 +68,9 @@ class CustomerAddressController extends GetxController{
 
   getCity() async {
     if (await isNetConnected()) {
+      isLoading(true);
       var response = await ApiCall().getCity();
+      isLoading(false);
       if (response != null) {
         if (response['RtnStatus']) {
           cities.clear();
@@ -77,6 +79,7 @@ class CustomerAddressController extends GetxController{
           }
           if (cities.isNotEmpty) {
             selectedCity('${cities.first['id']}');
+            getArea();
           }
         } else {
           toast(response['RtnMsg']);
@@ -85,7 +88,7 @@ class CustomerAddressController extends GetxController{
     }
   }
 
-  getCustomerAddress(int customerId) async {
+  getCustomerAddress() async {
     if (await isNetConnected()) {
       isLoading(true);
       CustomerAddressResponse? response = await ApiCall().getCustomerAddress(customerId: customerId);
@@ -112,6 +115,7 @@ class CustomerAddressController extends GetxController{
                 isUpdated ? "Updated Successful!" : "Added Successful!",
                 "${response['RtnMsg']}",
                     () {
+                  getCustomerAddress();
                   Get.back();
                 }, isDismissable: false);
           }else{

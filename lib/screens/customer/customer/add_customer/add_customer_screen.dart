@@ -118,6 +118,8 @@ class AddCustomerScreen extends StatelessWidget {
                           CustomEditText(
                             hintText: "Mobile Number",
                             controller: controller.mobileController,
+                            maxLength: 10,
+                            keyboardType: TextInputType.phone,
                             prefixIcon: Obx(
                               () => DropdownButton(
                                   value: controller.mobileNoDropDownValue.value,

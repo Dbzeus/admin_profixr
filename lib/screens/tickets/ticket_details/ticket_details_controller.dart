@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:profixer_admin/apis/api_call.dart';
@@ -43,7 +44,8 @@ class TicketDetailsController extends GetxController {
   }
 
   ticketUpdate(ChildStatus status) async {
-    var res = await ticketUpdationDialog(Get.context!, UpdationType.REMARK);
+    var res = await ticketUpdationDialog(Get.context!, getUpdationType(status.ticketTypeID));
+    // debugPrint(res);
     Get.delete<TicketUpdationController>();
     if (res != null) {
       try {
@@ -64,7 +66,7 @@ class TicketDetailsController extends GetxController {
 
         var data = {
           "TicketID": ticket.ticketID,
-          "TicketStatusID": status.ticketStatusID,
+          "TicketStatusID": status.childStatusId,
           "CustomerID": ticket.customerID,
           "CustomerAddressID": ticket.customerID,
           "ServiceID": ticket.serviceID,

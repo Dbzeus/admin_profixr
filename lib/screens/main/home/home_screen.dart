@@ -63,123 +63,127 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Overview',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
+      body: RefreshIndicator(
+        onRefresh: ()=> controller.getTicketCounts(isShowLoader: false),
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Overview',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 6,),
-                      InkWell(
-                        onTap: () {
-                          Get.focusScope!.unfocus();
-                          controller.selectDates();
-                        },
-                        child: Obx(
-                              () => Text('${controller.startDate} - ${controller.endDate}',
-                              style: TextStyle(
-                                  color: primaryColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12)),
+                        const SizedBox(height: 6,),
+                        InkWell(
+                          onTap: () {
+                            Get.focusScope!.unfocus();
+                            controller.selectDates();
+                          },
+                          child: Obx(
+                                () => Text('${controller.startDate} - ${controller.endDate}',
+                                style: TextStyle(
+                                    color: primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12)),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Get.toNamed(Routes.checkCustomer);
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: primaryColor,
-                          borderRadius: BorderRadius.circular(8),
-                          boxShadow: [
-                            BoxShadow(
-                                color: Colors.grey.shade100,
-                                spreadRadius: 1,
-                                blurRadius: 3,
-                                offset: const Offset(0, 2))
-                          ]),
-                      child: Row(
-                        children: [
-                          const SizedBox(
-                            width: 4,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12)),
-                            child: const Icon(
-                              Icons.add,
-                              color: primaryColor,
-                              size: 12,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          const Text(
-                            'Add Ticket',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12),
-                          ),
-                          const SizedBox(
-                            width: 4,
-                          ),
-                        ],
-                      ),
+                      ],
                     ),
-                  )
-                ],
-              ),
-            ),
-            Obx(
-              () => controller.isLoading.value
-                  ? Center(
-                      child: CircularProgressIndicator(),
+                    GestureDetector(
+                      onTap: () {
+                        Get.toNamed(Routes.checkCustomer);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            color: primaryColor,
+                            borderRadius: BorderRadius.circular(8),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.grey.shade100,
+                                  spreadRadius: 1,
+                                  blurRadius: 3,
+                                  offset: const Offset(0, 2))
+                            ]),
+                        child: Row(
+                          children: [
+                            const SizedBox(
+                              width: 4,
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: const Icon(
+                                Icons.add,
+                                color: primaryColor,
+                                size: 12,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            const Text(
+                              'Add Ticket',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12),
+                            ),
+                            const SizedBox(
+                              width: 4,
+                            ),
+                          ],
+                        ),
+                      ),
                     )
-                  : controller.dashboards.isEmpty
-                      ? Center(
-                          child: Text("No Records Found"),
-                        )
-                      : GridView.builder(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 4),
-                          itemCount: controller.dashboards.length,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          physics: const BouncingScrollPhysics(),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  crossAxisSpacing: 10,
-                                  childAspectRatio: 0.9,
-                                  mainAxisSpacing: 10),
-                          itemBuilder: (_, index) {
-                            return _buildDashboard(
-                                controller.dashboards[index]);
-                          }),
-            ),
-            const SizedBox(
-              height: 16,
-            ),
-          ],
+                  ],
+                ),
+              ),
+              Obx(
+                () => controller.isLoading.value
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : controller.dashboards.isEmpty
+                        ? Center(
+                            child: Text("No Records Found"),
+                          )
+                        : GridView.builder(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 4),
+                            itemCount: controller.dashboards.length,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            physics: const BouncingScrollPhysics(),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 3,
+                                    crossAxisSpacing: 10,
+                                    childAspectRatio: 0.9,
+                                    mainAxisSpacing: 10),
+                            itemBuilder: (_, index) {
+                              return _buildDashboard(
+                                  controller.dashboards[index]);
+                            }),
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+            ],
+          ),
         ),
       ),
     );

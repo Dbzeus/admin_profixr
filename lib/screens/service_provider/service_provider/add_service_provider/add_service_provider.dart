@@ -12,20 +12,29 @@ import 'package:profixer_admin/widgets/custom_edittext.dart';
 
 import '../../../../model/serviceprovider_response.dart';
 import '../../../../widgets/custom_appbar.dart';
-import '../../../../widgets/custom_dropdown.dart';
 import '../../../../widgets/custom_loader.dart';
+import '../../../../widgets/multi_select.dart';
 import '../../service_provider_admin/service_provider_admin_list/service_provider_admin_list.dart';
 
-class AddServiceProviderScreen extends StatelessWidget {
-  final controller = Get.find<ServiceProviderController>();
+class AddServiceProviderScreen extends StatefulWidget {
 
   AddServiceProviderScreen({Key? key}) : super(key: key);
+
+  @override
+  State<AddServiceProviderScreen> createState() => _AddServiceProviderScreenState();
+}
+
+class _AddServiceProviderScreenState extends State<AddServiceProviderScreen> {
+  final controller = Get.find<ServiceProviderController>();
 
   ServiceProviderData? serviceProviderData = Get.arguments["service"];
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
+    controller.isConfirm(true);
     if (serviceProviderData != null) {
+      controller.serviceProviderId=serviceProviderData!.serviceProviderID;
       controller.servicerProviderNameController.text =
           serviceProviderData!.serviceProviderName.toString();
       controller.contactNameController.text =
@@ -47,6 +56,14 @@ class AddServiceProviderScreen extends StatelessWidget {
       controller.contractEndController.text =
           toShowDateFormat(serviceProviderData!.contractEndDate).toString();
       controller.selectedIsActive(serviceProviderData!.isActive);
+
+      controller.getServiceProviderArea(canClear: false);
+      controller.getServiceProviderService(canClear: false);
+      controller.selectedService = serviceProviderData!.serviceIDs.toString();
+      controller.selectedServiceName(serviceProviderData!.serviceName);
+      controller.selectedArea = serviceProviderData!.areaIDs.toString();
+      controller.selectedAreaNames(serviceProviderData!.areaName.toString());
+
     } else {
       controller.servicerProviderNameController.clear();
       controller.contactNameController.clear();
@@ -58,8 +75,18 @@ class AddServiceProviderScreen extends StatelessWidget {
       controller.bankDetailsController.clear();
       controller.contractStartController.clear();
       controller.contractEndController.clear();
-
+      controller.selectedService="";
+      controller.selectedServiceName("");
+      controller.selectedArea="";
+      controller.selectedAreaNames("");
+      controller.getServiceProviderArea();
+      controller.getServiceProviderService();
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
     return GestureDetector(
       onTap: () {
         Get.focusScope!.unfocus();
@@ -68,13 +95,6 @@ class AddServiceProviderScreen extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         appBar: CustomAppBar(
           title: Get.arguments["title"].toString(),
-          onTap: () {
-            if (controller.isConfirm.value == false) {
-              controller.isConfirm(!controller.isConfirm.value);
-            } else {
-              Get.back();
-            }
-          },
         ),
         body: Stack(
           children: [
@@ -148,6 +168,8 @@ class AddServiceProviderScreen extends StatelessWidget {
                                     CustomEditText(
                                       hintText: "Mobile Number",
                                       controller: controller.mobileController,
+                                      maxLength: 10,
+                                      keyboardType: TextInputType.phone,
                                       prefixIcon: Obx(
                                         () => DropdownButton(
                                             value: controller
@@ -179,6 +201,7 @@ class AddServiceProviderScreen extends StatelessWidget {
                                     CustomEditText(
                                       hintText: "Email",
                                       controller: controller.emailController,
+                                      keyboardType: TextInputType.emailAddress,
                                     ),
                                     const SizedBox(
                                       height: 10,
@@ -205,6 +228,7 @@ class AddServiceProviderScreen extends StatelessWidget {
                               )
                             : Expanded(
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const SizedBox(
                                       height: 10,
@@ -225,31 +249,187 @@ class AddServiceProviderScreen extends StatelessWidget {
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    Obx(
-                                          () => CustomDropDown(
-                                        hintText: "What kind of service you Provide?",
-                                        dropDownValue: controller.selectedService.value,
-                                        items: controller.serviceList,
-                                        onSelected: (val) {
-                                          controller.selectedService(val);
-                                        },
+                                    Text('What kind of service you do?',style: TextStyle(
+                                        fontSize: 12
+                                    ),),
+                                    Obx(()=>Wrap(
+                                      direction: Axis.horizontal,
+                                      spacing: 8,
+                                      alignment: WrapAlignment.end,
+                                      children: List.generate(
+                                        controller.selectedServiceName.value.isEmpty ? 1 :controller.selectedServiceName
+                                            .split(',')
+                                            .length +
+                                            1,
+                                            (index) => index == (controller.selectedServiceName.value.isEmpty ? 0 :
+                                        controller.selectedServiceName
+                                            .split(',')
+                                            .length)
+                                            ? GestureDetector(
+                                          onTap: () async {
+                                            List<Map<String, dynamic>>?
+                                            result =
+                                            await Get.to(()=>MultiSelectWidget(
+                                                title: 'Select Services',
+                                                items: controller
+                                                    .getSelectedServiceItems()));
+                                            if (result != null) {
+                                              controller.selectedServiceName(
+                                                  result
+                                                      .map((e) => e['value']
+                                                      .toString())
+                                                      .toList()
+                                                      .join(","));
+                                              controller.selectedService =
+                                                  result
+                                                      .map((e) =>
+                                                      e['id'].toString())
+                                                      .toList()
+                                                      .join(",");
+                                            }
+                                          },
+                                          child: Chip(
+                                            backgroundColor: Colors.grey,
+                                            padding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 4),
+                                            label: Text(
+                                              'Add +',
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 10,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                            : Chip(
+                                          backgroundColor: cardStackColor,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 4),
+                                          onDeleted: () {
+                                            var name = controller
+                                                .selectedServiceName
+                                                .split(",")[index];
+                                            var arr=controller.selectedServiceName.value.split(",");
+                                            arr.remove(name);
+                                            controller.selectedServiceName(arr.join(","));
+
+                                            var id = controller.servicesList
+                                                .firstWhereOrNull((element) =>
+                                            element['value'] == name);
+                                            if (id != null) {
+                                              arr=controller.selectedService.split(",");
+                                              arr.remove(id['id']);
+                                              controller.selectedService =arr.join(",");
+                                            }
+                                          },
+                                          label: Text(
+                                            controller.selectedServiceName
+                                                .split(",")[index],
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                    ),),
+
                                     const SizedBox(
                                       height: 10,
                                     ),
-                                    Obx(
-                                          () => CustomDropDown(
-                                          hintText: "Which area do you prefer? ",
-                                          dropDownValue: controller
-                                              .selectedArea.value,
-                                          items:
-                                          controller.areaList,
-                                          onSelected: (value) {
-                                            controller
-                                                .selectedArea(value);
-                                          }),
-                                    ),
+                                    Text('Which area do you prefer?',style: TextStyle(
+                                        fontSize: 12
+                                    ),),
+                                    Obx(()=>Wrap(
+                                      direction: Axis.horizontal,
+                                      spacing: 8,
+                                      alignment: WrapAlignment.end,
+                                      children: List.generate(
+                                        controller.selectedAreaNames.value.isEmpty ? 1 :controller.selectedAreaNames
+                                            .split(',')
+                                            .length +
+                                            1,
+                                            (index) => index == (controller.selectedAreaNames.value.isEmpty ? 0 :
+                                        controller.selectedAreaNames
+                                            .split(',')
+                                            .length)
+                                            ? GestureDetector(
+                                          onTap: () async {
+                                            List<Map<String, dynamic>>?
+                                            result =
+                                            await Get.to(MultiSelectWidget(
+                                                title: 'Select Areas',
+                                                items: controller
+                                                    .getSelectedAreaItems()));
+                                            if (result != null) {
+                                              controller.selectedAreaNames(
+                                                  result
+                                                      .map((e) => e['value']
+                                                      .toString())
+                                                      .toList()
+                                                      .join(","));
+                                              controller.selectedArea = result
+                                                  .map((e) =>
+                                                  e['id'].toString())
+                                                  .toList()
+                                                  .join(",");
+                                            }
+                                          },
+                                          child: Chip(
+                                            backgroundColor: Colors.grey,
+                                            padding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 4),
+                                            label: Text(
+                                              'Add +',
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 10,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                            : controller.selectedAreaNames
+                                            .split(',')
+                                            .length>2 ? const SizedBox.shrink() :Chip(
+                                          backgroundColor: cardStackColor,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 4),
+                                          onDeleted: () {
+                                            var name = controller
+                                                .selectedAreaNames
+                                                .split(",")[index];
+
+                                            var arr=controller.selectedAreaNames.value.split(",");
+                                            arr.remove(name);
+                                            controller.selectedAreaNames(arr.join(","));
+
+                                            var id = controller.areaList
+                                                .firstWhereOrNull((element) =>
+                                            element['value'] == name);
+                                            if (id != null) {
+                                              arr=controller.selectedArea.split(",");
+                                              arr.remove(id['id']);
+                                              controller.selectedArea =arr.join(",");
+                                            }
+                                          },
+                                          label: Text(
+                                            controller.selectedAreaNames
+                                                .split(",")[index],
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),),
+
                                     const SizedBox(
                                       height: 10,
                                     ),
@@ -423,44 +603,58 @@ class AddServiceProviderScreen extends StatelessWidget {
                                       ),
                                     ),
                                     const Spacer(),
-                                    CustomButton(
-                                      text: "Add",
-                                      btnColor: primaryColor,
-                                      onTap: () {
-                                        var params = {
-                                          "ServiceProviderID":serviceProviderData?.serviceProviderID
-                                                  ??
-                                              0,
-                                          "ServiceProviderName": controller
-                                              .servicerProviderNameController.text,
-                                          "ContactPerson":
-                                              controller.contactNameController.text,
-                                          "ContactNumber":
-                                              controller.mobileController.text,
-                                          "ContactMailID":
-                                              controller.emailController.text,
-                                          "ContactAddress": controller
-                                              .permanentAddressController.text,
-                                          "TaxDetails":
-                                              controller.taxDetailsController.text,
-                                          "BankDetails":
-                                              controller.bankDetailsController.text,
-                                          "ServiceIDs":
-                                              serviceProviderData?.serviceIDs ?? "0",
-                                          "AreaIDs":
-                                              serviceProviderData?.areaIDs ?? "0",
-                                          "ContractStartDate": controller
-                                              .contractStartController.text,
-                                          "ContractEndDate":
-                                              controller.contractEndController.text,
-                                          "IsActive": controller.selectedIsActive.value,
-                                          "CUID":
-                                              controller.box.read(Session.userId),
-                                        };
-                                        controller
-                                            .insertUpdateServiceProvider(controller.selectedIsActive.value,params);
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            child: CustomButton(
+                                                text: 'Back',
+                                                onTap: () => controller.isConfirm(
+                                                    !controller.isConfirm.value))),
+                                        const SizedBox(
+                                          width: 12,
+                                        ),
+                                        Expanded(
+                                          child: CustomButton(
+                                            text: serviceProviderData==null ? "Add" : "Update",
+                                            btnColor: primaryColor,
+                                            onTap: () {
+                                              var params = {
+                                                "ServiceProviderID":serviceProviderData?.serviceProviderID
+                                                        ??
+                                                    0,
+                                                "ServiceProviderName": controller
+                                                    .servicerProviderNameController.text.trim(),
+                                                "ContactPerson":
+                                                    controller.contactNameController.text.trim(),
+                                                "ContactNumber":
+                                                    controller.mobileController.text.trim(),
+                                                "ContactMailID":
+                                                    controller.emailController.text.trim(),
+                                                "ContactAddress": controller
+                                                    .permanentAddressController.text.trim(),
+                                                "TaxDetails":
+                                                    controller.taxDetailsController.text.trim(),
+                                                "BankDetails":
+                                                    controller.bankDetailsController.text.trim(),
+                                                "ServiceIDs":
+                                                    controller.selectedService,
+                                                "AreaIDs":
+                                                    controller.selectedArea,
+                                                "ContractStartDate": toSendDateFormat(controller
+                                                    .contractStartController.text),
+                                                "ContractEndDate":
+                                                    toSendDateFormat(controller.contractEndController.text),
+                                                "IsActive": controller.selectedIsActive.value,
+                                                "CUID":
+                                                    controller.box.read(Session.userId),
+                                              };
+                                              controller
+                                                  .insertUpdateServiceProvider(controller.selectedIsActive.value,params);
 
-                                      },
+                                            },
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),

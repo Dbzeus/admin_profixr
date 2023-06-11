@@ -20,8 +20,7 @@ class ServiceProviderAdminController extends GetxController {
   TextEditingController adminMobNoController = TextEditingController();
   TextEditingController adminEmailController = TextEditingController();
   TextEditingController adminCurrentAddressController = TextEditingController();
-  TextEditingController adminPermenantAddressController =
-  TextEditingController();
+  TextEditingController adminPermenantAddressController = TextEditingController();
   TextEditingController adminDobController = TextEditingController();
   TextEditingController adminDojController = TextEditingController();
   TextEditingController searchController = TextEditingController();
@@ -50,19 +49,12 @@ class ServiceProviderAdminController extends GetxController {
 
   final box = GetStorage();
 
-  @override
-  void onInit() {
-    super.onInit();
-
-
-  }
-
   //for admin
-  getServiceProviderAdmin(int serviceProviderId, int userId) async {
+  getServiceProviderAdmin() async {
     if (await isNetConnected()) {
       isLoading(true);
       AdminResponse? response =
-      await ApiCall().getServiceProviderAdmin(serviceProviderId, userId);
+      await ApiCall().getServiceProviderAdmin(serviceProviderId, box.read(Session.userId));
       isLoading(false);
       if (response != null) {
         if (response.rtnStatus) {
@@ -88,7 +80,7 @@ class ServiceProviderAdminController extends GetxController {
                   () {
                 Get.back();
               });
-          getServiceProviderAdmin(serviceProviderId, box.read(Session.userId));
+          getServiceProviderAdmin();
         }
         toast(response['RtnMsg']);
       }
@@ -107,7 +99,7 @@ class ServiceProviderAdminController extends GetxController {
                   () {
                 Get.back();
               });
-          getServiceProviderAdmin(serviceProviderId, box.read(Session.userId));
+          getServiceProviderAdmin();
         }
         toast(response['RtnMsg']);
       }

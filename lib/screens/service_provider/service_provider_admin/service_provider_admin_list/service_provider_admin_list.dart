@@ -5,10 +5,10 @@ import 'package:profixer_admin/model/admin_response.dart';
 
 import '../../../../helpers/custom_colors.dart';
 import '../../../../routes/app_routes.dart';
-import '../../service_provider/service_provider_controller.dart';
 import '../service_provider_admin_controller.dart';
 
 class ServiceProviderAdminList extends GetView<ServiceProviderAdminController> {
+  @override
   final controller = Get.put(ServiceProviderAdminController());
 
   ServiceProviderAdminList({Key? key}) : super(key: key);

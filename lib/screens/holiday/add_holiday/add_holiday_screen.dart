@@ -26,7 +26,7 @@ class _AddHolidayScreenState extends State<AddHolidayScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    controller.timeSlots();
+    controller.getTimeSlots();
   }
 
   @override

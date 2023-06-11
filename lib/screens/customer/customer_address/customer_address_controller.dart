@@ -119,7 +119,7 @@ class CustomerAddressController extends GetxController{
                   Get.back();
                 }, isDismissable: false);
           }else{
-            customerAddress.firstWhere((element) => element.addressID==data.addressID).isActive=true;
+            customerAddress.firstWhere((element) => element.addressID==data.addressID).isActive=data[''];
             customerAddress.refresh();
           }
         } else {

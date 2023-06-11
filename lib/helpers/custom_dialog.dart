@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
@@ -33,7 +34,8 @@ customDialog(context,String title,String message,Function onTab,{
                   fontSize: 20
               ),),
               const SizedBox(height: 12,),
-              Text(message, textAlign: TextAlign.center,),
+              Center(child: Html(data: '$message',)),
+              // Text(message, textAlign: TextAlign.center,),
               const SizedBox(height: 16,),
               CustomButton(width: MediaQuery.of(context).size.width*0.6,
                   height: 45,

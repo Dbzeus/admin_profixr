@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:profixer_admin/helpers/constant_widgets.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
 
 import 'package:profixer_admin/helpers/utils.dart';
@@ -91,14 +92,10 @@ class AddAdminServiceProvider extends StatelessWidget {
                             height: 10,
                           ),
                           CustomEditText(
-                              hintText: "User Name",
-                              controller: controller.adminUserNameController),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CustomEditText(
                             hintText: "Mobile Number",
                             controller: controller.adminMobNoController,
+                            maxLength: 10,
+                            keyboardType: TextInputType.phone,
                             prefixIcon: Obx(
                               () => DropdownButton(
                                   value: controller.mobileNoDropDownValue.value,
@@ -126,15 +123,24 @@ class AddAdminServiceProvider extends StatelessWidget {
                             height: 10,
                           ),
                           CustomEditText(
-                              hintText: "Create Password",
-                              controller: controller.adminPasswordController),
+                            hintText: "Email",
+                            controller: controller.adminEmailController,
+                            keyboardType: TextInputType.emailAddress,
+                          ),
                           const SizedBox(
                             height: 10,
                           ),
                           CustomEditText(
-                            hintText: "Email",
-                            controller: controller.adminEmailController,
+                              hintText: "User Name",
+                              controller: controller.adminUserNameController),
+
+                          const SizedBox(
+                            height: 10,
                           ),
+                          CustomEditText(
+                              hintText: "Create a new password",
+                              controller: controller.adminPasswordController),
+
                           const Spacer(),
                           CustomButton(
                             text: "Next",
@@ -176,17 +182,13 @@ class AddAdminServiceProvider extends StatelessWidget {
                               size: 22,
                             ),
                             onTab: () async {
-                              var date = await showDatePicker(
-                                  context: Get.context!,
+                              controller.adminDobController.text = getDate(
                                   initialDate: DateTime.now(),
                                   firstDate: DateTime.now(),
                                   lastDate:
-                                      DateTime(DateTime.now().year + 1, 12, 31));
-                              if (date != null) {
-                                debugPrint(date.toString());
-                                controller.adminDobController.text =
-                                    DateFormat(controller.dateFormat).format(date);
-                              }
+                                  DateTime(DateTime.now().year + 1, 12, 31)
+                              );
+
                             },
                           ),
                           const SizedBox(
@@ -204,16 +206,11 @@ class AddAdminServiceProvider extends StatelessWidget {
                               size: 22,
                             ),
                             onTab: () async {
-                              var date = await showDatePicker(
-                                  context: Get.context!,
+                              controller.adminDojController.text = getDate(
                                   initialDate: DateTime.now(),
                                   firstDate: DateTime.now(),
-                                  lastDate:
-                                      DateTime(DateTime.now().year + 1, 12, 31));
-                              if (date != null) {
-                                controller.adminDojController.text =
-                                    DateFormat(controller.dateFormat).format(date);
-                              }
+                                  lastDate: DateTime(DateTime.now().year + 1, 12, 31)
+                              );
                             },
                           ),
                           const SizedBox(
@@ -317,36 +314,50 @@ class AddAdminServiceProvider extends StatelessWidget {
                             ),
                           ),
                           const Spacer(),
-                          CustomButton(
-                              text: "Add",
-                              btnColor: primaryColor,
-                              onTap: () {
-                                var data = {
-                                  "ServiceProviderUserID":  adminData?.serviceProviderUserID ?? 0,
-                                  "UserID": controller.box.read(Session.userId),
-                                  "ServiceProviderID": controller.serviceProviderId,
-                                  "FirstName":
-                                      controller.adminFirstNameController.text,
-                                  "LastName":
-                                      controller.adminLastNameController.text,
-                                  "MobileNumber":
-                                      controller.adminMobNoController.text,
-                                  "MailID": controller.adminEmailController.text,
-                                  "ContactAddress":
-                                      controller.adminCurrentAddressController.text,
-                                  "PermanentAddress": controller
-                                      .adminPermenantAddressController.text,
-                                  "DOB": controller.adminDobController.text,
-                                  "DOJ": controller.adminDojController.text,
-                                  "Username":
-                                      controller.adminUserNameController.text,
-                                  "Password":
-                                      controller.adminPasswordController.text,
-                                  "IsActive": controller.selectedIsActive.value,
-                                  "CUID": controller.box.read(Session.userId),
-                                };
-                                controller.insertUpdateServiceProviderAdmin(controller.selectedIsActive.value,data);
-                              }),
+                          Row(
+                            children: [
+                              Expanded(
+                                  child: CustomButton(
+                                      text: 'Back',
+                                      onTap: () => controller.isConfirm(
+                                          !controller.isConfirm.value))),
+                              const SizedBox(
+                                width: 12,
+                              ),
+                              Expanded(
+                                child: CustomButton(
+                                    text: adminData==null ? "Add" : "Update",
+                                    btnColor: primaryColor,
+                                    onTap: () {
+                                      var data = {
+                                        "ServiceProviderUserID":  adminData?.serviceProviderUserID ?? 0,
+                                        "UserID": adminData?.userID ?? 0,
+                                        "ServiceProviderID": controller.serviceProviderId,
+                                        "FirstName":
+                                            controller.adminFirstNameController.text.trim(),
+                                        "LastName":
+                                            controller.adminLastNameController.text.trim(),
+                                        "MobileNumber":
+                                            controller.adminMobNoController.text.trim(),
+                                        "MailID": controller.adminEmailController.text.trim(),
+                                        "ContactAddress":
+                                            controller.adminCurrentAddressController.text.trim(),
+                                        "PermanentAddress": controller
+                                            .adminPermenantAddressController.text.trim(),
+                                        "DOB": toSendDateFormat(controller.adminDobController.text),
+                                        "DOJ": toSendDateFormat(controller.adminDojController.text),
+                                        "Username":
+                                            controller.adminUserNameController.text.trim(),
+                                        "Password":
+                                            controller.adminPasswordController.text.trim(),
+                                        "IsActive": controller.selectedIsActive.value,
+                                        "CUID": controller.box.read(Session.userId),
+                                      };
+                                      controller.insertUpdateServiceProviderAdmin(controller.selectedIsActive.value,data);
+                                    }),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
               ),

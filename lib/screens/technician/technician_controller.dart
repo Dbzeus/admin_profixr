@@ -34,7 +34,7 @@ class TechnicianController extends GetxController {
   RxString mobileNoDropDownValue = "+966".obs;
   List<String> mobileItems = ["+966", "+967", "+968"];
 
-  RxString serviceProviderDropDownValue = "Plumbing".obs;
+  /*RxString serviceProviderDropDownValue = "Plumbing".obs;
   List<Map<String, String>> serviceProviderDropDownItems = [
     {
       "id": "1",
@@ -48,49 +48,42 @@ class TechnicianController extends GetxController {
       "id": "3",
       "value": 'Technician',
     }
-  ];
+  ];*/
 
   final box = GetStorage();
-  RxList areaList = RxList();
-  RxList servicesList = RxList();
-  RxList serviceProviderList = RxList();
+  RxList<Map<String, String>> areaList = RxList();
+  RxString selectedArea = "".obs;
+  RxList<Map<String, String>> servicesList = RxList();
+  RxString selectedService = "".obs;
+  RxList<Map<String, String>> serviceProviderList = RxList();
   RxString selectedServiceProvider = "".obs;
 
   @override
   void onInit() {
     super.onInit();
     getTechnician();
-    getArea();
-    getServices();
+    getServiceProviders();
   }
 
-  getArea() async {
-    if (await isNetConnected()) {
-      isLoading(true);
-      var response = await ApiCall().getArea();
-      isLoading(false);
-      if (response != null) {
-        if (response['RtnStatus']) {
-          areaList(response['RtnData']);
-        } else {
-          toast(response['RtnMsg']);
-        }
-      }
-    }
-  }
 
-  getServiceProvider() async {
+  getServiceProviders() async {
     if (await isNetConnected()) {
       isLoading(true);
-      ServiceproviderResponse? response = await ApiCall().getServiceProvider();
+      var response = await ApiCall().getServiceProvider();
       isLoading(false);
       if (response != null) {
         if (response.rtnStatus) {
+          serviceProviderList.clear();
           for (var e in response.rtnData) {
-            serviceProviderList.add({"id": '${e.serviceProviderID}', "value": "${e.serviceProviderName}"});
+            serviceProviderList.add({
+              "id": '${e.serviceProviderID}',
+              "value": "${e.serviceProviderName}"
+            });
           }
           if (serviceProviderList.isNotEmpty) {
-            selectedServiceProvider('${serviceProviderList.first['value']}');
+            selectedServiceProvider('${serviceProviderList.first['id']}');
+            getServiceProviderService();
+            getServiceProviderArea();
           }
         } else {
           toast(response.rtnMsg);
@@ -99,14 +92,45 @@ class TechnicianController extends GetxController {
     }
   }
 
-  getServices() async {
+  getServiceProviderService() async {
     if (await isNetConnected()) {
       isLoading(true);
-      var response = await ApiCall().getService();
+      final response = await ApiCall().getServiceProviderService(
+          providerId: int.parse(selectedServiceProvider.value));
       isLoading(false);
       if (response != null) {
-        if (response['RtnStatus']) {
-          servicesList(response['RtnData']);
+        servicesList.clear();
+        if (response["RtnStatus"]) {
+          for (var e in response['RtnData']) {
+            servicesList
+                .add({"id": '${e["Service"]}', "value": "${e['ServiceName']}"});
+          }
+          if (servicesList.isNotEmpty) {
+            selectedService('${servicesList.first['id']}');
+          }
+        } else {
+          toast(response['RtnMsg']);
+        }
+      }
+    }
+  }
+
+  getServiceProviderArea() async {
+    if (await isNetConnected()) {
+      isLoading(true);
+      var response = await ApiCall().getServiceProviderArea(
+          providerId: int.parse(selectedServiceProvider.value));
+      isLoading(false);
+      if (response != null) {
+        areaList.clear();
+
+        if (response["RtnStatus"]) {
+          for (var e in response['RtnData']) {
+            areaList.add({"id": '${e["Area"]}', "value": "${e['AreaName']}"});
+          }
+          if (areaList.isNotEmpty) {
+            selectedArea('${areaList.first['id']}');
+          }
         } else {
           toast(response['RtnMsg']);
         }
@@ -118,7 +142,7 @@ class TechnicianController extends GetxController {
     if (await isNetConnected()) {
       isLoading(true);
       TechnicianResponse? response =
-          await ApiCall().getTechnician(0,0);//_box.read(Session.userId), 1
+          await ApiCall().getTechnician(0, 0); //_box.read(Session.userId), 1
       isLoading(false);
       if (response != null) {
         if (response.rtnStatus) {
@@ -131,7 +155,26 @@ class TechnicianController extends GetxController {
     }
   }
 
-  insertUpdateTechnician(bool val,data) async {
+  insertUpdateTechnician(bool val, data) async {
+    if (await isNetConnected()) {
+      isLoading(true);
+      data["IsActive"] = val;
+      var response = await ApiCall().insertTechnician(data);
+      isLoading(false);
+      if (response != null) {
+        if (response['RtnStatus']) {
+          customDialog(Get.context, "Success", response['RtnMsg'].toString(),
+              () {
+            Get.back();
+            getTechnician();
+          }, isDismissable: false);
+        }
+        toast(response['RtnMsg']);
+      }
+    }
+  }
+
+  enableAndDisableTechnician(bool val, data) async {
     if (await isNetConnected()) {
       isLoading(true);
       data.isActive = val;
@@ -141,9 +184,9 @@ class TechnicianController extends GetxController {
         if (response['RtnStatus']) {
           customDialog(Get.context, "Success", response['RtnMsg'].toString(),
                   () {
-                Get.back();
+
                 getTechnician();
-              },isDismissable: false);
+              }, isDismissable: false);
         }
         toast(response['RtnMsg']);
       }

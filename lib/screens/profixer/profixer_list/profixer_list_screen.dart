@@ -398,7 +398,7 @@ class ProfixerListScreen extends GetView<ProfixerController> {
                     activeColor: Colors.green.shade200,
                     inactiveThumbColor: Colors.red.shade200,
                     onChanged: (val) {
-                      controller.insertUpdateProfixer(val, data);                   })
+                      controller.enableAndDisableProfixer(val, data);                   })
               ],
             )
           ],

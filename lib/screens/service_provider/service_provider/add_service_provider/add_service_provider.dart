@@ -6,7 +6,7 @@ import 'package:profixer_admin/helpers/custom_colors.dart';
 
 import 'package:profixer_admin/helpers/utils.dart';
 
-import 'package:profixer_admin/screens/service_provider/service_provider_controller.dart';
+import 'package:profixer_admin/screens/service_provider/service_provider/service_provider_controller.dart';
 import 'package:profixer_admin/widgets/custom_button.dart';
 import 'package:profixer_admin/widgets/custom_edittext.dart';
 
@@ -38,12 +38,6 @@ class AddServiceProviderScreen extends StatelessWidget {
           serviceProviderData!.contactMailID.toString();
       controller.permanentAddressController.text =
           serviceProviderData!.contactAddress.toString();
-
-
-
-
-
-
       controller.taxDetailsController.text =
           serviceProviderData!.taxDetails.toString();
       controller.bankDetailsController.text =
@@ -244,6 +238,21 @@ class AddServiceProviderScreen extends StatelessWidget {
                                     const SizedBox(
                                       height: 10,
                                     ),
+                                    Obx(
+                                          () => CustomDropDown(
+                                          hintText: "Which area do you prefer? ",
+                                          dropDownValue: controller
+                                              .selectedArea.value,
+                                          items:
+                                          controller.areaList,
+                                          onSelected: (value) {
+                                            controller
+                                                .selectedArea(value);
+                                          }),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
                                     CustomEditText(
                                       hintText: "Contract Start Date",
                                       showCursor: false,
@@ -418,7 +427,7 @@ class AddServiceProviderScreen extends StatelessWidget {
                                       text: "Add",
                                       btnColor: primaryColor,
                                       onTap: () {
-                                        var data = {
+                                        var params = {
                                           "ServiceProviderID":serviceProviderData?.serviceProviderID
                                                   ??
                                               0,
@@ -449,7 +458,7 @@ class AddServiceProviderScreen extends StatelessWidget {
                                               controller.box.read(Session.userId),
                                         };
                                         controller
-                                            .insertUpdateServiceProvider(controller.selectedIsActive.value,data);
+                                            .insertUpdateServiceProvider(controller.selectedIsActive.value,params);
 
                                       },
                                     ),

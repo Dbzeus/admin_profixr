@@ -7,7 +7,7 @@ import 'package:profixer_admin/helpers/custom_dialog.dart';
 import 'package:profixer_admin/model/admin_response.dart';
 import 'package:profixer_admin/model/serviceprovider_response.dart';
 
-import '../../helpers/utils.dart';
+import '../../../helpers/utils.dart';
 
 class ServiceProviderController extends GetxController {
   TextEditingController servicerProviderNameController =
@@ -24,30 +24,14 @@ class ServiceProviderController extends GetxController {
   TextEditingController contractStartController = TextEditingController();
   TextEditingController contractEndController = TextEditingController();
 
-  //Admin controllers
-  TextEditingController adminFirstNameController = TextEditingController();
-  TextEditingController adminLastNameController = TextEditingController();
-  TextEditingController adminUserNameController = TextEditingController();
-  TextEditingController adminPasswordController = TextEditingController();
-  TextEditingController adminMobNoController = TextEditingController();
-  TextEditingController adminEmailController = TextEditingController();
-  TextEditingController adminCurrentAddressController = TextEditingController();
-  TextEditingController adminPermenantAddressController =
-      TextEditingController();
-  TextEditingController adminDobController = TextEditingController();
-  TextEditingController adminDojController = TextEditingController();
-
-
-
-
   RxBool isConfirm = true.obs;
   RxBool isLoading = false.obs;
   RxBool selectedIsActive = true.obs;
   RxInt selectedTag = 0.obs;
-RxList<Map<String,String>> serviceList = RxList();
-RxString selectedService = "".obs;
+  RxList<Map<String, String>> serviceList = RxList();
+  RxString selectedService = "".obs;
 
-  RxList<Map<String,String>> areaList = RxList();
+  RxList<Map<String, String>> areaList = RxList();
   RxString selectedArea = "".obs;
 
   //RxBool selectedTag = false.obs;
@@ -59,7 +43,7 @@ RxString selectedService = "".obs;
   RxString mobileNoDropDownValue = "+966".obs;
   List<String> mobileItems = ["+966", "+967", "+968"];
 
-  int serviceProviderId= -1;
+  int serviceProviderId = -1;
 
   final box = GetStorage();
 
@@ -67,7 +51,6 @@ RxString selectedService = "".obs;
   void onInit() {
     super.onInit();
     getServiceProvider();
-
   }
 
   getServiceProvider() async {
@@ -86,23 +69,24 @@ RxString selectedService = "".obs;
     }
   }
 
-
   getServiceProviderService(int serviceProviderId) async {
     if (await isNetConnected()) {
       isLoading(true);
-      final response = await ApiCall().getServiceProviderService(providerId: serviceProviderId );
+      final response = await ApiCall()
+          .getServiceProviderService(providerId: serviceProviderId);
       isLoading(false);
       if (response != null) {
+        serviceList.clear();
         if (response["RtnStatus"]) {
           for (var e in response['RtnData']) {
-            serviceList.add({"id": '${e["ServiceProviderID"]}', "value": "${e['ServiceName']}"});
-
+            serviceList
+                .add({"id": '${e["Service"]}', "value": "${e['ServiceName']}"});
           }
           if (serviceList.isNotEmpty) {
             selectedService('${serviceList.first['id']}');
           }
         } else {
-          toast(response.rtnMsg);
+          toast(response['RtnMsg']);
         }
       }
     }
@@ -111,28 +95,29 @@ RxString selectedService = "".obs;
   getServiceProviderArea(int serviceProviderId) async {
     if (await isNetConnected()) {
       isLoading(true);
-      var response = await ApiCall().getServiceProviderArea(providerId: serviceProviderId);
+      var response =
+          await ApiCall().getServiceProviderArea(providerId: serviceProviderId);
       isLoading(false);
       if (response != null) {
+        areaList.clear();
         if (response["RtnStatus"]) {
           for (var e in response['RtnData']) {
-            areaList.add({"id": '${e["ServiceProviderID"]}', "value": "${e['AreaName']}"});
-
+            areaList.add({"id": '${e["Area"]}', "value": "${e['AreaName']}"});
           }
           if (areaList.isNotEmpty) {
-            selectedArea('${serviceList.first['id']}');
+            selectedArea('${areaList.first['id']}');
           }
         } else {
-          toast(response.rtnMsg);
+          toast(response['RtnMsg']);
         }
       }
     }
   }
 
-  insertUpdateServiceProvider(bool val,data) async {
+  insertUpdateServiceProvider(bool val, data) async {
     if (await isNetConnected()) {
       isLoading(true);
-      data.isActive = val;
+      data["IsActive"] = val;
       var response = await ApiCall().insertServiceProvider(data);
       isLoading(false);
       if (response != null) {
@@ -140,8 +125,28 @@ RxString selectedService = "".obs;
           customDialog(Get.context, "Success", response['RtnMsg'].toString(),
               () {
             Get.back();
+            getServiceProvider();
           });
-          getServiceProvider();
+
+        }
+        toast(response['RtnMsg']);
+      }
+    }
+  }
+
+  enableAndDisableServiceProvider(bool val, data) async {
+    if (await isNetConnected()) {
+      isLoading(true);
+      data.isActive = val;
+      var response = await ApiCall().insertServiceProvider(data);
+      isLoading(false);
+      if (response != null) {
+        if (response['RtnStatus']) {
+          customDialog(
+              Get.context, "Success", response['RtnMsg'].toString(), () {
+            getServiceProvider();
+          });
+
         }
         toast(response['RtnMsg']);
       }
@@ -149,10 +154,11 @@ RxString selectedService = "".obs;
   }
 
   //for admin
-  getServiceProviderAdmin(int serviceProviderId,int userId) async {
+  getServiceProviderAdmin(int serviceProviderId, int userId) async {
     if (await isNetConnected()) {
       isLoading(true);
-      AdminResponse? response = await ApiCall().getServiceProviderAdmin(serviceProviderId, userId);
+      AdminResponse? response =
+          await ApiCall().getServiceProviderAdmin(serviceProviderId, userId);
       isLoading(false);
       if (response != null) {
         if (response.rtnStatus) {
@@ -161,26 +167,6 @@ RxString selectedService = "".obs;
         } else {
           toast(response.rtnMsg);
         }
-      }
-    }
-  }
-
-  //for admin
-  insertUpdateServiceProviderAdmin(bool val,data) async {
-    if (await isNetConnected()) {
-      isLoading(true);
-    data.isActive = val;
-      var response = await ApiCall().insertServiceProviderAdmin(data);
-      isLoading(false);
-      if (response != null) {
-        if (response['RtnStatus']) {
-          customDialog(Get.context, "Success", response['RtnMsg'].toString(),
-                  () {
-                Get.back();
-              });
-          getServiceProviderAdmin(serviceProviderId,box.read(Session.userId));
-        }
-        toast(response['RtnMsg']);
       }
     }
   }

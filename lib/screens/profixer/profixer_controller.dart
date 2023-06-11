@@ -17,10 +17,6 @@ class ProfixerController extends GetxController {
   TextEditingController relievedDateController = TextEditingController();
   TextEditingController relievedReasonController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
-
-
-
-
   TextEditingController permanentAddressController = TextEditingController();
   TextEditingController currentAddressController = TextEditingController();
 
@@ -83,7 +79,7 @@ final box = GetStorage();
   insertUpdateProfixer(bool val,data) async {
     if (await isNetConnected()) {
       isLoading(true);
-      data.isActive = val;
+      data["IsActive"] = val;
       var response = await ApiCall().insertProfixerUser(data);
       isLoading(false);
       if (response != null) {
@@ -91,6 +87,25 @@ final box = GetStorage();
           customDialog(Get.context, "Success", response['RtnMsg'].toString(),
                   () {
                 Get.back();
+                getProfixer();
+              },isDismissable: false);
+        }
+        toast(response['RtnMsg']);
+      }
+    }
+  }
+
+  enableAndDisableProfixer(bool val,data) async {
+    if (await isNetConnected()) {
+      isLoading(true);
+      data.isActive = val;
+      var response = await ApiCall().insertProfixerUser(data);
+      isLoading(false);
+      if (response != null) {
+        if (response['RtnStatus']) {
+          customDialog(Get.context, "Success", response['RtnMsg'].toString(),
+                  () {
+
                 getProfixer();
               },isDismissable: false);
         }

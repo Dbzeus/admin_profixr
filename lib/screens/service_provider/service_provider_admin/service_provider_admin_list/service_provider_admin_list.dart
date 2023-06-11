@@ -5,10 +5,11 @@ import 'package:profixer_admin/model/admin_response.dart';
 
 import '../../../../helpers/custom_colors.dart';
 import '../../../../routes/app_routes.dart';
-import '../../service_provider_controller.dart';
+import '../../service_provider/service_provider_controller.dart';
+import '../service_provider_admin_controller.dart';
 
-class ServiceProviderAdminList extends StatelessWidget {
-  final controller = Get.find<ServiceProviderController>();
+class ServiceProviderAdminList extends GetView<ServiceProviderAdminController> {
+  final controller = Get.put(ServiceProviderAdminController());
 
   ServiceProviderAdminList({Key? key}) : super(key: key);
 
@@ -88,7 +89,7 @@ class ServiceProviderAdminList extends StatelessWidget {
                         const SizedBox(
                           height: 100,
                         ),
-                        Text('No Admin Found'),
+                        Center(child: Text('No Admin Found')),
                       ],
                     ))
                   : ListView.builder(
@@ -335,7 +336,7 @@ class ServiceProviderAdminList extends StatelessWidget {
                     activeColor: Colors.green.shade200,
                     inactiveThumbColor: Colors.red.shade200,
                     onChanged: (val) {
-                      controller.insertUpdateServiceProviderAdmin(val, data);
+                      controller.enableAndDisableServiceProviderAdmin(val, data);
                     })
               ],
             )

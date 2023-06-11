@@ -63,11 +63,13 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                 ),
                 GestureDetector(
                   onTap: () {
+
                     Get.toNamed(Routes.addTechnician, arguments: {
                       "title": "Add Technician",
                       "buttonTitle": "Add",
                       "data": null,
                     });
+
                   },
                   child: Container(
                     height: 50,
@@ -402,7 +404,7 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                     activeColor: Colors.green.shade200,
                     inactiveThumbColor: Colors.red.shade200,
                     onChanged: (val) {
-                      controller.insertUpdateTechnician(val,data);
+                      controller.enableAndDisableTechnician(val,data);
                     })
               ],
             )

@@ -5,7 +5,7 @@ import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/helpers/utils.dart';
 import 'package:profixer_admin/model/serviceprovider_response.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
-import 'package:profixer_admin/screens/service_provider/service_provider_controller.dart';
+import 'package:profixer_admin/screens/service_provider/service_provider/service_provider_controller.dart';
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 
 class ServiceProviderListScreen extends GetView<ServiceProviderController> {
@@ -112,7 +112,7 @@ class ServiceProviderListScreen extends GetView<ServiceProviderController> {
     return GestureDetector(
       onTap: () {
         controller.getServiceProviderAdmin(
-            data.serviceProviderID, 0);
+            data.serviceProviderID, controller.box.read(Session.userId));
         controller.getServiceProviderArea(data.serviceProviderID);
         controller.getServiceProviderService(data.serviceProviderID);
         controller.serviceProviderId= data.serviceProviderID;//controller.box.read(Session.userId));
@@ -428,7 +428,7 @@ class ServiceProviderListScreen extends GetView<ServiceProviderController> {
                     activeColor: Colors.green.shade200,
                     inactiveThumbColor: Colors.red.shade200,
                     onChanged: (val) {
-                      controller.insertUpdateServiceProvider(val, data);
+                      controller.enableAndDisableServiceProvider(val, data);
                     })
               ],
             )

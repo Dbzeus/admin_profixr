@@ -104,7 +104,7 @@ class ServiceProviderData {
  late  String taxDetails;
  late  String bankDetails;
  late  String serviceIDs;
- late  dynamic? serviceName;
+ late  String? serviceName;
  late  String areaIDs;
  late  String? areaName;
  late  String contractStartDate;

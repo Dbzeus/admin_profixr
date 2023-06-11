@@ -111,11 +111,6 @@ class ServiceProviderListScreen extends GetView<ServiceProviderController> {
   _buildList(ServiceProviderData data) {
     return GestureDetector(
       onTap: () {
-        controller.getServiceProviderAdmin(
-            data.serviceProviderID, controller.box.read(Session.userId));
-        controller.getServiceProviderArea(data.serviceProviderID);
-        controller.getServiceProviderService(data.serviceProviderID);
-        controller.serviceProviderId= data.serviceProviderID;//controller.box.read(Session.userId));
         Get.toNamed(Routes.addServiceProvider, arguments: {
           "title": "Edit Service Provider",
           "buttonTitle": "Next",
@@ -138,6 +133,7 @@ class ServiceProviderListScreen extends GetView<ServiceProviderController> {
             ],
             borderRadius: BorderRadius.circular(16)),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
@@ -179,7 +175,7 @@ class ServiceProviderListScreen extends GetView<ServiceProviderController> {
                       Row(
                         children: [
                           const Icon(
-                            Icons.wifi_calling_3,
+                            Icons.call,
                             color: primaryColor,
                             size: 12,
                           ),
@@ -205,11 +201,13 @@ class ServiceProviderListScreen extends GetView<ServiceProviderController> {
                           const SizedBox(
                             width: 6,
                           ),
-                          Text(
-                            data.contactMailID.toString(),
-                            style: TextStyle(
-                              color: blackColor,
-                              fontSize: 10,
+                          Expanded(
+                            child: Text(
+                              data.contactMailID.toString(),
+                              style: TextStyle(
+                                color: blackColor,
+                                fontSize: 10,
+                              ),
                             ),
                           ),
                         ],
@@ -270,7 +268,6 @@ class ServiceProviderListScreen extends GetView<ServiceProviderController> {
               height: 4,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Services",
@@ -279,22 +276,31 @@ class ServiceProviderListScreen extends GetView<ServiceProviderController> {
                     fontSize: 12,
                   ),
                 ),
-                Chip(
-                  backgroundColor: cardStackColor,
-                  padding: EdgeInsets.symmetric(horizontal: 4),
-                  label: Text(
-                    data.serviceName.toString(),
-                    style: TextStyle(
-                      color: primaryColor,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 10,
+                Expanded(
+                  child: Wrap(
+                    direction: Axis.horizontal,
+                    spacing: 8,
+                    alignment: WrapAlignment.end,
+                    children: List.generate(
+                      data.serviceName?.split(',').length ?? 0,
+                          (index) => Chip(
+                        backgroundColor: cardStackColor,
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        label: Text(
+                          data.serviceName!.split(",")[index],
+                          style: const TextStyle(
+                            color: primaryColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Area",
@@ -303,15 +309,25 @@ class ServiceProviderListScreen extends GetView<ServiceProviderController> {
                     fontSize: 12,
                   ),
                 ),
-                Chip(
-                  backgroundColor: cardStackColor,
-                  padding: EdgeInsets.symmetric(horizontal: 4),
-                  label: Text(
-                    data.areaName.toString(),
-                    style: TextStyle(
-                      color: primaryColor,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 10,
+                Expanded(
+                  child: Wrap(
+                    direction: Axis.horizontal,
+                    spacing: 8,
+                    alignment: WrapAlignment.end,
+                    children: List.generate(
+                      data.areaName?.split(',').length ?? 0,
+                          (index) => Chip(
+                        backgroundColor: cardStackColor,
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        label: Text(
+                          data.areaName!.split(",")[index],
+                          style: const TextStyle(
+                            color: primaryColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -342,27 +358,22 @@ class ServiceProviderListScreen extends GetView<ServiceProviderController> {
             const SizedBox(
               height: 4,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Tax Details",
-                  style: TextStyle(
-                    color: blackColor,
-                    fontSize: 12,
-                  ),
-                ),
-                Text(
-                  data.taxDetails.toString(),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: blackColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
+            Text(
+              "Tax Details",
+              style: TextStyle(
+                color: blackColor,
+                fontSize: 12,
+              ),
+            ),
+            Text(
+              data.taxDetails.toString(),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: blackColor,
+                fontWeight: FontWeight.w600,
+                fontSize: 12,
+              ),
             ),
             const SizedBox(
               height: 4,

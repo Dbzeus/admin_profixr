@@ -11,6 +11,7 @@ class ProfixerController extends GetxController {
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
+  TextEditingController designationController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController dobController = TextEditingController();
   TextEditingController dojController = TextEditingController();
@@ -35,23 +36,7 @@ class ProfixerController extends GetxController {
   RxString mobileNoDropDownValue = "+966".obs;
   List<String> mobileItems = ["+966", "+967", "+968"];
 
-  RxString designationDropDownValue = "Manager".obs;
-  List<Map<String, String>> designationDropDownItems = [
-    {
-      "id": "1",
-      "value": 'Manager',
-    },
-    {
-      "id": "2",
-      "value": 'Sales',
-    },
-    {
-      "id": "3",
-      "value": 'Profixer',
-    }
-  ];
-
-final box = GetStorage();
+  final box = GetStorage();
 
   @override
   void onInit() {
@@ -59,8 +44,7 @@ final box = GetStorage();
     getProfixer();
   }
 
-
-    getProfixer() async {
+  getProfixer() async {
     if (await isNetConnected()) {
       isLoading(true);
       ProfixerResponse? response = await ApiCall().getProfixerUser();
@@ -76,40 +60,37 @@ final box = GetStorage();
     }
   }
 
-  insertUpdateProfixer(bool val,data) async {
+  insertUpdateProfixer(
+    bool val,
+    data,
+    bool isUpdated, {
+    bool isShowDialog = true,
+  }) async {
     if (await isNetConnected()) {
       isLoading(true);
-      data["IsActive"] = val;
-      var response = await ApiCall().insertProfixerUser(data);
-      isLoading(false);
-      if (response != null) {
-        if (response['RtnStatus']) {
-          customDialog(Get.context, "Success", response['RtnMsg'].toString(),
-                  () {
-                Get.back();
-                getProfixer();
-              },isDismissable: false);
-        }
-        toast(response['RtnMsg']);
+      if(data is ProfixerData){
+        data.isActive=val;
+      }else {
+        data["IsActive"] = val;
       }
-    }
-  }
-
-  enableAndDisableProfixer(bool val,data) async {
-    if (await isNetConnected()) {
-      isLoading(true);
-      data.isActive = val;
       var response = await ApiCall().insertProfixerUser(data);
       isLoading(false);
       if (response != null) {
         if (response['RtnStatus']) {
-          customDialog(Get.context, "Success", response['RtnMsg'].toString(),
-                  () {
-
-                getProfixer();
-              },isDismissable: false);
+          if (isShowDialog) {
+            customDialog(
+                Get.context,
+                isUpdated ? "Updated Successful!" : "Created Successful!",
+                response['RtnMsg'].toString(), () {
+              Get.back();
+              getProfixer();
+            }, isDismissable: false);
+          } else {
+            getProfixer();
+          }
+        } else {
+          toast(response['RtnMsg']);
         }
-        toast(response['RtnMsg']);
       }
     }
   }

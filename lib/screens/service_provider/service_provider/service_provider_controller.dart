@@ -28,13 +28,7 @@ class ServiceProviderController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool selectedIsActive = true.obs;
   RxInt selectedTag = 0.obs;
-  RxList<Map<String, String>> serviceList = RxList();
-  RxString selectedService = "".obs;
 
-  RxList<Map<String, String>> areaList = RxList();
-  RxString selectedArea = "".obs;
-
-  //RxBool selectedTag = false.obs;
 
   RxList<ServiceProviderData> serviceProviders = RxList();
   RxList<AdminData> serviceProviderAdmin = RxList();
@@ -43,7 +37,14 @@ class ServiceProviderController extends GetxController {
   RxString mobileNoDropDownValue = "+966".obs;
   List<String> mobileItems = ["+966", "+967", "+968"];
 
-  int serviceProviderId = -1;
+  RxList<Map<String, String>> areaList = RxList();
+  String selectedArea = "";
+  RxString selectedAreaNames = "".obs;
+  RxList<Map<String, String>> servicesList = RxList();
+  String selectedService = "";
+  RxString selectedServiceName = "".obs;
+
+  int serviceProviderId=0;
 
   final box = GetStorage();
 
@@ -69,22 +70,26 @@ class ServiceProviderController extends GetxController {
     }
   }
 
-  getServiceProviderService(int serviceProviderId) async {
+  getServiceProviderService({
+    canClear=true,
+  }) async {
     if (await isNetConnected()) {
       isLoading(true);
-      final response = await ApiCall()
-          .getServiceProviderService(providerId: serviceProviderId);
+      final response = await ApiCall().getServiceProviderService(
+          providerId: serviceProviderId);
       isLoading(false);
       if (response != null) {
-        serviceList.clear();
+        servicesList.clear();
+        if(canClear) {
+          selectedService = "";
+          selectedServiceName("");
+        }
         if (response["RtnStatus"]) {
           for (var e in response['RtnData']) {
-            serviceList
+            servicesList
                 .add({"id": '${e["Service"]}', "value": "${e['ServiceName']}"});
           }
-          if (serviceList.isNotEmpty) {
-            selectedService('${serviceList.first['id']}');
-          }
+
         } else {
           toast(response['RtnMsg']);
         }
@@ -92,27 +97,32 @@ class ServiceProviderController extends GetxController {
     }
   }
 
-  getServiceProviderArea(int serviceProviderId) async {
+  getServiceProviderArea({
+    canClear=true,
+  }) async {
     if (await isNetConnected()) {
       isLoading(true);
-      var response =
-          await ApiCall().getServiceProviderArea(providerId: serviceProviderId);
+      var response = await ApiCall().getServiceProviderArea(
+          providerId: serviceProviderId);
       isLoading(false);
       if (response != null) {
         areaList.clear();
+        if(canClear) {
+          selectedArea = "";
+          selectedAreaNames("");
+        }
         if (response["RtnStatus"]) {
           for (var e in response['RtnData']) {
             areaList.add({"id": '${e["Area"]}', "value": "${e['AreaName']}"});
           }
-          if (areaList.isNotEmpty) {
-            selectedArea('${areaList.first['id']}');
-          }
+
         } else {
           toast(response['RtnMsg']);
         }
       }
     }
   }
+
 
   insertUpdateServiceProvider(bool val, data) async {
     if (await isNetConnected()) {
@@ -154,11 +164,11 @@ class ServiceProviderController extends GetxController {
   }
 
   //for admin
-  getServiceProviderAdmin(int serviceProviderId, int userId) async {
+  getServiceProviderAdmin(int serviceProviderId) async {
     if (await isNetConnected()) {
       isLoading(true);
       AdminResponse? response =
-          await ApiCall().getServiceProviderAdmin(serviceProviderId, userId);
+          await ApiCall().getServiceProviderAdmin(serviceProviderId, box.read(Session.userId));
       isLoading(false);
       if (response != null) {
         if (response.rtnStatus) {
@@ -170,4 +180,22 @@ class ServiceProviderController extends GetxController {
       }
     }
   }
+
+  getSelectedServiceItems() {
+    return servicesList.map((element) => {
+      'id':element['id'],
+      'value':element['value'],
+      'isSelected': selectedServiceName.split(",").firstWhereOrNull((e) => e==element['value'])!=null
+    }).toList().obs;
+  }
+
+  getSelectedAreaItems() {
+    return areaList.map((element) => {
+      'id':element['id'],
+      'value':element['value'],
+      'isSelected': selectedAreaNames.split(",").firstWhereOrNull((e) => e==element['value'])!=null
+    }).toList().obs;
+  }
+
+
 }

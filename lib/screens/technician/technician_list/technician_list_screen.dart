@@ -8,14 +8,13 @@ import 'package:profixer_admin/screens/technician/technician_controller.dart';
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 
 class TechnicianListScreen extends GetView<TechnicianController> {
+  @override
   final controller = Get.put(TechnicianController());
 
   TechnicianListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       appBar: CustomAppBar(
         title: "Technician",
@@ -68,8 +67,6 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                       "buttonTitle": "Add",
                       "data": null,
                     });
-
-
                   },
                   child: Container(
                     height: 50,
@@ -119,7 +116,6 @@ class TechnicianListScreen extends GetView<TechnicianController> {
           "buttonTitle": "Next",
           "data": data
         });
-
       },
       child: Container(
         padding: const EdgeInsets.all(12),
@@ -174,7 +170,7 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                       Row(
                         children: [
                           const Icon(
-                            Icons.wifi_calling_3,
+                            Icons.call,
                             color: primaryColor,
                             size: 12,
                           ),
@@ -278,7 +274,6 @@ class TechnicianListScreen extends GetView<TechnicianController> {
               ],
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
                   "Services",
@@ -287,22 +282,34 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                     fontSize: 12,
                   ),
                 ),
-                Chip(
-                  backgroundColor: cardStackColor,
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  label: Text(
-                    data.serviceName.toString(),
-                    style: const TextStyle(
-                      color: primaryColor,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 10,
+                const SizedBox(
+                  width: 8,
+                ),
+                Expanded(
+                  child: Wrap(
+                    direction: Axis.horizontal,
+                    spacing: 8,
+                    alignment: WrapAlignment.end,
+                    children: List.generate(
+                      data.serviceName.split(',').length,
+                      (index) => Chip(
+                        backgroundColor: cardStackColor,
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        label: Text(
+                          data.serviceName.split(",")[index],
+                          style: const TextStyle(
+                            color: primaryColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const Text(
                   "Area",
@@ -311,15 +318,28 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                     fontSize: 12,
                   ),
                 ),
-                Chip(
-                  backgroundColor: cardStackColor,
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  label: Text(
-                    data.areaName.toString(),
-                    style: const TextStyle(
-                      color: primaryColor,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 10,
+                const SizedBox(
+                  width: 8,
+                ),
+                Expanded(
+                  child: Wrap(
+                    direction: Axis.horizontal,
+                    spacing: 8,
+                    alignment: WrapAlignment.end,
+                      children: List.generate(
+                      data.areaName.split(',').length,
+                      (index) => Chip(
+                        backgroundColor: cardStackColor,
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        label: Text(
+                          data.areaName.split(",")[index],
+                          style: const TextStyle(
+                            color: primaryColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -335,14 +355,18 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                     fontSize: 12,
                   ),
                 ),
-                Text(
-                  data.permanentAddress.toString(),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    color: blackColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
+                const SizedBox(width: 8,),
+                Expanded(
+                  child: Text(
+                    data.permanentAddress.toString(),
+                    maxLines: 2,
+                    textAlign: TextAlign.end,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: blackColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                    ),
                   ),
                 ),
               ],
@@ -360,12 +384,18 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                     fontSize: 12,
                   ),
                 ),
-                Text(
-                  data.contactAddress.toString(),
-                  style: const TextStyle(
-                    color: blackColor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 12,
+                const SizedBox(width: 8,),
+                Expanded(
+                  child: Text(
+                    data.contactAddress.toString(),
+                    textAlign: TextAlign.end,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: blackColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
+                    ),
                   ),
                 ),
               ],
@@ -404,7 +434,7 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                     activeColor: Colors.green.shade200,
                     inactiveThumbColor: Colors.red.shade200,
                     onChanged: (val) {
-                      controller.enableAndDisableTechnician(val,data);
+                      controller.insertUpdateTechnician(val, data,true, isShowDialog: false);
                     })
               ],
             )

@@ -25,6 +25,7 @@ dependencies:
   flutter_native_splash:
   permission_handler:
   dotted_border: ^2.0.0+3
+  flutter_html:
 #  timelineview:
 
 flutter_native_splash:

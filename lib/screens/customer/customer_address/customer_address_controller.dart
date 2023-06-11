@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -19,10 +20,10 @@ class CustomerAddressController extends GetxController {
   int customerId = 0;
 
   //address form
-  TextEditingController addressTitleController = TextEditingController();
-  TextEditingController doorNoController = TextEditingController();
-  TextEditingController streetNameController = TextEditingController();
-  TextEditingController landmarkController = TextEditingController();
+  TextEditingController  addressTitleController= TextEditingController();
+  TextEditingController  doorNoController= TextEditingController();
+  TextEditingController  streetNameController= TextEditingController();
+  TextEditingController  landmarkController= TextEditingController();
 
   RxBool selectedIsActive = true.obs;
 
@@ -46,8 +47,7 @@ class CustomerAddressController extends GetxController {
   getArea() async {
     if (await isNetConnected()) {
       isLoading(true);
-      var response = await ApiCall().getArea(
-          cityId: int.parse(selectedCity.value));
+      var response = await ApiCall().getArea(cityId: int.parse(selectedCity.value));
       isLoading(false);
       if (response != null) {
         if (response['RtnStatus']) {
@@ -57,7 +57,7 @@ class CustomerAddressController extends GetxController {
           }
           if (areas.isNotEmpty) {
             selectedArea('${areas.first['id']}');
-          } else {
+          }else{
             selectedArea('');
           }
           areas.refresh();
@@ -168,7 +168,7 @@ class CustomerAddressController extends GetxController {
       var response = await ApiCall().insertCustomerAddress(data);
       if (response != null) {
         if (response['RtnStatus']) {
-          if (showDialog) {
+          if(showDialog) {
             customDialog(
                 Get.context,
                 isUpdated ? "Updated Successful!" : "Added Successful!",
@@ -177,10 +177,8 @@ class CustomerAddressController extends GetxController {
                   getCustomerAddress();
                   Get.back();
                 }, isDismissable: false);
-          } else {
-            customerAddress
-                .firstWhere((element) => element.addressID == data.addressID)
-                .isActive = true;
+          }else{
+            customerAddress.firstWhere((element) => element.addressID==data.addressID).isActive=data[''];
             customerAddress.refresh();
           }
         } else {
@@ -189,37 +187,7 @@ class CustomerAddressController extends GetxController {
       }
       isLoading(false);
     }
-
-}
-
-enalbeDisableAddress(data, bool isUpdated, {bool showDialog = true}) async {
-  if (await isNetConnected()) {
-    isLoading(true);
-    var response = await ApiCall().insertCustomerAddress(data);
-    if (response != null) {
-      if (response['RtnStatus']) {
-        getCustomerAddress();
-        if (showDialog) {
-          customDialog(
-              Get.context,
-              isUpdated ? "Updated Successful!" : "Added Successful!",
-              "${response['RtnMsg']}",
-                  () {
-                Get.back();
-              }, isDismissable: false);
-        } else {
-          customerAddress
-              .firstWhere((element) => element.addressID == data.addressID)
-              .isActive = true;
-          customerAddress.refresh();
-        }
-      } else {
-        toast(response['RtnMsg']);
-      }
-    }
-    isLoading(false);
   }
-}
 
 onSearchChanged(String text) {
   if (text.isEmpty) {

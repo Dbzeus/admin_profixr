@@ -52,9 +52,11 @@ class TechnicianController extends GetxController {
 
   final box = GetStorage();
   RxList<Map<String, String>> areaList = RxList();
-  RxString selectedArea = "".obs;
+  String selectedArea = "";
+  RxString selectedAreaNames = "".obs;
   RxList<Map<String, String>> servicesList = RxList();
-  RxString selectedService = "".obs;
+  String selectedService = "";
+  RxString selectedServiceName = "".obs;
   RxList<Map<String, String>> serviceProviderList = RxList();
   RxString selectedServiceProvider = "".obs;
 
@@ -62,11 +64,13 @@ class TechnicianController extends GetxController {
   void onInit() {
     super.onInit();
     getTechnician();
-    getServiceProviders();
   }
 
 
-  getServiceProviders() async {
+  getServiceProviders({
+    bool isAssigned=true,
+    String? selectedId,
+}) async {
     if (await isNetConnected()) {
       isLoading(true);
       var response = await ApiCall().getServiceProvider();
@@ -77,13 +81,16 @@ class TechnicianController extends GetxController {
           for (var e in response.rtnData) {
             serviceProviderList.add({
               "id": '${e.serviceProviderID}',
-              "value": "${e.serviceProviderName}"
+              "value": e.serviceProviderName
             });
           }
-          if (serviceProviderList.isNotEmpty) {
+          if (serviceProviderList.isNotEmpty && isAssigned) {
             selectedServiceProvider('${serviceProviderList.first['id']}');
             getServiceProviderService();
             getServiceProviderArea();
+          }
+          if(selectedId!=null){
+            selectedServiceProvider(selectedId);
           }
         } else {
           toast(response.rtnMsg);
@@ -92,7 +99,9 @@ class TechnicianController extends GetxController {
     }
   }
 
-  getServiceProviderService() async {
+  getServiceProviderService({
+    canClear=true,
+}) async {
     if (await isNetConnected()) {
       isLoading(true);
       final response = await ApiCall().getServiceProviderService(
@@ -100,14 +109,18 @@ class TechnicianController extends GetxController {
       isLoading(false);
       if (response != null) {
         servicesList.clear();
+        if(canClear) {
+          selectedService = "";
+          selectedServiceName("");
+        }
         if (response["RtnStatus"]) {
           for (var e in response['RtnData']) {
             servicesList
                 .add({"id": '${e["Service"]}', "value": "${e['ServiceName']}"});
           }
-          if (servicesList.isNotEmpty) {
-            selectedService('${servicesList.first['id']}');
-          }
+          // if (servicesList.isNotEmpty) {
+          //   selectedService('${servicesList.first['id']}');
+          // }
         } else {
           toast(response['RtnMsg']);
         }
@@ -115,7 +128,9 @@ class TechnicianController extends GetxController {
     }
   }
 
-  getServiceProviderArea() async {
+  getServiceProviderArea({
+    canClear=true,
+  }) async {
     if (await isNetConnected()) {
       isLoading(true);
       var response = await ApiCall().getServiceProviderArea(
@@ -123,14 +138,17 @@ class TechnicianController extends GetxController {
       isLoading(false);
       if (response != null) {
         areaList.clear();
-
+        if(canClear) {
+          selectedArea = "";
+          selectedAreaNames("");
+        }
         if (response["RtnStatus"]) {
           for (var e in response['RtnData']) {
             areaList.add({"id": '${e["Area"]}', "value": "${e['AreaName']}"});
           }
-          if (areaList.isNotEmpty) {
-            selectedArea('${areaList.first['id']}');
-          }
+          // if (areaList.isNotEmpty) {
+          //   selectedArea('${areaList.first['id']}');
+          // }
         } else {
           toast(response['RtnMsg']);
         }
@@ -155,41 +173,54 @@ class TechnicianController extends GetxController {
     }
   }
 
-  insertUpdateTechnician(bool val, data) async {
+  insertUpdateTechnician( bool val,
+      data,
+      bool isUpdated, {
+        bool isShowDialog = true,
+      }) async {
     if (await isNetConnected()) {
       isLoading(true);
-      data["IsActive"] = val;
+      if(data is TechnicainData){
+        data.isActive = val;
+      }else {
+        data["IsActive"] = val;
+      }
       var response = await ApiCall().insertTechnician(data);
       isLoading(false);
       if (response != null) {
         if (response['RtnStatus']) {
-          customDialog(Get.context, "Success", response['RtnMsg'].toString(),
-              () {
-            Get.back();
+          if (isShowDialog) {
+            customDialog(Get.context,
+                isUpdated ? "Updated Successful!" : "Created Successful!",
+                response['RtnMsg'].toString(),
+                    () {
+                  Get.back();
+                  getTechnician();
+                }, isDismissable: false);
+          }else{
             getTechnician();
-          }, isDismissable: false);
+          }
+        }else {
+          toast(response['RtnMsg']);
         }
-        toast(response['RtnMsg']);
       }
     }
   }
 
-  enableAndDisableTechnician(bool val, data) async {
-    if (await isNetConnected()) {
-      isLoading(true);
-      data.isActive = val;
-      var response = await ApiCall().insertTechnician(data);
-      isLoading(false);
-      if (response != null) {
-        if (response['RtnStatus']) {
-          customDialog(Get.context, "Success", response['RtnMsg'].toString(),
-                  () {
-
-                getTechnician();
-              }, isDismissable: false);
-        }
-        toast(response['RtnMsg']);
-      }
-    }
+  getSelectedServiceItems() {
+    return servicesList.map((element) => {
+      'id':element['id'],
+      'value':element['value'],
+      'isSelected': selectedServiceName.split(",").firstWhereOrNull((e) => e==element['value'])!=null
+    }).toList().obs;
   }
+
+  getSelectedAreaItems() {
+    return areaList.map((element) => {
+      'id':element['id'],
+      'value':element['value'],
+      'isSelected': selectedAreaNames.split(",").firstWhereOrNull((e) => e==element['value'])!=null
+    }).toList().obs;
+  }
+
 }

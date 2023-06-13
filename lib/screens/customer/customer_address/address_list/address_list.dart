@@ -35,7 +35,6 @@ class _AddressListState extends State<AddressList> {
           height: 16,
         ),
         Row(
-
           children: [
             Expanded(
               child: Container(
@@ -115,14 +114,16 @@ class _AddressListState extends State<AddressList> {
                         child: Text('No Addresses Found'),
                       ),
                     )
-                  : ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: controller.customerAddress.length,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      physics: const BouncingScrollPhysics(),
-                      itemBuilder: (_, index) =>
-                          _buildList(controller.customerAddress[index])),
+                  : Expanded(
+                    child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: controller.customerAddress.length,
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (_, index) =>
+                            _buildList(controller.customerAddress[index])),
+                  ),
         ),
       ],
     );

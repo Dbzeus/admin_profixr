@@ -101,24 +101,21 @@ class _ServiceProviderAdminListState extends State<ServiceProviderAdminList> {
                 child: CircularProgressIndicator(),
               ))
               : controller.serviceProviderAdmin.isEmpty
-                  ? Center(
-                      child: Column(
-                      children: [
-                        const SizedBox(
-                          height: 100,
-                        ),
-                        Center(child: Text('No Admin Found')),
-                      ],
-                    ))
-                  : ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: controller.serviceProviderAdmin.length,
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      physics: const BouncingScrollPhysics(),
-                      itemBuilder: (_, index) =>
-                          _buildList(controller.serviceProviderAdmin[index]),
-                    ),
+                  ? Padding(
+                    padding: const EdgeInsets.only(top: 100),
+                    child: Center(child: Text('No Admin Found')),
+                  )
+                  : Expanded(
+                    child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: controller.serviceProviderAdmin.length,
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (_, index) =>
+                            _buildList(controller.serviceProviderAdmin[index]),
+                      ),
+                  ),
         )
       ],
     );
@@ -213,11 +210,13 @@ class _ServiceProviderAdminListState extends State<ServiceProviderAdminList> {
                           const SizedBox(
                             width: 6,
                           ),
-                          Text(
-                            data.mailID.toString(),
-                            style: TextStyle(
-                              color: blackColor,
-                              fontSize: 10,
+                          Expanded(
+                            child: Text(
+                              data.mailID.toString(),
+                              style: TextStyle(
+                                color: blackColor,
+                                fontSize: 10,
+                              ),
                             ),
                           ),
                         ],

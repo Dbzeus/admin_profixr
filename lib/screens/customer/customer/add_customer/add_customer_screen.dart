@@ -193,7 +193,7 @@ class AddCustomerScreen extends StatelessWidget {
                               }),
                         ],
                       ),
-                    ) : AddressList(customerData?.customerID ?? 0)
+                    ) : Expanded(child: AddressList(customerData?.customerID ?? 0))
                   ],
                 ),
               ),

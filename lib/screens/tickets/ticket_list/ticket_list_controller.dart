@@ -1,50 +1,54 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:profixer_admin/apis/api_call.dart';
-import 'package:profixer_admin/helpers/constant_widgets.dart';
+import 'package:profixer_admin/helpers/utils.dart';
 import 'package:profixer_admin/model/TicketListResponse.dart';
-import 'package:profixer_admin/screens/tickets/ticket_details/updation/ticket_updation.dart';
-import 'package:profixer_admin/screens/tickets/ticket_details/updation/tikcet_updation_controller.dart';
-import 'package:profixer_admin/screens/tickets/ticket_list/ticket_list_controller.dart';
+import 'package:profixer_admin/model/ticket_count_response.dart';
 
+import '../../../helpers/constant_widgets.dart';
 import '../../../helpers/custom_dialog.dart';
-import '../../../helpers/utils.dart';
-import '../../../model/TicketHistoryResponse.dart';
 import '../../main/main_controller.dart';
+import '../ticket_details/updation/ticket_updation.dart';
+import '../ticket_details/updation/tikcet_updation_controller.dart';
 
-class TicketDetailsController extends GetxController {
-  Ticket ticket = Get.arguments;
-  RxBool isHistoryLoading = false.obs;
-  RxBool isLoading = false.obs;
-  final _box = GetStorage();
+class TicketListController extends GetxController {
+  TextEditingController searchController = TextEditingController();
 
-  RxList<TicketHistory> histories = RxList();
+  TicketCount data = Get.arguments['data'];
+  var startDate = Get.arguments['startDate'];
+  var endDate = Get.arguments['endDate'];
+
+  final box = GetStorage();
+
+  RxList<Ticket> ticketList = RxList();
+  RxBool isLoading = true.obs;
 
   @override
   void onInit() {
     super.onInit();
-    getTicketHistory();
+    getTicketList();
   }
 
-  getTicketHistory() async {
+  getTicketList() async {
     if (await isNetConnected()) {
-      isHistoryLoading(true);
-      var response = await ApiCall()
-          .getTicketHistory(_box.read(Session.userId), ticket.ticketID);
-      isHistoryLoading(false);
+      isLoading(true);
+      var response = await ApiCall().getTicketList(
+          box.read(Session.userId), data.ticketStatusID, startDate, endDate);
       if (response != null) {
         if (response.rtnStatus) {
-          histories(response.rtnData);
+          ticketList(response.rtnData);
         } else {
           toast(response.rtnMsg);
         }
       }
+      isLoading(false);
     }
   }
 
-  ticketUpdate(ChildStatus status) async {
-    var res = await ticketUpdationDialog(Get.context!, getUpdationType(status.ticketTypeID));
+  ticketUpdate(Ticket ticket, ChildStatus status) async {
+    var res = await ticketUpdationDialog(
+        Get.context!, getUpdationType(status.ticketTypeID));
     // debugPrint(res);
     Get.delete<TicketUpdationController>();
     if (res != null) {
@@ -64,7 +68,7 @@ class TicketDetailsController extends GetxController {
           }
         }
 
-        var data = {
+        var param = {
           "TicketID": ticket.ticketID,
           "TicketStatusID": status.childStatusId,
           "CustomerID": ticket.customerID,
@@ -79,7 +83,7 @@ class TicketDetailsController extends GetxController {
           "Reason": res['reason'],
           "Remarks": res['remark'],
           "Images": image,
-          "CUID": _box.read(Session.userId)
+          "CUID": box.read(Session.userId)
         };
 
         var response = await ApiCall().updateATicket(data);
@@ -95,9 +99,7 @@ class TicketDetailsController extends GetxController {
             if (response['RtnStatus']) {
               final con = Get.find<MainController>();
               con.getTicketCounts();
-              final cont = Get.find<TicketListController>();
-              cont.getTicketList();
-              Get.back();
+              getTicketList();
             }
           }, isDismissable: false);
         }

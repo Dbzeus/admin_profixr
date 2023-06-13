@@ -37,7 +37,7 @@ class TicketUpdationController extends GetxController {
           for (var e in response.rtnData) {
             providers.add({
               "id": '${e.serviceProviderID}',
-              "value": "${e.serviceProviderName}"
+              "value": e.serviceProviderName
             });
           }
           if (providers.isNotEmpty) {
@@ -54,8 +54,7 @@ class TicketUpdationController extends GetxController {
   getTechnicians() async {
     if (await isNetConnected()) {
       isLoading(true);
-      var response = await ApiCall().getTechnician(
-          _box.read(Session.userId), int.parse(selectedProvider.value));
+      var response = await ApiCall().getTechnician(0, int.parse(selectedProvider.value));
       isLoading(false);
       if (response != null) {
         if (response.rtnStatus) {

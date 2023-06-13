@@ -8,13 +8,13 @@ import 'package:profixer_admin/routes/app_routes.dart';
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 
 import '../../../model/TicketListResponse.dart';
-import 'booked_ticket_controller.dart';
+import 'ticket_list_controller.dart';
 
-class BookedTicketScreen extends GetView<BookedTicketController> {
+class TicketListScreen extends GetView<TicketListController> {
   @override
-  final controller = Get.put(BookedTicketController());
+  final controller = Get.put(TicketListController());
 
-  BookedTicketScreen({Key? key}) : super(key: key);
+  TicketListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -309,28 +309,31 @@ class BookedTicketScreen extends GetView<BookedTicketController> {
                       child: Row(
                         children: List.generate(item.childStatus.length, (index) =>  Row(
                           children: [
-                            Container(
-                              width: 90,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                  color: whiteColor,
-                                  borderRadius: BorderRadius.circular(4),
-                                  border: Border.all(
-                                    color: HexColor.fromHex(item.childStatus[index].colorCode,),
-                                  )),
-                              child: Center(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    CachedNetworkImage(imageUrl: item.childStatus[index].statusImage,width: 18,height: 18,),
-                                    Text(
-                                      item.childStatus[index].childStatusName,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 12,
-                                        color: HexColor.fromHex(item.childStatus[index].colorCode,),),
-                                    )
-                                  ],
+                            GestureDetector(
+                              onTap: ()=> controller.ticketUpdate(item,item.childStatus[index]),
+                              child: Container(
+                                width: 90,
+                                height: 30,
+                                decoration: BoxDecoration(
+                                    color: whiteColor,
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: Border.all(
+                                      color: HexColor.fromHex(item.childStatus[index].colorCode,),
+                                    )),
+                                child: Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      CachedNetworkImage(imageUrl: item.childStatus[index].statusImage,width: 18,height: 18,),
+                                      Text(
+                                        item.childStatus[index].childStatusName,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12,
+                                          color: HexColor.fromHex(item.childStatus[index].colorCode,),),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

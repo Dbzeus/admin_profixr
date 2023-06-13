@@ -31,10 +31,11 @@ import 'package:profixer_admin/screens/technician/add_techinican/add_technician_
 import 'package:profixer_admin/screens/technician/technician_list/technician_list_screen.dart';
 
 
-import 'package:profixer_admin/screens/tickets/booked_ticket/booked_ticket_screen.dart';
 import 'package:profixer_admin/screens/tickets/existing_customer_ticket/existing_ticket_screen.dart';
 import 'package:profixer_admin/screens/tickets/new_ticket/new_ticket_screen.dart';
 import 'package:profixer_admin/screens/tickets/ticket_details/ticket_details_screen.dart';
+import 'package:profixer_admin/screens/tickets/ticket_list/ticket_list_controller.dart';
+import 'package:profixer_admin/screens/tickets/ticket_list/ticket_list_screen.dart';
 
 import '../screens/auth/login/login_screen.dart';
 import '../screens/holiday/holiday_list/holiday_list_screen.dart';
@@ -97,7 +98,7 @@ class AppPages {
     ),
     GetPage(
       name: Routes.bookedTicket,
-      page: () => BookedTicketScreen(),
+      page: () => TicketListScreen(),
     ),
     GetPage(
       name: Routes.ticketDetails,

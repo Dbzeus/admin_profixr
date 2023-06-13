@@ -296,7 +296,7 @@ class TicketDetailsScreen extends GetView<TicketDetailsController> {
                                 height: 12,
                               ),
                               SingleChildScrollView(
-                                physics: BouncingScrollPhysics(),
+                                physics: const BouncingScrollPhysics(),
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
                                   children: List.generate(

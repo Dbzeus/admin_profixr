@@ -46,16 +46,17 @@ class HolidayListScreen extends GetView<HolidayController> {
                         color: textColor,
                       ),
                       decoration: const InputDecoration(
-                          hintText: 'Search',
-                          border: InputBorder.none,
-                          prefixIcon: Icon(
-                            Icons.search,
-                            color: textColor,
-                          ),
-                          /*suffix: Icon(
+                        hintText: 'Search',
+                        border: InputBorder.none,
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: textColor,
+                        ),
+                        /*suffix: Icon(
                             Icons.filter_alt_rounded,
                             color: textColor,
-                          )*/),
+                          )*/
+                      ),
                     ),
                   ),
                 ),
@@ -166,7 +167,9 @@ class HolidayListScreen extends GetView<HolidayController> {
                           size: 14,
                           color: primaryColor,
                         ),
-                        const SizedBox(width: 4,),
+                        const SizedBox(
+                          width: 4,
+                        ),
                         Text(
                           data["HolidayDate"].toString().split("T")[0],
                           style: const TextStyle(
@@ -185,42 +188,76 @@ class HolidayListScreen extends GetView<HolidayController> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    'From: ${data["TimeSlot"].toString().split("-")[0].trim()}',
+                    '${data["TimeSlot"]}',
                     style: const TextStyle(
                       fontSize: 12,
-                      color: blackColor,
+                      fontWeight: FontWeight.bold,
+                      color: blueTextColor,
                     ),
                   ),
-                  Text(
-                    'To: ${data["TimeSlot"].toString().split("-")[1].trim()}',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: blackColor,
-                    ),
-                  ),
+                  data["TimeSlot"].toString().toLowerCase().contains("full day")
+                      ? const SizedBox.shrink()
+                      : Column(
+                          children: [
+                            Text(
+                              'From: ${data["TimeSlot"].toString().split("-")[0].trim()}',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: blackColor,
+                              ),
+                            ),
+                            Text(
+                              'To: ${data["TimeSlot"].toString().split("-")[1].trim()}',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: blackColor,
+                              ),
+                            )
+                          ],
+                        )
                 ],
               ),
             ],
           ),
           const Divider(),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                children: [
-                  Text(
-                    'Remark',
-                    style: TextStyle(
-                        color: primaryColor,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 13),
-                  ),
-                  Text(
-                    '${data["Remarks"]}',
-                    style: TextStyle(fontSize: 13),
-                  ),
-                ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment : CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Remark',
+                      style: TextStyle(
+                          color: primaryColor,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 13),
+                    ),
+                    Text(
+                      '${data["Remarks"]}',
+                      style: TextStyle(fontSize: 13),
+                    ),
+                  ],
+                ),
               ),
+              const SizedBox(width: 8,),
+              InkWell(
+                onTap: () async {
+                  Get.toNamed(Routes.addHoliday, arguments: data);
+                },
+                child: Container(
+                  padding: EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                      color: blueTextColor,
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Icon(
+                    Icons.edit,
+                    size: 15,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8,),
               InkWell(
                 onTap: () async {
                   controller.deleteHoliday(data);

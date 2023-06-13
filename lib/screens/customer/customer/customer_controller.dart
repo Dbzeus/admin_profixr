@@ -56,14 +56,7 @@ class CustomerController extends GetxController {
   }
 
   validation(bool isUpdated){
-    if (nameController.text.isEmpty &&
-        mobileController.text.isEmpty &&
-        emailController.text.isEmpty &&
-        permanentAddressController.text.isEmpty &&
-        dobController.text.isEmpty &&
-        remarkController.text.isEmpty) {
-      toast("Please Enter All Fields");
-    } else if (nameController.text.isEmpty) {
+     if (nameController.text.isEmpty) {
       toast("Please Enter Customer Name");
     } else if (mobileController.text.isEmpty) {
       toast("Please Enter Mobile Number");

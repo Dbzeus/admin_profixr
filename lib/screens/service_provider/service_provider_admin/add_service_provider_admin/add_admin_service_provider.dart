@@ -141,13 +141,38 @@ class AddAdminServiceProvider extends StatelessWidget {
                           CustomEditText(
                               hintText: "Create a new password",
                               controller: controller.adminPasswordController),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          CustomEditText(
+                            hintText: "National ID",
+                            controller: controller.identityController,
+                          ),
 
                           const Spacer(),
                           CustomButton(
                             text: "Next",
                             btnColor: primaryColor,
                             onTap: () {
-                              controller.isConfirm(!controller.isConfirm.value);
+                              if (controller.adminFirstNameController.text.isEmpty) {
+                                toast("Please Enter Your First Name ");
+                              } else if (controller.adminLastNameController.text.isEmpty) {
+                                toast("Please Enter Last Name");
+                              } else if (controller.adminMobNoController.text.isEmpty) {
+                                toast("Please Enter Your Mobile Number");
+                              } else if (controller.adminEmailController.text.isEmpty) {
+                                toast("Please Enter Email ID");
+                              }else if (controller.adminUserNameController.text.isEmpty) {
+                                toast("Please Enter User Name");
+                              }
+                              else if (controller.adminPasswordController.text.isEmpty) {
+                                toast("Please Enter Your Password");
+                              }else if (controller.identityController.text.isEmpty) {
+                                toast("Please Enter Your National ID");
+                              }else{
+                                controller.isConfirm(!controller.isConfirm.value);
+                              }
+
                             },
                           ),
                         ],
@@ -329,31 +354,42 @@ class AddAdminServiceProvider extends StatelessWidget {
                                     text: adminData==null ? "Add" : "Update",
                                     btnColor: primaryColor,
                                     onTap: () {
-                                      var data = {
-                                        "ServiceProviderUserID":  adminData?.serviceProviderUserID ?? 0,
-                                        "UserID": adminData?.userID ?? 0,
-                                        "ServiceProviderID": controller.serviceProviderId,
-                                        "FirstName":
-                                            controller.adminFirstNameController.text.trim(),
-                                        "LastName":
-                                            controller.adminLastNameController.text.trim(),
-                                        "MobileNumber":
-                                            controller.adminMobNoController.text.trim(),
-                                        "MailID": controller.adminEmailController.text.trim(),
-                                        "ContactAddress":
-                                            controller.adminCurrentAddressController.text.trim(),
-                                        "PermanentAddress": controller
-                                            .adminPermenantAddressController.text.trim(),
-                                        "DOB": toSendDateFormat(controller.adminDobController.text),
-                                        "DOJ": toSendDateFormat(controller.adminDojController.text),
-                                        "Username":
-                                            controller.adminUserNameController.text.trim(),
-                                        "Password":
-                                            controller.adminPasswordController.text.trim(),
-                                        "IsActive": controller.selectedIsActive.value,
-                                        "CUID": controller.box.read(Session.userId),
-                                      };
-                                      controller.insertUpdateServiceProviderAdmin(controller.selectedIsActive.value,data);
+                                      if (controller.adminCurrentAddressController.text.isEmpty) {
+                                        toast("Please Enter Current Address ");
+                                      } else if (controller.adminPermenantAddressController.text.isEmpty) {
+                                        toast("Please Enter Permanent Address ");
+                                      } else if (controller.adminDobController.text.isEmpty) {
+                                        toast("Please Select Date of Birth");
+                                      } else if (controller.adminDojController.text.isEmpty) {
+                                        toast("Please Select Date of Joining");
+                                      } else{
+                                        var data = {
+                                          "ServiceProviderUserID":  adminData?.serviceProviderUserID ?? 0,
+                                          "UserID": adminData?.userID ?? 0,
+                                          "ServiceProviderID": controller.serviceProviderId,
+                                          "FirstName":
+                                          controller.adminFirstNameController.text.trim(),
+                                          "LastName":
+                                          controller.adminLastNameController.text.trim(),
+                                          "MobileNumber":
+                                          controller.adminMobNoController.text.trim(),
+                                          "MailID": controller.adminEmailController.text.trim(),
+                                          "ContactAddress":
+                                          controller.adminCurrentAddressController.text.trim(),
+                                          "PermanentAddress": controller
+                                              .adminPermenantAddressController.text.trim(),
+                                          "DOB": toSendDateFormat(controller.adminDobController.text),
+                                          "DOJ": toSendDateFormat(controller.adminDojController.text),
+                                          "Username":
+                                          controller.adminUserNameController.text.trim(),
+                                          "Password":
+                                          controller.adminPasswordController.text.trim(),
+                                          "IsActive": controller.selectedIsActive.value,
+                                          "CUID": controller.box.read(Session.userId),
+                                        };
+                                        controller.insertUpdateServiceProviderAdmin(controller.selectedIsActive.value,data);
+                                      }
+
                                     }),
                               ),
                             ],

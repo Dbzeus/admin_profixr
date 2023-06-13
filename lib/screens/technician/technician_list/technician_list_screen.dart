@@ -270,10 +270,13 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                   style: const TextStyle(
                     color: blackColor,
                     fontWeight: FontWeight.w600,
-                    fontSize: 12,
+                    fontSize: 10,
                   ),
                 ),
               ],
+            ),
+            const SizedBox(
+                height: 4
             ),
             Row(
               children: [
@@ -293,23 +296,41 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                     spacing: 8,
                     alignment: WrapAlignment.end,
                     children: List.generate(
-                      data.serviceName.split(',').length,
-                      (index) => Chip(
+                        data.serviceName?.split(',').length ?? 0,
+                            (index) => Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: cardStackColor,
+                          ),
+                          padding: EdgeInsets.all(4),
+                          child: Text(
+                            data.serviceName!.split(",")[index],
+                            style: const TextStyle(
+                              color: primaryColor,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 8,
+                            ),
+                          ),
+                        )/*Chip(
                         backgroundColor: cardStackColor,
                         padding: const EdgeInsets.symmetric(horizontal: 4),
                         label: Text(
-                          data.serviceName.split(",")[index],
+                          data.serviceName!.split(",")[index],
                           style: const TextStyle(
                             color: primaryColor,
                             fontWeight: FontWeight.w600,
                             fontSize: 10,
                           ),
                         ),
-                      ),
+                      ),*/
                     ),
                   ),
                 ),
+
               ],
+            ),
+            const SizedBox(
+              height: 6
             ),
             Row(
               children: [
@@ -328,24 +349,29 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                     direction: Axis.horizontal,
                     spacing: 8,
                     alignment: WrapAlignment.end,
-                      children: List.generate(
-                      data.areaName.split(',').length,
-                      (index) => Chip(
-                        backgroundColor: cardStackColor,
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        label: Text(
-                          data.areaName.split(",")[index],
-                          style: const TextStyle(
-                            color: primaryColor,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 10,
+                    children: List.generate(
+                        data.areaName?.split(',').length ?? 0,
+                            (index) => Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: cardStackColor,
                           ),
-                        ),
-                      ),
-                    ),
+                          padding: const EdgeInsets.all(4),
+                          child: Text(
+                            data.areaName!.split(",")[index],
+                            style: const TextStyle(
+                              color: primaryColor,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 8,
+                            ),
+                          ),
+                        )),
                   ),
                 ),
               ],
+            ),
+            const SizedBox(
+                height: 4
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -367,7 +393,7 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                     style: const TextStyle(
                       color: blackColor,
                       fontWeight: FontWeight.w600,
-                      fontSize: 12,
+                      fontSize: 10,
                     ),
                   ),
                 ),
@@ -396,7 +422,7 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                     style: const TextStyle(
                       color: blackColor,
                       fontWeight: FontWeight.w600,
-                      fontSize: 12,
+                      fontSize: 10,
                     ),
                   ),
                 ),

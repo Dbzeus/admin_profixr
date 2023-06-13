@@ -93,7 +93,6 @@ class HolidayController extends GetxController {
         "Remarks": remarkController.text,
         "CUID": box.read(Session.userId)
       };
-
       createHoliday(data, isUpdated);
     }
   }

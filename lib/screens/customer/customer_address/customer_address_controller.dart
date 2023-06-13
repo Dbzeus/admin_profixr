@@ -108,16 +108,7 @@ class CustomerAddressController extends GetxController {
   }
 
   validation(bool isUpdated, CustomerAddress? address) {
-    if (addressTitleController.text.isEmpty &&
-        doorNoController.text.isEmpty &&
-        streetNameController.text.isEmpty &&
-        selectedCity.isEmpty &&
-        selectedArea.isEmpty
-
-
-    ) {
-      toast("Please Enter All Fields");
-    } else if (
+     if (
     addressTitleController.text.isEmpty
     ) {
       toast("Please Enter Address");

@@ -253,7 +253,7 @@ class ProfixerListScreen extends GetView<ProfixerController> {
                   style: TextStyle(
                     color: blackColor,
                     fontWeight: FontWeight.w600,
-                    fontSize: 12,
+                    fontSize: 10,
                   ),
                 ),
               ],
@@ -279,7 +279,7 @@ class ProfixerListScreen extends GetView<ProfixerController> {
                             style: TextStyle(
                               color: blackColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 12,
+                              fontSize: 10,
                             ),
                           ),
                         ],
@@ -302,7 +302,7 @@ class ProfixerListScreen extends GetView<ProfixerController> {
                             style: TextStyle(
                               color: blackColor,
                               fontWeight: FontWeight.w600,
-                              fontSize: 12,
+                              fontSize: 10,
                             ),
                           ),
                         ],
@@ -335,7 +335,7 @@ class ProfixerListScreen extends GetView<ProfixerController> {
                     style: TextStyle(
                       color: blackColor,
                       fontWeight: FontWeight.w600,
-                      fontSize: 12,
+                      fontSize: 10,
                     ),
                   ),
                 ),
@@ -364,7 +364,7 @@ class ProfixerListScreen extends GetView<ProfixerController> {
                     style: TextStyle(
                       color: blackColor,
                       fontWeight: FontWeight.w600,
-                      fontSize: 12,
+                      fontSize: 10,
                     ),
                   ),
                 ),

@@ -10,6 +10,7 @@ import 'package:profixer_admin/screens/service_provider/service_provider/service
 import 'package:profixer_admin/widgets/custom_button.dart';
 import 'package:profixer_admin/widgets/custom_edittext.dart';
 
+import '../../../../helpers/constant_widgets.dart';
 import '../../../../model/serviceprovider_response.dart';
 import '../../../../widgets/custom_appbar.dart';
 import '../../../../widgets/custom_loader.dart';
@@ -212,6 +213,13 @@ class _AddServiceProviderScreenState extends State<AddServiceProviderScreen> {
                                           controller.permanentAddressController,
                                     ),
                                     const SizedBox(
+                                      height: 10,
+                                    ),
+                                    CustomEditText(
+                                      hintText: "National ID",
+                                      controller: controller.identityController,
+                                    ),
+                                    const SizedBox(
                                       height: 20,
                                     ),
                                     const Spacer(),
@@ -219,8 +227,25 @@ class _AddServiceProviderScreenState extends State<AddServiceProviderScreen> {
                                       text: "Next",
                                       btnColor: primaryColor,
                                       onTap: () {
-                                        controller
-                                            .isConfirm(!controller.isConfirm.value);
+                                        if (controller.servicerProviderNameController.text.isEmpty) {
+                                          toast("Please Enter Service Provider Name");
+                                        } else if (controller.contactNameController.text.isEmpty) {
+                                          toast("Please Enter Contact Person Name");
+                                        } else if (controller.userNameController.text.isEmpty) {
+                                          toast("Please Enter User Name");
+                                        } else if (controller.mobileController.text.isEmpty) {
+                                          toast("Please Enter Your Mobile Number");
+                                        } else if (controller.emailController.text.isEmpty) {
+                                          toast("Please Enter Email ID");
+                                        } else if (controller.permanentAddressController.text.isEmpty) {
+                                          toast("Please Enter Permanent Address");
+                                        }else if (controller.identityController.text.isEmpty) {
+                                          toast("Please Enter National Id");
+                                        }else{
+                                          controller
+                                              .isConfirm(!controller.isConfirm.value);
+                                        }
+
                                       },
                                     ),
                                   ],
@@ -272,7 +297,9 @@ class _AddServiceProviderScreenState extends State<AddServiceProviderScreen> {
                                             await Get.to(()=>MultiSelectWidget(
                                                 title: 'Select Services',
                                                 items: controller
-                                                    .getSelectedServiceItems()));
+                                                    .getSelectedServiceItems()),
+
+                                            );
                                             if (result != null) {
                                               controller.selectedServiceName(
                                                   result
@@ -618,38 +645,54 @@ class _AddServiceProviderScreenState extends State<AddServiceProviderScreen> {
                                             text: serviceProviderData==null ? "Add" : "Update",
                                             btnColor: primaryColor,
                                             onTap: () {
-                                              var params = {
-                                                "ServiceProviderID":serviceProviderData?.serviceProviderID
-                                                        ??
-                                                    0,
-                                                "ServiceProviderName": controller
-                                                    .servicerProviderNameController.text.trim(),
-                                                "ContactPerson":
-                                                    controller.contactNameController.text.trim(),
-                                                "ContactNumber":
-                                                    controller.mobileController.text.trim(),
-                                                "ContactMailID":
-                                                    controller.emailController.text.trim(),
-                                                "ContactAddress": controller
-                                                    .permanentAddressController.text.trim(),
-                                                "TaxDetails":
-                                                    controller.taxDetailsController.text.trim(),
-                                                "BankDetails":
-                                                    controller.bankDetailsController.text.trim(),
-                                                "ServiceIDs":
-                                                    controller.selectedService,
-                                                "AreaIDs":
-                                                    controller.selectedArea,
-                                                "ContractStartDate": toSendDateFormat(controller
-                                                    .contractStartController.text),
-                                                "ContractEndDate":
-                                                    toSendDateFormat(controller.contractEndController.text),
-                                                "IsActive": controller.selectedIsActive.value,
-                                                "CUID":
-                                                    controller.box.read(Session.userId),
-                                              };
-                                              controller
-                                                  .insertUpdateServiceProvider(controller.selectedIsActive.value,params);
+                                              if (controller.taxDetailsController.text.isEmpty) {
+                                                toast("Please Enter Tax Details ");
+                                              } else if (controller.bankDetailsController.text.isEmpty) {
+                                                toast("Please Enter Bank Details");
+                                              } else if (controller.selectedServiceName.isEmpty) {
+                                                toast("Please Select Services");
+                                              } else if (controller.selectedAreaNames.isEmpty) {
+                                                toast("Please Select Areas");
+                                              } else if (controller.contractStartController.text.isEmpty) {
+                                                toast("Please Enter Contract Start Date");
+                                              } else if (controller.contractEndController.text.isEmpty) {
+                                                toast("Please Enter contract End Date");
+                                              }
+                                              else{
+                                                var params = {
+                                                  "ServiceProviderID":serviceProviderData?.serviceProviderID
+                                                      ??
+                                                      0,
+                                                  "ServiceProviderName": controller
+                                                      .servicerProviderNameController.text.trim(),
+                                                  "ContactPerson":
+                                                  controller.contactNameController.text.trim(),
+                                                  "ContactNumber":
+                                                  controller.mobileController.text.trim(),
+                                                  "ContactMailID":
+                                                  controller.emailController.text.trim(),
+                                                  "ContactAddress": controller
+                                                      .permanentAddressController.text.trim(),
+                                                  "TaxDetails":
+                                                  controller.taxDetailsController.text.trim(),
+                                                  "BankDetails":
+                                                  controller.bankDetailsController.text.trim(),
+                                                  "ServiceIDs":
+                                                  controller.selectedService,
+                                                  "AreaIDs":
+                                                  controller.selectedArea,
+                                                  "ContractStartDate": toSendDateFormat(controller
+                                                      .contractStartController.text),
+                                                  "ContractEndDate":
+                                                  toSendDateFormat(controller.contractEndController.text),
+                                                  "IsActive": controller.selectedIsActive.value,
+                                                  "CUID":
+                                                  controller.box.read(Session.userId),
+                                                };
+                                                controller
+                                                    .insertUpdateServiceProvider(controller.selectedIsActive.value,params);
+                                              }
+
 
                                             },
                                           ),

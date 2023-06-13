@@ -62,6 +62,7 @@ class ProfixerListScreen extends GetView<ProfixerController> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    controller.searchController.clear();
                     Get.toNamed(Routes.addProfixer, arguments: {
                       "title": "Add Profixer",
                       "buttonTitle": "Add",
@@ -111,6 +112,7 @@ class ProfixerListScreen extends GetView<ProfixerController> {
   _buildList(ProfixerData data) {
     return GestureDetector(
       onTap: () {
+        controller.searchController.clear();
         Get.toNamed(Routes.addProfixer, arguments: {
           "title": "Edit Profixer",
           "buttonTitle": "Next",

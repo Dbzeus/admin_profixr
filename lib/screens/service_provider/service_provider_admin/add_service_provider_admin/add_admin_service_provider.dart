@@ -21,6 +21,7 @@ class AddAdminServiceProvider extends StatelessWidget {
   AddAdminServiceProvider({Key? key}) : super(key: key);
 
   AdminData? adminData = Get.arguments["service"];
+  String title = Get.arguments["title"];
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +63,7 @@ class AddAdminServiceProvider extends StatelessWidget {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: CustomAppBar(
-          title: Get.arguments["title"].toString(),
+          title: title,
           onTap: () {
             if (controller.isConfirm.value == false) {
               controller.isConfirm(!controller.isConfirm.value);
@@ -182,11 +183,10 @@ class AddAdminServiceProvider extends StatelessWidget {
                               size: 22,
                             ),
                             onTab: () async {
-                              controller.adminDobController.text = getDate(
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime.now(),
-                                  lastDate:
-                                  DateTime(DateTime.now().year + 1, 12, 31)
+                              controller.adminDobController.text = await getDate(
+                                  initialDate: DateTime(DateTime.now().year -18, 12, 31),
+                                  firstDate: DateTime(DateTime.now().year -80, 12, 31),
+                                  lastDate: DateTime(DateTime.now().year -18, 12, 31)
                               );
 
                             },

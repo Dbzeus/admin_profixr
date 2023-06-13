@@ -13,8 +13,6 @@ class LoginController extends GetxController {
   TextEditingController passwordController = TextEditingController();
   TextEditingController forgetMobNoController = TextEditingController();
 
-
-
   RxBool isVisible = true.obs;
 
   RxBool isLoading = false.obs;
@@ -34,20 +32,29 @@ class LoginController extends GetxController {
         UserDataResponse? loginResponse = await ApiCall().checkLogin(
             mobNoController.text, passwordController.text, " ", " ");
         isLoading(false);
+debugPrint("1");
         if (loginResponse != null) {
+          debugPrint("2");
           if (loginResponse.rtnStatus) {
+            debugPrint("3");
             toast(loginResponse.rtnMsg);
             storeSessions(loginResponse.rtnData);
-            Get.offAllNamed(Routes.main,);
+            Get.offAllNamed(
+              Routes.main,
+            );
           } else {
+            debugPrint("4");
             toast(loginResponse.rtnMsg);
           }
+        }else{
+          debugPrint("5");
         }
+        debugPrint("6");
       }
     }
   }
 
-  storeSessions(UserData data){
+  storeSessions(UserData data) {
     _box.write(Session.isLogin, true);
     _box.write(Session.userId, data.userID);
     _box.write(Session.userMobileNo, data.mobileNo);
@@ -62,7 +69,8 @@ class LoginController extends GetxController {
       isLoading(true);
       Get.focusScope?.unfocus();
       if (await isNetConnected()) {
-        var forgetPasswordResponse = await ApiCall().forgetPassword(forgetMobNoController.text);
+        var forgetPasswordResponse =
+            await ApiCall().forgetPassword(forgetMobNoController.text);
         isLoading(false);
         if (forgetPasswordResponse != null) {
           if (forgetPasswordResponse["RtnStatus"]) {

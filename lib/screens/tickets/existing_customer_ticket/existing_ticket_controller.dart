@@ -183,7 +183,33 @@ class ExistingTicketController extends GetxController {
   }
 
   bookATicket() async {
-    if (await isNetConnected()) {
+    if(customerNameController.text.isEmpty &&
+        customerMobileNoController.text.isEmpty &&
+        selectedAddress.isEmpty&&
+        selectedService.isEmpty &&
+        selectedCNature.isEmpty &&
+        selectedType.isEmpty &&
+        selectedTimeSlot.isEmpty &&
+    bookingRemarksController.text.isEmpty
+    ){
+      toast("Please fill all the fields");
+    }else if(customerNameController.text.isEmpty){
+      toast("Please Enter Customer Name");
+    }else if(customerMobileNoController.text.isEmpty){
+      toast("Please Enter Customer Mobile Number");
+    }else if(selectedAddress.isEmpty){
+      toast("Please select the address");
+    }else if(selectedService.isEmpty){
+      toast("Please select the service");
+    }else if(selectedCNature.isEmpty){
+      toast("Please select the complaint Nature ");
+    }else if(selectedType.isEmpty){
+      toast("Please select the service type ");
+    }else if(selectedTimeSlot.isEmpty){
+      toast("Please select the Timeslot");
+    }else if(bookingRemarksController.text.isEmpty){
+      toast("Please enter remarks ");
+    }else{if (await isNetConnected()) {
       try {
         debugPrint("is book called");
         isLoading(true);
@@ -238,6 +264,7 @@ class ExistingTicketController extends GetxController {
         //ignore
         isLoading(false);
       }
-    }
+    }}
+
   }
 }

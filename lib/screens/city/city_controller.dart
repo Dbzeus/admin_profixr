@@ -66,26 +66,33 @@ class CityController extends GetxController {
   }
 
   createCity(city, bool isUpdated) async {
-    debugPrint(city.toString());
-    if (await isNetConnected()) {
-      isLoading(true);
-      var response = await ApiCall().insertCity(city);
-      isLoading(false);
-      if (response != null) {
-        if (response['RtnStatus']) {
-          customDialog(
-              Get.context,
-              isUpdated ? "Updated Successful!" : "Added Successful!",
-              "${response['RtnMsg']}",
-                  () {
-                Get.back();
-                getCity();
-              }, isDismissable: false);
-        } else {
-          toast('${response['RtnMsg']}');
+    if(cityNameController.text.isEmpty && selectedCountry.isEmpty){
+    toast("Please Enter All Fields");
+    }else if (cityNameController.text.isEmpty) {
+      toast("Please Enter City");
+    } else if (selectedCountry.isEmpty) {
+      toast("Please Enter Country");
+    }else{
+      if (await isNetConnected()) {
+        isLoading(true);
+        var response = await ApiCall().insertCity(city);
+        isLoading(false);
+        if (response != null) {
+          if (response['RtnStatus']) {
+            customDialog(
+                Get.context,
+                isUpdated ? "Updated Successful!" : "Added Successful!",
+                "${response['RtnMsg']}", () {
+              Get.back();
+              getCity();
+            }, isDismissable: false);
+          } else {
+            toast('${response['RtnMsg']}');
+          }
         }
       }
     }
+
   }
 
   updateCity(bool val, city) async {
@@ -107,12 +114,17 @@ class CityController extends GetxController {
     if (text.isEmpty) {
       cities(searchList);
     } else {
-      cities(searchList.where((element) =>
-          element["CityName"].toString().toLowerCase().contains(
-              text.toLowerCase()) ||
-              element["CountryName"].toString().toLowerCase().contains(
-                  text.toLowerCase())
-      ).toList());
+      cities(searchList
+          .where((element) =>
+              element["CityName"]
+                  .toString()
+                  .toLowerCase()
+                  .contains(text.toLowerCase()) ||
+              element["CountryName"]
+                  .toString()
+                  .toLowerCase()
+                  .contains(text.toLowerCase()))
+          .toList());
     }
   }
 }

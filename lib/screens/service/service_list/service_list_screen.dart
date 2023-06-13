@@ -48,6 +48,9 @@ class ServiceListScreen extends GetView<ServiceController> {
                         fontSize: 16,
                         color: textColor,
                       ),
+                      onChanged: (text){
+                        controller.onSearchChanged(text);
+                      },
                       decoration: const InputDecoration(
                         hintText: 'Search',
                         border: InputBorder.none,
@@ -64,6 +67,7 @@ class ServiceListScreen extends GetView<ServiceController> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    controller.searchController.clear();
                     Get.toNamed(Routes.addService, arguments: {
                       "title": "Add Service",
                       "buttonTitle": "Add"
@@ -111,6 +115,7 @@ class ServiceListScreen extends GetView<ServiceController> {
   _buildMenu(data) {
     return GestureDetector(
       onTap: () {
+        controller.searchController.clear();
         Get.toNamed(Routes.addService, arguments: {
           "title": "Edit Service",
           "buttonTitle": "Save Changes",

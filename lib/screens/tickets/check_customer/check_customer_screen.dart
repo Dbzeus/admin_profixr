@@ -29,7 +29,11 @@ class CheckCustomerScreen extends GetView<CheckCustomerController> {
             children: [
               CustomEditText(
                   hintText: "Customer Name / Mobile Number",
-                  controller: controller.customerNameController),
+                  controller: controller.customerNameController,
+              onChanged: (text){
+                    controller.onSearchChanged(text);
+              },
+              ),
               const SizedBox(
                 height: 10,
               ),

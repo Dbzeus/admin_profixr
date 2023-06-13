@@ -9,6 +9,8 @@ import '../../helpers/utils.dart';
 
 class ServiceController extends GetxController{
   RxList services = RxList();
+  RxList searchList = RxList();
+
   RxBool isLoading = false.obs;
 
   TextEditingController serviceNameController = TextEditingController();
@@ -34,6 +36,8 @@ class ServiceController extends GetxController{
       if (response != null) {
         if (response['RtnStatus']) {
           services(response['RtnData']);
+          searchList(response['RtnData']);
+
         } else {
           toast(response['RtnMsg']);
         }
@@ -42,35 +46,44 @@ class ServiceController extends GetxController{
   }
 
   createService(service,bool isUpdated) async {
-    if (await isNetConnected()) {
-      isLoading(true);
-      if(service['ServiceImg'].isNotEmpty && !(service['ServiceImg'].toString().isURL)){
-        //upload Image
-        var response=await ApiCall().uploadAttachment([service['ServiceImg']]);
-        if(response!=null){
-          if(response['RtnStatus']){
-            service['ServiceImg']=response['RtnMsg'];
-          }else{
+    if(serviceNameController.text.isEmpty && remarkController.text.isEmpty){
+    toast("Please Enter All Fields");
+    }else if(serviceNameController.text.isEmpty){
+      toast("Please Enter Service Name");
+    }else if(remarkController.text.isEmpty){
+      toast("Please Enter Description");
+    }else{
+      if (await isNetConnected()) {
+        isLoading(true);
+        if(service['ServiceImg'].isNotEmpty && !(service['ServiceImg'].toString().isURL)){
+          //upload Image
+          var response=await ApiCall().uploadAttachment([service['ServiceImg']]);
+          if(response!=null){
+            if(response['RtnStatus']){
+              service['ServiceImg']=response['RtnMsg'];
+            }else{
+              toast('${response['RtnMsg']}');
+            }
+          }
+        }
+        service['ServiceImg'] = getLastSegment(service['ServiceImg']);
+        debugPrint(service.toString());
+        var response = await ApiCall().insertService(service);
+        isLoading(false);
+        if (response != null) {
+          if (response['RtnStatus']) {
+            customDialog(
+                Get.context, isUpdated ? "Updated Successful!": "Added Successful!", "${response['RtnMsg']}", () {
+              Get.back();
+              getServices();
+            }, isDismissable: false);
+          } else {
             toast('${response['RtnMsg']}');
           }
         }
       }
-      service['ServiceImg'] = getLastSegment(service['ServiceImg']);
-      debugPrint(service.toString());
-      var response = await ApiCall().insertService(service);
-      isLoading(false);
-      if (response != null) {
-        if (response['RtnStatus']) {
-          customDialog(
-              Get.context, isUpdated ? "Updated Successful!": "Added Successful!", "${response['RtnMsg']}", () {
-            Get.back();
-            getServices();
-          }, isDismissable: false);
-        } else {
-          toast('${response['RtnMsg']}');
-        }
-      }
     }
+
   }
 
   updateService(bool val, data) async {
@@ -87,6 +100,24 @@ class ServiceController extends GetxController{
       }
     }
 
+  }
+
+  onSearchChanged(String text) {
+    if (text.isEmpty) {
+      services(searchList);
+    } else {
+      services(searchList
+          .where((element) =>
+      element["ServiceName"]
+          .toString()
+          .toLowerCase()
+          .contains(text.toLowerCase()) ||
+          element["Remarks"]
+              .toString()
+              .toLowerCase()
+              .contains(text.toLowerCase()))
+          .toList());
+    }
   }
 
 }

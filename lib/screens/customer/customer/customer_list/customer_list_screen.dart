@@ -46,6 +46,9 @@ class CustomerListScreen extends GetView<CustomerController> {
                         fontSize: 16,
                         color: textColor,
                       ),
+                      onChanged: (text){
+                        controller.onSearchChanged(text);
+                      },
                       decoration: const InputDecoration(
                           hintText: 'Search',
                           border: InputBorder.none,
@@ -53,10 +56,7 @@ class CustomerListScreen extends GetView<CustomerController> {
                             Icons.search,
                             color: textColor,
                           ),
-                          suffix: Icon(
-                            Icons.filter_alt_rounded,
-                            color: textColor,
-                          )),
+                         ),
                     ),
                   ),
                 ),
@@ -65,6 +65,7 @@ class CustomerListScreen extends GetView<CustomerController> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    controller.searchController.clear();
                     Get.toNamed(Routes.addCustomer, arguments: {
                       "title": "Add Customer",
                       "buttonTitle": "Add",
@@ -112,6 +113,7 @@ class CustomerListScreen extends GetView<CustomerController> {
   _buildMenu(Customer data) {
     return GestureDetector(
       onTap: () {
+        controller.searchController.clear();
         Get.toNamed(Routes.addCustomer, arguments: {
           "title": "Edit Customer",
           "buttonTitle": "Save Changes",

@@ -45,6 +45,9 @@ class HolidayListScreen extends GetView<HolidayController> {
                         fontSize: 16,
                         color: textColor,
                       ),
+                      onChanged: (text){
+                        controller.onSearchChanged(text);
+                      },
                       decoration: const InputDecoration(
                         hintText: 'Search',
                         border: InputBorder.none,
@@ -65,6 +68,7 @@ class HolidayListScreen extends GetView<HolidayController> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    controller.searchController.clear();
                     Get.toNamed(Routes.addHoliday, arguments: {
                       "title": "Add Holiday",
                       "buttonTitle": "Add"

@@ -55,6 +55,9 @@ class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
                           fontSize: 16,
                           color: textColor,
                         ),
+                        onChanged: (text){
+                          controller.onSearchChanged(text);
+                        },
                         decoration: InputDecoration(
                           hintText: 'Search',
                           border: InputBorder.none,
@@ -76,6 +79,7 @@ class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
                   ),
                   GestureDetector(
                     onTap: () {
+                      controller.searchController.clear();
                       Get.toNamed(Routes.addComplaintNature,
                           arguments: {"title": "Add Complaint Nature", "buttonTitle": "Add","complaintNature": null,});
                     },
@@ -134,7 +138,7 @@ class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
   _buildServices(data) {
     return GestureDetector(
       onTap: () {
-        debugPrint("data $data");
+        controller.searchController.clear();
         Get.focusScope?.unfocus();
         Get.toNamed(Routes.addComplaintNature,arguments: {
           "title": "Edit Complaint Nature",
@@ -177,7 +181,7 @@ class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "${data['ComplaintNatureName']}",
+                      "${data['ServiceName']}",
                       style: TextStyle(
                           color: blackColor,
                           fontSize: 14,
@@ -187,44 +191,35 @@ class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
                       height: 8,
                     ),
                     Text(
+                      "${data['ComplaintNatureName']}",
+                      style: TextStyle(
+                          color: blackColor,
+                          fontSize: 12,
+                          ),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(
                       "${data['Remarks']}",
                       overflow: TextOverflow.ellipsis,
                       maxLines: 4,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 10,
                         color: blackColor,
                       ),
                     ),
                   ],
                 ),
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    height: 20,
-                    width: 20,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: const Color.fromRGBO(0, 169, 206, 1),
-                    ),
-                    child: Center(
-                      child: SvgPicture.asset(
-                        'assets/icon/waterdrop.svg',
-                        height: 10,
-                        width: 10,
-                      ),
-                    ),
-                  ),
-                  Switch(
-                      value: data["IsActive"],
-                      activeColor: Colors.green.shade200,
-                      inactiveThumbColor: Colors.red.shade200,
-                      onChanged: (val) {
-                        controller.updateComplaintNature(val,data);
-                      })
-                ],
-              )
+
+              Switch(
+                  value: data["IsActive"],
+                  activeColor: Colors.green.shade200,
+                  inactiveThumbColor: Colors.red.shade200,
+                  onChanged: (val) {
+                    controller.updateComplaintNature(val,data);
+                  })
             ],
           )),
     );

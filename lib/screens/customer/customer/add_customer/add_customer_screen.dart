@@ -22,17 +22,15 @@ class AddCustomerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int customerId = 0;
-    int userId = 0;
 
 
     if (customerData!=null)  {
-      customerId = customerData!.customerID;
-      userId = customerData!.userID;
+     controller.customerId = customerData!.customerID;
+      controller.userId = customerData!.userID;
 
       controller.nameController.text = customerData!.firstName.toString();
       controller.remarkController.text = customerData!.remarks.toString();
-      controller.dateController.text =
+      controller.dobController.text =
           toShowDateFormat(customerData!.dob.toString());
       controller.mobileController.text =customerData!.mobileNo.toString();
       controller.emailController.text = customerData!.emailID.toString();
@@ -41,7 +39,7 @@ class AddCustomerScreen extends StatelessWidget {
     } else {
       controller.nameController.clear();
       controller.remarkController.clear();
-      controller.dateController.clear();
+      controller.dobController.clear();
       controller.mobileController.clear();
       controller.emailController.clear();
       controller.permanentAddressController.clear();
@@ -162,14 +160,14 @@ class AddCustomerScreen extends StatelessWidget {
                             hintText: "Date Of Birth",
                             showCursor: false,
                             keyboardType: TextInputType.none,
-                            controller: controller.dateController,
+                            controller: controller.dobController,
                             suffixIcon: const Icon(
                               Icons.calendar_month_rounded,
                               color: blackColor,
                               size: 22,
                             ),
                             onTab: () async {
-                              controller.dateController.text = await getDate(
+                              controller.dobController.text = await getDate(
                                   initialDate: DateTime(DateTime.now().year -18, 12, 31),
                                   firstDate: DateTime(DateTime.now().year -80, 12, 31),
                                   lastDate: DateTime(DateTime.now().year -18, 12, 31)
@@ -191,27 +189,7 @@ class AddCustomerScreen extends StatelessWidget {
                           CustomButton(
                               text: Get.arguments['buttonTitle'],
                               onTap: () {
-                                var data = {
-                                  "CustomerID": customerId,
-                                  "UserID": userId,
-                                  "FirstName": controller.nameController.text.trim(),
-                                  "LastName": "",
-                                  "MobileNumber":
-                                      controller.mobileController.text.trim(),
-                                  "EMailID": controller.emailController.text.trim(),
-                                  "CurrentAddress":
-                                      controller.permanentAddressController.text.trim(),
-                                  "DOB":
-                                      toSendDateFormat(controller.dateController.text),
-                                  "Remarks": controller.remarkController.text.trim(),
-                                  "Username": controller.mobileController.text.trim(),
-                                  "Password": "1234",
-                                  "IsActive": true,
-                                  "CUID": controller.box.read(Session.userId)
-                                };
-
-                                controller.createCustomer(
-                                    data, Get.arguments['customer'] != null);
+                                controller.validation(Get.arguments['customer'] != null);
                               }),
                         ],
                       ),

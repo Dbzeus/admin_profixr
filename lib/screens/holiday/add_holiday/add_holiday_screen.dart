@@ -31,10 +31,10 @@ class _AddHolidayScreenState extends State<AddHolidayScreen> {
 
   @override
   Widget build(BuildContext context) {
-    int holidayId = 0;
+
 
     if (Get.arguments['holiday'] != null) {
-      holidayId = Get.arguments['holiday']['ServiceID'];
+      controller.holidayId = Get.arguments['holiday']['ServiceID'];
 
       controller.reasonController.text = Get.arguments['holiday']['Reason'];
       controller.remarkController.text = Get.arguments['holiday']['Remarks'];
@@ -145,17 +145,7 @@ class _AddHolidayScreenState extends State<AddHolidayScreen> {
                   CustomButton(
                       text: Get.arguments['buttonTitle'],
                       onTap: () {
-                        var data = {
-                          "HolidayID": holidayId,
-                          "HolidayDate": toSendDateFormat(controller.dateController.text),
-                          "Reason": controller.reasonController.text,
-                          "TimeSlotID": controller.selectedTimeSlot.value,
-                          "Remarks": controller.remarkController.text,
-                          "CUID": controller.box.read(Session.userId)
-                        };
-
-                        controller.createHoliday(
-                            data, Get.arguments['holiday'] != null);
+                        controller.vaildation(Get.arguments['holiday'] != null);
                       }),
                 ],
               ),

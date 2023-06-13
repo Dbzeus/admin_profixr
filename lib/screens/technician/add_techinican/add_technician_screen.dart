@@ -170,17 +170,11 @@ class _AddTechnicianScreenState extends State<AddTechnicianScreen> {
                                   ),
                                   onTab: () async {
                                     controller.dobController.text =
-                                        await getDate(
-                                            initialDate: DateTime(
-                                              DateTime.now().year - 18,
-                                            ),
-                                            firstDate: DateTime(
-                                              DateTime.now().year - 80,
-                                            ),
-                                            lastDate: DateTime(
-                                                DateTime.now().year - 18,
-                                                12,
-                                                31));
+                                    await getDate(
+                                        initialDate: DateTime(DateTime.now().year -18, 12, 31),
+                                        firstDate: DateTime(DateTime.now().year -80, 12, 31),
+                                        lastDate: DateTime(DateTime.now().year -18, 12, 31)
+                                    );
                                   },
                                 ),
                                 const SizedBox(

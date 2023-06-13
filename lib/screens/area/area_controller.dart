@@ -49,12 +49,12 @@ class AreaController extends GetxController {
       var response = await ApiCall().getCity();
       if (response != null) {
         if (response['RtnStatus']) {
-            for (var e in response['RtnData']) {
-              cities.add({"id": '${e["CityID"]}', "value": "${e['CityName']}"});
-            }
-            if (cities.isNotEmpty) {
-              selectedCity('${cities.first['id']}');
-            }
+          for (var e in response['RtnData']) {
+            cities.add({"id": '${e["CityID"]}', "value": "${e['CityName']}"});
+          }
+          if (cities.isNotEmpty) {
+            selectedCity('${cities.first['id']}');
+          }
         } else {
           toast(response['RtnMsg']);
         }
@@ -62,20 +62,34 @@ class AreaController extends GetxController {
     }
   }
 
-  createArea(area,bool isUpdated) async {
-    if (await isNetConnected()) {
-      isLoading(true);
-      var response = await ApiCall().insertArea(area);
-      isLoading(false);
-      if (response != null) {
-        if (response['RtnStatus']) {
-          customDialog(
-              Get.context, isUpdated ? "Updated Successful!": "Added Successful!", "${response['RtnMsg']}", () {
-            Get.back();
-            getArea();
-          }, isDismissable: false);
-        } else {
-          toast('${response['RtnMsg']}');
+  createArea(area, bool isUpdated) async {
+    if (areaNameController.text.isEmpty &&
+    pincodeController.text.isEmpty &&
+    selectedCity.isEmpty) {
+    toast("Please Enter All Fields");
+    } else if (areaNameController.text.isEmpty) {
+      toast("Please Enter Area");
+    } else if (pincodeController.text.isEmpty) {
+      toast("Please Enter Area");
+    } else if (selectedCity.isEmpty) {
+      toast("Please Enter City");
+    } else {
+      if (await isNetConnected()) {
+        isLoading(true);
+        var response = await ApiCall().insertArea(area);
+        isLoading(false);
+        if (response != null) {
+          if (response['RtnStatus']) {
+            customDialog(
+                Get.context,
+                isUpdated ? "Updated Successful!" : "Added Successful!",
+                "${response['RtnMsg']}", () {
+              Get.back();
+              getArea();
+            }, isDismissable: false);
+          } else {
+            toast('${response['RtnMsg']}');
+          }
         }
       }
     }
@@ -100,12 +114,17 @@ class AreaController extends GetxController {
     if (text.isEmpty) {
       areas(searchList);
     } else {
-      areas(searchList.where((element) =>
-      element["AreaName"].toString().toLowerCase().contains(
-          text.toLowerCase()) ||
-          element["CityName"].toString().toLowerCase().contains(
-              text.toLowerCase())
-      ).toList());
+      areas(searchList
+          .where((element) =>
+              element["AreaName"]
+                  .toString()
+                  .toLowerCase()
+                  .contains(text.toLowerCase()) ||
+              element["CityName"]
+                  .toString()
+                  .toLowerCase()
+                  .contains(text.toLowerCase()))
+          .toList());
     }
   }
 }

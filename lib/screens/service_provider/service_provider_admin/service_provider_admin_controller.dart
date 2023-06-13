@@ -50,11 +50,7 @@ class ServiceProviderAdminController extends GetxController {
 
   final box = GetStorage();
 
-  @override
-  void onInit() {
-    super.onInit();
-    getServiceProviderAdmin();
-  }
+
 
   //for admin
   getServiceProviderAdmin() async {

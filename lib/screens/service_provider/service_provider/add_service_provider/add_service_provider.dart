@@ -80,6 +80,7 @@ class _AddServiceProviderScreenState extends State<AddServiceProviderScreen> {
       controller.selectedServiceName("");
       controller.selectedArea="";
       controller.selectedAreaNames("");
+      controller.identityController.clear();
       controller.getServiceProviderArea();
       controller.getServiceProviderService();
     }

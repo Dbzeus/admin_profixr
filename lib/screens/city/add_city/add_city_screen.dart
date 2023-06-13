@@ -9,6 +9,7 @@ import 'package:profixer_admin/widgets/custom_loader.dart';
 
 import '../../../helpers/utils.dart';
 import '../../../widgets/custom_dropdown.dart';
+import '../../../widgets/spinner.dart';
 
 class AddCityScreen extends StatelessWidget {
   final controller = Get.find<CityController>();
@@ -54,6 +55,17 @@ class AddCityScreen extends StatelessWidget {
                     height: 24,
                   ),
                   Obx(
+                        () => Spinner(
+                      value: controller.selectedCountry.value,
+                      items: controller.countries,
+                      onChanged: (val) {
+                        if (val == null && val==controller.selectedCountry.value) return;
+                        controller.selectedCountry(val);
+                      },
+                      hint: 'Country',
+                    ),
+                  ),
+                  /*Obx(
                     () => CustomDropDown(
                       hintText: "Country",
                       dropDownValue: controller.selectedCountry.value,
@@ -62,7 +74,7 @@ class AddCityScreen extends StatelessWidget {
                         controller.selectedCountry(val);
                       },
                     ),
-                  ),
+                  ),*/
                   const SizedBox(
                     height: 32,
                   ),

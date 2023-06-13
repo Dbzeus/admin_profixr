@@ -14,6 +14,7 @@ import '../../../../helpers/utils.dart';
 import '../../../../widgets/custom_appbar.dart';
 import '../../../../widgets/custom_button.dart';
 import '../../../../widgets/custom_loader.dart';
+import '../../../../widgets/spinner.dart';
 
 class AddAddressScreen extends StatefulWidget {
 
@@ -88,7 +89,18 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Obx(() =>
+                  Obx(
+                        () => Spinner(
+                      value: controller.selectedCity.value,
+                      items: controller.cities,
+                      onChanged: (val) {
+                        if (val == null && val==controller.selectedCity.value) return;
+                        controller.selectedCity(val);
+                      },
+                      hint: 'City',
+                    ),
+                  ),
+                  /*Obx(() =>
                       CustomDropDown(
                           hintText: "City",
                           dropDownValue:
@@ -97,11 +109,22 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                           onSelected: (value) {
                             controller.selectedCity(value);
                             controller.getArea();
-                          }),),
+                          }),),*/
                   const SizedBox(
                     height: 10,
                   ),
-                  Obx(() =>
+                  Obx(
+                        () => Spinner(
+                      value: controller.selectedArea.value,
+                      items: controller.areas,
+                      onChanged: (val) {
+                        if (val == null && val==controller.selectedArea.value) return;
+                        controller.selectedArea(val);
+                      },
+                      hint: 'CiAreaty',
+                    ),
+                  ),
+                  /*Obx(() =>
                       CustomDropDown(
                           hintText: "Area",
                           dropDownValue:
@@ -109,7 +132,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                           items: controller.areas,
                           onSelected: (value) {
                             controller.selectedArea(value);
-                          }),),
+                          }),),*/
                   const SizedBox(
                     height: 10,
                   ),

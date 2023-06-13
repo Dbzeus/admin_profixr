@@ -58,6 +58,7 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
       controller.dojController.clear();
       controller.currentAddressController.clear();
       controller.relievedDateController.clear();
+      controller.identityController.clear();
       controller.relievedReasonController.clear();
     }
     controller.isConfirm(true);
@@ -251,6 +252,13 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                       controller.permanentAddressController,
                                   maxLines: 2,
                                   minLines: 2,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                CustomEditText(
+                                  hintText: "National ID",
+                                  controller: controller.identityController,
                                 ),
                                 const SizedBox(
                                   height: 10,
@@ -553,6 +561,8 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                             toast("Please Enter Current address");
                                           } else if (controller.permanentAddressController.text.isEmpty) {
                                             toast("Please Enter Permanent Address");
+                                          }else if (controller.identityController.text.isEmpty) {
+                                            toast("Please Enter National ID");
                                           }else{
                                             var params = {
                                               "UserID": profixerData?.userID ?? 0,

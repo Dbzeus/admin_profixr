@@ -69,11 +69,7 @@ class ComplaintNatureController extends GetxController {
   }
 
   createComplaintNature(data, bool isUpdated) async {
-    if (selectedService.isEmpty &&
-        natureNameController.text.isEmpty &&
-        remarkController.text.isEmpty) {
-      toast("Please Enter all fields");
-    } else if (selectedService.isEmpty) {
+    if (selectedService.isEmpty) {
       toast("Please select service");
     } else if (natureNameController.text.isEmpty) {
       toast("Please enter ComplaintNature");

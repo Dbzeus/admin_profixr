@@ -66,11 +66,7 @@ class AreaController extends GetxController {
   }
 
   createArea(area, bool isUpdated) async {
-    if (areaNameController.text.isEmpty &&
-    pincodeController.text.isEmpty &&
-    selectedCity.isEmpty) {
-    toast("Please Enter All Fields");
-    } else if (areaNameController.text.isEmpty) {
+    if (areaNameController.text.isEmpty) {
       toast("Please Enter Area");
     } else if (pincodeController.text.isEmpty) {
       toast("Please Enter Area");

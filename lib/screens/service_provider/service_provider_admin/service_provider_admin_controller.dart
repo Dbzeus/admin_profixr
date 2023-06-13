@@ -17,6 +17,7 @@ class ServiceProviderAdminController extends GetxController {
   TextEditingController adminLastNameController = TextEditingController();
   TextEditingController adminUserNameController = TextEditingController();
   TextEditingController adminPasswordController = TextEditingController();
+  TextEditingController identityController = TextEditingController();
   TextEditingController adminMobNoController = TextEditingController();
   TextEditingController adminEmailController = TextEditingController();
   TextEditingController adminCurrentAddressController = TextEditingController();
@@ -48,6 +49,12 @@ class ServiceProviderAdminController extends GetxController {
   int serviceProviderId = -1;
 
   final box = GetStorage();
+
+  @override
+  void onInit() {
+    super.onInit();
+    getServiceProviderAdmin();
+  }
 
   //for admin
   getServiceProviderAdmin() async {

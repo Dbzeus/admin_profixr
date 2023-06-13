@@ -120,11 +120,7 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                   onTab: () async {
                                     controller.dobController.text =
                                         await getDate(
-                                            initialDate: DateTime(
-                                              DateTime.now().year - 18,
-                                              12,
-                                              31,
-                                            ),
+                                            initialDate: DateTime(DateTime.now().year -18, DateTime.now().month, DateTime.now().day),
                                             firstDate: DateTime(
                                               DateTime.now().year - 80,
                                             ),
@@ -185,8 +181,25 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                   text: "Next",
                                   btnColor: primaryColor,
                                   onTap: () {
-                                    controller
-                                        .isConfirm(!controller.isConfirm.value);
+                                    if (controller.firstNameController.text.isEmpty) {
+                                      toast("Please Enter First Name");
+                                    } else if (controller.lastNameController.text.isEmpty) {
+                                      toast("Please Enter Last Name");
+                                    } else if (controller.designationController.text.isEmpty) {
+                                      toast("Please Enter Designation");
+                                    } else if (controller.dobController.text.isEmpty) {
+                                      toast("Please Enter Your Date of Birth Address");
+                                    } else if (controller.mobileController.text.isEmpty) {
+                                      toast("Please Enter Mobile Number");
+                                    } else if (controller.userNameController.text.isEmpty) {
+                                      toast("Please Enter UserName");
+                                    }else if (controller.passwordController.text.isEmpty) {
+                                      toast("Please Enter Password");
+                                    }else{
+                                      controller
+                                          .isConfirm(!controller.isConfirm.value);
+                                    }
+
                                   },
                                 ),
                               ],
@@ -534,51 +547,60 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                             : "Update",
                                         btnColor: primaryColor,
                                         onTap: () {
-                                          var params = {
-                                            "UserID": profixerData?.userID ?? 0,
-                                            "FirstName": controller
-                                                .firstNameController.text,
-                                            "LastName": controller
-                                                .lastNameController.text,
-                                            "Desigination": controller
-                                                .designationController.text
-                                                .trim(),
-                                            "DOB": toSendDateFormat(
-                                                controller.dobController.text),
-                                            "DOJ": toSendDateFormat(
-                                                controller.dojController.text),
-                                            "MobileNo": controller
-                                                .mobileController.text,
-                                            "CurrentAddress": controller
-                                                .currentAddressController.text,
-                                            "PermanentAddress": controller
-                                                 .permanentAddressController
-                                                .text,
-                                            "IsRelived": controller
-                                                .selectedRelieveIsActive.value,
-                                            "RelivedDate": controller.selectedRelieveIsActive.value ? controller
-                                                    .relievedDateController
-                                                    .text
-                                                    .isEmpty
-                                                ? ""
-                                                : toSendDateFormat(controller
-                                                    .relievedDateController
-                                                    .text) : "01-01-1900",
-                                            "RelivedReason": controller
-                                                .relievedReasonController.text,
-                                            "UserName": controller
-                                                .userNameController.text,
-                                            "Password": controller
-                                                .passwordController.text,
-                                            "IsActive": controller
-                                                .selectedIsActive.value,
-                                            "CUID": controller.box
-                                                .read(Session.userId),
-                                          };
-                                          controller.insertUpdateProfixer(
-                                              controller.selectedIsActive.value,
-                                              params,
-                                              profixerData != null);
+                                          if (controller.dojController.text.isEmpty) {
+                                            toast("Please Enter Date of joining");
+                                          } else if (controller.currentAddressController.text.isEmpty) {
+                                            toast("Please Enter Current address");
+                                          } else if (controller.permanentAddressController.text.isEmpty) {
+                                            toast("Please Enter Permanent Address");
+                                          }else{
+                                            var params = {
+                                              "UserID": profixerData?.userID ?? 0,
+                                              "FirstName": controller
+                                                  .firstNameController.text,
+                                              "LastName": controller
+                                                  .lastNameController.text,
+                                              "Desigination": controller
+                                                  .designationController.text
+                                                  .trim(),
+                                              "DOB": toSendDateFormat(
+                                                  controller.dobController.text),
+                                              "DOJ": toSendDateFormat(
+                                                  controller.dojController.text),
+                                              "MobileNo": controller
+                                                  .mobileController.text,
+                                              "CurrentAddress": controller
+                                                  .currentAddressController.text,
+                                              "PermanentAddress": controller
+                                                  .permanentAddressController
+                                                  .text,
+                                              "IsRelived": controller
+                                                  .selectedRelieveIsActive.value,
+                                              "RelivedDate": controller.selectedRelieveIsActive.value ? controller
+                                                  .relievedDateController
+                                                  .text
+                                                  .isEmpty
+                                                  ? ""
+                                                  : toSendDateFormat(controller
+                                                  .relievedDateController
+                                                  .text) : "01-01-1900",
+                                              "RelivedReason": controller
+                                                  .relievedReasonController.text,
+                                              "UserName": controller
+                                                  .userNameController.text,
+                                              "Password": controller
+                                                  .passwordController.text,
+                                              "IsActive": controller
+                                                  .selectedIsActive.value,
+                                              "CUID": controller.box
+                                                  .read(Session.userId),
+                                            };
+                                            controller.insertUpdateProfixer(
+                                                controller.selectedIsActive.value,
+                                                params,
+                                                profixerData != null);
+                                          }
+
                                         },
                                       ),
                                     ),

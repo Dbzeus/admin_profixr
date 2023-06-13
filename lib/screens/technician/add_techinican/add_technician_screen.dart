@@ -171,7 +171,7 @@ class _AddTechnicianScreenState extends State<AddTechnicianScreen> {
                                   onTab: () async {
                                     controller.dobController.text =
                                     await getDate(
-                                        initialDate: DateTime(DateTime.now().year -18, 12, 31),
+                                        initialDate: DateTime(DateTime.now().year -18, DateTime.now().month, DateTime.now().day),
                                         firstDate: DateTime(DateTime.now().year -80, 12, 31),
                                         lastDate: DateTime(DateTime.now().year -18, 12, 31)
                                     );
@@ -196,8 +196,25 @@ class _AddTechnicianScreenState extends State<AddTechnicianScreen> {
                                   text: "Next",
                                   btnColor: primaryColor,
                                   onTap: () {
-                                    controller
-                                        .isConfirm(!controller.isConfirm.value);
+                                    if (controller.firstNameController.text.isEmpty) {
+                                      toast("Please Enter First Name");
+                                    } else if (controller.lastNameController.text.isEmpty) {
+                                      toast("Please Enter Last Name");
+                                    } else if (controller.mobileController.text.isEmpty) {
+                                      toast("Please Enter Mobile Number");
+                                    }else if (controller.emailController.text.isEmpty) {
+                                      toast("Please Enter Email ID");
+                                    }  else if (controller.dobController.text.isEmpty) {
+                                      toast("Please Enter Your Date of Birth Address");
+                                    } else if (controller.userNameController.text.isEmpty) {
+                                      toast("Please Enter UserName");
+                                    }else if (controller.passwordController.text.isEmpty) {
+                                      toast("Please Enter Password");
+                                    }else{
+                                      controller
+                                          .isConfirm(!controller.isConfirm.value);
+                                    }
+
                                   },
                                 ),
                               ],
@@ -586,53 +603,72 @@ class _AddTechnicianScreenState extends State<AddTechnicianScreen> {
                                         text: technicianData == null ? "Add" : "Update",
                                         btnColor: primaryColor,
                                         onTap: () {
-                                          var params = {
-                                            "TechnicianID":
-                                                technicianData?.technicianID ??
-                                                    0,
-                                            "UserID":
-                                                technicianData?.userID ?? 0,
-                                            "ServiceProviderID": controller
-                                                .selectedServiceProvider.value,
-                                            "FirstName": controller
-                                                .firstNameController.text
-                                                .trim(),
-                                            "LastName": controller
-                                                .lastNameController.text
-                                                .trim(),
-                                            "MobileNumber": controller
-                                                .mobileController.text,
-                                            "MailID": controller
-                                                .emailController.text
-                                                .trim(),
-                                            "ContactAddress": controller
-                                                .currentAddressController.text
-                                                .trim(),
-                                            "PermanentAddress": controller
-                                                .permanentAddressController.text
-                                                .trim(),
-                                            "DOB": toSendDateFormat(
-                                                controller.dobController.text),
-                                            "DOJ": toSendDateFormat(
-                                                controller.dojController.text),
-                                            "ServiceIDs":
-                                                controller.selectedService,
-                                            "AreaIDs": controller.selectedArea,
-                                            "Username": controller
-                                                .userNameController.text
-                                                .trim(),
-                                            "Password": controller
-                                                .passwordController.text
-                                                .trim(),
-                                            "IsActive": controller
-                                                .selectedIsActive.value,
-                                            "CUID": controller.box
-                                                .read(Session.userId),
-                                          };
-                                          controller.insertUpdateTechnician(
-                                              controller.selectedIsActive.value,
-                                              params,
-                                              technicianData != null);
+                                          if (controller.serviceProviderList.isEmpty) {
+                                            toast("Please Select service Provider");
+                                          } else if (controller.dojController.text.isEmpty) {
+                                            toast("Please Enter Your Date of Joining ");
+                                          }else if (controller.selectedServiceName.isEmpty) {
+                                            toast("Please Enter Select services ");
+                                          }else if (controller.selectedAreaNames.isEmpty) {
+                                            toast("Please Select your prefered Area");
+                                          }
+                                          else if (controller.identityController.text.isEmpty) {
+                                            toast("Please Enter National ID");
+                                          } else if (controller.currentAddressController.text.isEmpty) {
+                                            toast("Please Enter Current Address Number");
+                                          }else if (controller.permanentAddressController.text.isEmpty) {
+                                            toast("Please Enter Permanent Address");
+                                          }  else{
+                                            var params = {
+                                              "TechnicianID":
+                                              technicianData?.technicianID ??
+                                                  0,
+                                              "UserID":
+                                              technicianData?.userID ?? 0,
+                                              "ServiceProviderID": controller
+                                                  .selectedServiceProvider.value,
+                                              "FirstName": controller
+                                                  .firstNameController.text
+                                                  .trim(),
+                                              "LastName": controller
+                                                  .lastNameController.text
+                                                  .trim(),
+                                              "MobileNumber": controller
+                                                  .mobileController.text,
+                                              "MailID": controller
+                                                  .emailController.text
+                                                  .trim(),
+                                              "ContactAddress": controller
+                                                  .currentAddressController.text
+                                                  .trim(),
+                                              "PermanentAddress": controller
+                                                  .permanentAddressController.text
+                                                  .trim(),
+                                              "DOB": toSendDateFormat(
+                                                  controller.dobController.text),
+                                              "DOJ": toSendDateFormat(
+                                                  controller.dojController.text),
+                                              "ServiceIDs":
+                                              controller.selectedService,
+                                              "AreaIDs": controller.selectedArea,
+                                              "Username": controller
+                                                  .userNameController.text
+                                                  .trim(),
+                                              "Password": controller
+                                                  .passwordController.text
+                                                  .trim(),
+                                              "IsActive": controller
+                                                  .selectedIsActive.value,
+                                              "CUID": controller.box
+                                                  .read(Session.userId),
+                                            };
+                                            controller.insertUpdateTechnician(
+                                                controller.selectedIsActive.value,
+                                                params,
+                                                technicianData != null);
+                                          }
+
+
                                         },
                                       ),
                                     ),

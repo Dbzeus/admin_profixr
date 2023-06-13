@@ -17,6 +17,7 @@ class ServiceProviderController extends GetxController {
   TextEditingController mobileController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController permanentAddressController = TextEditingController();
+  TextEditingController identityController = TextEditingController();
   TextEditingController searchController = TextEditingController();
 
   TextEditingController taxDetailsController = TextEditingController();
@@ -194,6 +195,7 @@ class ServiceProviderController extends GetxController {
       'isSelected': selectedAreaNames.split(",").firstWhereOrNull((e) => e==element['value'])!=null
     }).toList().obs;
   }
+
 
 
 }

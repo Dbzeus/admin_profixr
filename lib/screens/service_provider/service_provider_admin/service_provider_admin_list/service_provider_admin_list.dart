@@ -225,6 +225,7 @@ class ServiceProviderAdminList extends GetView<ServiceProviderAdminController> {
                         fontSize: 10,
                       ),
                     ),
+
                   ],
                 )
               ],

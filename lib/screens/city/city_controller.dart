@@ -66,9 +66,7 @@ class CityController extends GetxController {
   }
 
   createCity(city, bool isUpdated) async {
-    if(cityNameController.text.isEmpty && selectedCountry.isEmpty){
-    toast("Please Enter All Fields");
-    }else if (cityNameController.text.isEmpty) {
+     if (cityNameController.text.isEmpty) {
       toast("Please Enter City");
     } else if (selectedCountry.isEmpty) {
       toast("Please Enter Country");

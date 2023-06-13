@@ -142,9 +142,10 @@ class NewTicketScreen extends GetView<NewTicketController> {
           ),
           onTab: () async {
             controller.dobController.text = await getDate(
-                initialDate: DateTime(DateTime.now().year - 18, 12, 31),
-                firstDate: DateTime(DateTime.now().year - 80, 12, 31),
-                lastDate: DateTime(DateTime.now().year - 18, 12, 31));
+                initialDate: DateTime(DateTime.now().year -18, DateTime.now().month, DateTime.now().day),
+                firstDate: DateTime(DateTime.now().year -80, 12, 31),
+                lastDate: DateTime(DateTime.now().year -18, 12, 31)
+            );
           },
         ),
         const SizedBox(

@@ -44,8 +44,7 @@ class CustomerAddressController extends GetxController {
   getArea() async {
     if (await isNetConnected()) {
       isLoading(true);
-      var response =
-          await ApiCall().getArea(cityId: int.parse(selectedCity.value));
+      var response = await ApiCall().getArea(cityId: int.parse(selectedCity.value));
       isLoading(false);
       if (response != null) {
         if (response['RtnStatus']) {
@@ -55,7 +54,7 @@ class CustomerAddressController extends GetxController {
           }
           if (areas.isNotEmpty) {
             selectedArea('${areas.first['id']}');
-          } else {
+          }else{
             selectedArea('');
           }
           areas.refresh();
@@ -109,13 +108,9 @@ class CustomerAddressController extends GetxController {
   }
 
   validation(bool isUpdated, CustomerAddress? address) {
-    if (addressTitleController.text.isEmpty &&
-        doorNoController.text.isEmpty &&
-        streetNameController.text.isEmpty &&
-        selectedCity.isEmpty &&
-        selectedArea.isEmpty) {
-      toast("Please Enter All Fields");
-    } else if (addressTitleController.text.isEmpty) {
+     if (
+    addressTitleController.text.isEmpty
+    ) {
       toast("Please Enter Address");
     } else if (doorNoController.text.isEmpty) {
       toast("Please Enter DoorNo ");

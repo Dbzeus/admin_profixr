@@ -31,6 +31,7 @@ getTime({TimeOfDay? initialTime, String timeFormat = "HH:mm"}) async {
           .format(DateTime(0, 1, 1, time.hour, time.minute));
 }
 
+/*
 uploadButton(Function onTab) {
   return GestureDetector(
     onTap: () => onTab(),
@@ -61,6 +62,7 @@ uploadButton(Function onTab) {
     ),
   );
 }
+*/
 
 getImageCamera() async {
   var res = await ImagePicker()

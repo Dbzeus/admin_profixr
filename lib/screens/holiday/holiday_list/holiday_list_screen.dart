@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
+import 'package:profixer_admin/helpers/utils.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 
@@ -45,7 +47,7 @@ class HolidayListScreen extends GetView<HolidayController> {
                         fontSize: 16,
                         color: textColor,
                       ),
-                      onChanged: (text){
+                      onChanged: (text) {
                         controller.onSearchChanged(text);
                       },
                       decoration: const InputDecoration(
@@ -71,7 +73,6 @@ class HolidayListScreen extends GetView<HolidayController> {
                     controller.searchController.clear();
                     Get.toNamed(Routes.addHoliday, arguments: {
                       "title": "Add Holiday",
-                      "buttonTitle": "Add"
                     });
                   },
                   child: Container(
@@ -141,7 +142,10 @@ class HolidayListScreen extends GetView<HolidayController> {
                 ),
                 child: Center(
                   child: Text(
-                    data["HolidayDate"].toString().split("T")[0].substring(9),
+                    data["HolidayDate"]
+                        .toString()
+                        .split("T")[0]
+                        .substring(8, 10),
                     style: const TextStyle(
                       color: primaryColor,
                       fontSize: 18,
@@ -175,7 +179,8 @@ class HolidayListScreen extends GetView<HolidayController> {
                           width: 4,
                         ),
                         Text(
-                          data["HolidayDate"].toString().split("T")[0],
+                          toShowDateFormat(
+                              data["HolidayDate"].toString().split("T")[0]),
                           style: const TextStyle(
                             fontSize: 12,
                             color: primaryColor,
@@ -228,7 +233,7 @@ class HolidayListScreen extends GetView<HolidayController> {
             children: [
               Expanded(
                 child: Column(
-                  crossAxisAlignment : CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Remark',
@@ -244,24 +249,35 @@ class HolidayListScreen extends GetView<HolidayController> {
                   ],
                 ),
               ),
-              const SizedBox(width: 8,),
-              InkWell(
-                onTap: () async {
-                  Get.toNamed(Routes.addHoliday, arguments: data);
-                },
-                child: Container(
-                  padding: EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                      color: blueTextColor,
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Icon(
-                    Icons.edit,
-                    size: 15,
-                    color: Colors.white,
-                  ),
-                ),
+              const SizedBox(
+                width: 8,
               ),
-              const SizedBox(width: 8,),
+              DateFormat(ymd)
+                          .parse(data["HolidayDate"].toString().split("T")[0])
+                          .compareTo(DateTime.now()) > 0
+                  ? InkWell(
+                      onTap: () async {
+                        Get.toNamed(Routes.addHoliday, arguments: {
+                          'title': 'Edit Holiday',
+                          'holiday': data
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                            color: blueTextColor,
+                            borderRadius: BorderRadius.circular(8)),
+                        child: Icon(
+                          Icons.edit,
+                          size: 15,
+                          color: Colors.white,
+                        ),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
+              const SizedBox(
+                width: 8,
+              ),
               InkWell(
                 onTap: () async {
                   controller.deleteHoliday(data);

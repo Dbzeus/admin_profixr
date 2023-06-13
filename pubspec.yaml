@@ -26,6 +26,9 @@ dependencies:
   permission_handler:
   dotted_border: ^2.0.0+3
   flutter_html:
+  search_choices:
+  photo_view:
+
 #  timelineview:
 
 flutter_native_splash:

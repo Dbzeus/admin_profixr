@@ -4,7 +4,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:profixer_admin/helpers/constant_widgets.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/screens/tickets/new_ticket/new_ticket_controller.dart';
@@ -12,6 +11,7 @@ import 'package:profixer_admin/widgets/custom_appbar.dart';
 import 'package:profixer_admin/widgets/custom_button.dart';
 import 'package:profixer_admin/widgets/custom_edittext.dart';
 
+import '../../../helpers/utils.dart';
 import '../../../widgets/custom_dropdown.dart';
 import '../../../widgets/custom_loader.dart';
 
@@ -57,13 +57,15 @@ class NewTicketScreen extends GetView<NewTicketController> {
           body: Stack(
             children: [
               Obx(
-                () =>Stepper(
+                () => Stepper(
                   steps: stepList(),
                   currentStep: controller.currentStep.value,
                   type: StepperType.horizontal,
                   controlsBuilder: (_, __) {
                     return Obx(() => CustomButton(
-                          text: controller.currentStep.value == 2 ? 'Book' : 'Next',
+                          text: controller.currentStep.value == 2
+                              ? 'Book'
+                              : 'Next',
                           onTap: () {
                             if (controller.currentStep.value == 0) {
                               controller.saveCustomer();
@@ -140,10 +142,9 @@ class NewTicketScreen extends GetView<NewTicketController> {
           ),
           onTab: () async {
             controller.dobController.text = await getDate(
-                initialDate: DateTime(DateTime.now().year -18, 12, 31),
-                firstDate: DateTime(DateTime.now().year -80, 12, 31),
-                lastDate: DateTime(DateTime.now().year -18, 12, 31)
-            );
+                initialDate: DateTime(DateTime.now().year - 18, 12, 31),
+                firstDate: DateTime(DateTime.now().year - 80, 12, 31),
+                lastDate: DateTime(DateTime.now().year - 18, 12, 31));
           },
         ),
         const SizedBox(
@@ -180,7 +181,7 @@ class NewTicketScreen extends GetView<NewTicketController> {
           height: 10,
         ),
         Obx(
-              () => CustomDropDown(
+          () => CustomDropDown(
             hintText: "City",
             dropDownValue: controller.selectedCity.value,
             items: controller.cities,
@@ -194,7 +195,7 @@ class NewTicketScreen extends GetView<NewTicketController> {
           height: 10,
         ),
         Obx(
-              () => CustomDropDown(
+          () => CustomDropDown(
             hintText: "Area",
             dropDownValue: controller.selectedArea.value,
             items: controller.areas,
@@ -243,7 +244,7 @@ class NewTicketScreen extends GetView<NewTicketController> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Obx(
-              () => CustomDropDown(
+          () => CustomDropDown(
             hintText: "Service",
             dropDownValue: controller.selectedService.value,
             items: controller.services,
@@ -257,7 +258,7 @@ class NewTicketScreen extends GetView<NewTicketController> {
           height: 10,
         ),
         Obx(
-              () => CustomDropDown(
+          () => CustomDropDown(
             hintText: "Complaint Nature",
             dropDownValue: controller.selectedCNature.value,
             items: controller.cNatures,
@@ -270,7 +271,7 @@ class NewTicketScreen extends GetView<NewTicketController> {
           height: 10,
         ),
         Obx(
-              () => CustomDropDown(
+          () => CustomDropDown(
             hintText: "Service Type",
             dropDownValue: controller.selectedType.value,
             items: controller.types,
@@ -296,15 +297,14 @@ class NewTicketScreen extends GetView<NewTicketController> {
             controller.serviceDateController.text = await getDate(
                 initialDate: DateTime.now(),
                 firstDate: DateTime.now(),
-                lastDate: DateTime(DateTime.now().year + 1, 12, 31)
-            );
+                lastDate: DateTime(DateTime.now().year + 1, 12, 31));
           },
         ),
         const SizedBox(
           height: 10,
         ),
         Obx(
-              () => CustomDropDown(
+          () => CustomDropDown(
             hintText: "Service Time Slot",
             dropDownValue: controller.selectedTimeSlot.value,
             items: controller.timeSlots,
@@ -332,26 +332,38 @@ class NewTicketScreen extends GetView<NewTicketController> {
         Row(
           children: [
             Expanded(
-              child: Obx(() => DottedBorder(
-                color: controller.imagePath.value.isNotEmpty
-                    ? primaryColor
-                    : Colors.black26,
-                strokeWidth: 1,
-                child: Container(
-                    height: 80,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: controller.imagePath.value.isURL
-                              ? CachedNetworkImage(
-                              imageUrl: controller.imagePath.value)
-                          as ImageProvider
-                              : FileImage(File(controller.imagePath.value)),
-                          fit: BoxFit.cover),
-                    ),
-                    child: controller.imagePath.value.isEmpty
-                        ? const Center(child: Text('Upload images'))
-                        : const SizedBox.shrink()),
-              )),
+              child: Obx(
+                () => InkWell(
+                  onTap: (){
+                    if(controller.imagePath.value.isNotEmpty){
+                      open(Get.context!, 0, [controller.imagePath.value]);
+                    }
+                  },
+                  child: DottedBorder(
+                      color: controller.imagePath.value.isNotEmpty
+                          ? primaryColor
+                          : Colors.black26,
+                      strokeWidth: 1,
+                      child: Container(
+                        height: 80,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: controller.imagePath.value.isURL
+                                  ? CachedNetworkImage(
+                                          imageUrl: controller.imagePath.value)
+                                      as ImageProvider
+                                  : FileImage(File(controller.imagePath.value)),
+                              fit: BoxFit.cover),
+                        ),
+                        child: controller.imagePath.value.isEmpty
+                            ? const Center(child: Text('Upload images'))
+                            : const SizedBox(
+                                width: double.infinity,
+                                height: double.infinity,
+                              ),
+                      )),
+                ),
+              ),
             ),
             const SizedBox(
               width: 8,

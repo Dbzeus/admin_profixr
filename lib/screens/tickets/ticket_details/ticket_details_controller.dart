@@ -63,6 +63,8 @@ class TicketDetailsController extends GetxController {
             }
           }
         }
+        image = getLastSegment(image);
+
 
         var data = {
           "TicketID": ticket.ticketID,
@@ -74,7 +76,7 @@ class TicketDetailsController extends GetxController {
           "ServiceTypeID": ticket.serviceID,
           "ServiceProviderID": res['providerId'],
           "TechnicianID": res['techId'],
-          "AppoinmentDate": "2023-06-10T09:02:28.850Z",
+          "AppoinmentDate": ticket.createdDate,
           "TimeSlotID": ticket.timeSlotID,
           "Reason": res['reason'],
           "Remarks": res['remark'],

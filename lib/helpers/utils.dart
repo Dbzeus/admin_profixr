@@ -1,4 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
+import '../widgets/image_viewer.dart';
 
 class Session{
   static const isLogin = "isLogin";
@@ -37,4 +41,16 @@ dateTimeToString({
 
 String getLastSegment(String paths){
   return paths.split("/").last;
+}
+
+void open(BuildContext context, final int index, var images) {
+  Get.to(
+    GalleryPhotoView(
+      galleryItems: images,
+      backgroundDecoration: const BoxDecoration(
+        color: Colors.black,
+      ),
+      initialIndex: index.obs,
+    ),
+  );
 }

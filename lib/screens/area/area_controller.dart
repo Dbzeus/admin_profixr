@@ -49,8 +49,11 @@ class AreaController extends GetxController {
       var response = await ApiCall().getCity();
       if (response != null) {
         if (response['RtnStatus']) {
+          (response['RtnData'] as List).sort((a,b)=>a['CityName'].toString().compareTo(b['CityName']));
           for (var e in response['RtnData']) {
-            cities.add({"id": '${e["CityID"]}', "value": "${e['CityName']}"});
+            if(e['IsActive']) {
+              cities.add({"id": '${e["CityID"]}', "value": "${e['CityName']}"});
+            }
           }
           if (cities.isNotEmpty) {
             selectedCity('${cities.first['id']}');

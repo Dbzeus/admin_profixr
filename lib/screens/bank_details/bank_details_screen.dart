@@ -1,6 +1,8 @@
 
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -10,6 +12,8 @@ import 'package:profixer_admin/screens/bank_details/bank_details_controller.dart
 import 'package:profixer_admin/widgets/custom_appbar.dart';
 import 'package:profixer_admin/widgets/custom_button.dart';
 import 'package:profixer_admin/widgets/custom_edittext.dart';
+
+import '../../helpers/utils.dart';
 
 class BankDetailsScreen extends GetView<BankDetailsController> {
 
@@ -112,9 +116,116 @@ class BankDetailsScreen extends GetView<BankDetailsController> {
               const SizedBox(
                 height: 20,
               ),
-              uploadButton(() async {
-                controller.imagePath(await getImageFromGallery() ?? controller.imagePath.value);
-              }),
+              Row(
+                children: [
+                  Expanded(
+                    child: Obx(() => InkWell(
+                      onTap: (){
+                        if(controller.imagePath.value.isNotEmpty){
+                          open(Get.context!, 0, [controller.imagePath.value]);
+                        }
+                      },
+                      child: DottedBorder(
+                        color: controller.imagePath.value.isNotEmpty
+                            ? primaryColor
+                            : Colors.black26,
+                        strokeWidth: 1,
+                        child: Container(
+                            height: 50,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: controller
+                                      .imagePath.value.isURL
+                                      ? CachedNetworkImage(
+                                      imageUrl: controller
+                                          .imagePath
+                                          .value) as ImageProvider
+                                      : FileImage(File(controller
+                                      .imagePath.value)),
+                                  fit: BoxFit.cover),
+                            ),
+                            child: controller.imagePath.value.isEmpty
+                                ? const Center(
+                                child: Text('Upload images'))
+                                : const SizedBox(width: double.infinity,height: double.infinity,)),
+                      ),
+                    )),
+                  ),
+                  const SizedBox(
+                    width: 8,
+                  ),
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          InkWell(
+                            onTap: () async {
+                              controller.imagePath(
+                                  await getImageFromGallery() ??
+                                      controller.imagePath.value);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.shade100,
+                                  borderRadius:
+                                  BorderRadius.circular(8)),
+                              child: const Icon(
+                                Icons.image,
+                                size: 15,
+                                color: primaryColor,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 12,
+                          ),
+                          InkWell(
+                            onTap: () async {
+                              controller.imagePath(
+                                  await getImageCamera() ??
+                                      controller.imagePath.value);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.shade100,
+                                  borderRadius:
+                                  BorderRadius.circular(8)),
+                              child: const Icon(
+                                Icons.camera_alt,
+                                size: 15,
+                                color: primaryColor,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      Obx(() => controller.imagePath.isNotEmpty
+                          ? InkWell(
+                        onTap: () => controller.imagePath(""),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                            const SizedBox(
+                              width: 6,
+                            ),
+                            const Text(
+                              'Delete',
+                              style: TextStyle(color: Colors.red),
+                            )
+                          ],
+                        ),
+                      )
+                          : const SizedBox.shrink())
+                    ],
+                  )
+                ],
+              ),
               const SizedBox(
                 height: 30,
               ),

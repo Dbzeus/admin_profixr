@@ -1,9 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:profixer_admin/model/customer_address_response.dart';
-import 'package:profixer_admin/model/customer_response.dart';
 
 import '../../../apis/api_call.dart';
 import '../../../helpers/constant_widgets.dart';
@@ -20,10 +18,10 @@ class CustomerAddressController extends GetxController {
   int customerId = 0;
 
   //address form
-  TextEditingController  addressTitleController= TextEditingController();
-  TextEditingController  doorNoController= TextEditingController();
-  TextEditingController  streetNameController= TextEditingController();
-  TextEditingController  landmarkController= TextEditingController();
+  TextEditingController addressTitleController = TextEditingController();
+  TextEditingController doorNoController = TextEditingController();
+  TextEditingController streetNameController = TextEditingController();
+  TextEditingController landmarkController = TextEditingController();
 
   RxBool selectedIsActive = true.obs;
 
@@ -38,7 +36,6 @@ class CustomerAddressController extends GetxController {
   RxList<Map<String, String>> areas = RxList();
   RxString selectedArea = "".obs;
 
-
   @override
   void onInit() {
     super.onInit();
@@ -47,7 +44,8 @@ class CustomerAddressController extends GetxController {
   getArea() async {
     if (await isNetConnected()) {
       isLoading(true);
-      var response = await ApiCall().getArea(cityId: int.parse(selectedCity.value));
+      var response =
+          await ApiCall().getArea(cityId: int.parse(selectedCity.value));
       isLoading(false);
       if (response != null) {
         if (response['RtnStatus']) {
@@ -57,7 +55,7 @@ class CustomerAddressController extends GetxController {
           }
           if (areas.isNotEmpty) {
             selectedArea('${areas.first['id']}');
-          }else{
+          } else {
             selectedArea('');
           }
           areas.refresh();
@@ -76,8 +74,11 @@ class CustomerAddressController extends GetxController {
       if (response != null) {
         if (response['RtnStatus']) {
           cities.clear();
+          (response['RtnData'] as List).sort((a,b)=>a['CityName'].toString().compareTo(b['CityName']));
           for (var e in response['RtnData']) {
-            cities.add({"id": '${e["CityID"]}', "value": "${e['CityName']}"});
+            if(e['IsActive']) {
+              cities.add({"id": '${e["CityID"]}', "value": "${e['CityName']}"});
+            }
           }
           if (cities.isNotEmpty) {
             selectedCity('${cities.first['id']}');
@@ -93,8 +94,8 @@ class CustomerAddressController extends GetxController {
   getCustomerAddress() async {
     if (await isNetConnected()) {
       isLoading(true);
-      CustomerAddressResponse? response = await ApiCall().getCustomerAddress(
-          customerId: customerId);
+      CustomerAddressResponse? response =
+          await ApiCall().getCustomerAddress(customerId: customerId);
       isLoading(false);
       if (response != null) {
         if (response.rtnStatus) {
@@ -112,37 +113,23 @@ class CustomerAddressController extends GetxController {
         doorNoController.text.isEmpty &&
         streetNameController.text.isEmpty &&
         selectedCity.isEmpty &&
-        selectedArea.isEmpty
-
-
-    ) {
+        selectedArea.isEmpty) {
       toast("Please Enter All Fields");
-    } else if (
-    addressTitleController.text.isEmpty
-    ) {
+    } else if (addressTitleController.text.isEmpty) {
       toast("Please Enter Address");
-    } else if (
-    doorNoController.text.isEmpty
-    ) {
+    } else if (doorNoController.text.isEmpty) {
       toast("Please Enter DoorNo ");
-    } else if (
-    streetNameController.text.isEmpty
-    ) {
+    } else if (streetNameController.text.isEmpty) {
       toast("Please Enter Street Name");
-    } else if (
-    selectedCity.isEmpty
-    ) {
+    } else if (selectedCity.isEmpty) {
       toast("Please Select City");
-    } else if (
-    selectedArea.isEmpty
-    ) {
+    } else if (selectedArea.isEmpty) {
       toast("Please Select Area");
     } else {
       var data = {
         "AddressID": address?.addressID ?? 0,
         "CustomerID": address?.customerID ?? customerId,
-        "AddressTitle": addressTitleController.text
-            .trim(),
+        "AddressTitle": addressTitleController.text.trim(),
         "DoorNo": doorNoController.text.trim(),
         "StreetName": streetNameController.text.trim(),
         "CityID": selectedCity.value,
@@ -153,8 +140,7 @@ class CustomerAddressController extends GetxController {
         "IsActive": true,
         "CUID": box.read(Session.userId)
       };
-      insertCustomerAddress(
-          data, isUpdated);
+      insertCustomerAddress(data, isUpdated);
     }
   }
 
@@ -165,52 +151,50 @@ class CustomerAddressController extends GetxController {
       isLoading(false);
       if (response != null) {
         if (response['RtnStatus']) {
-          if(showDialog) {
+          if (showDialog) {
             customDialog(
                 Get.context,
                 isUpdated ? "Updated Successful!" : "Added Successful!",
-                "${response['RtnMsg']}",
-                    () {
-                  getCustomerAddress();
-                  Get.back();
-                }, isDismissable: false);
-          }else{
-            customerAddress.firstWhere((element) => element.addressID==data.addressID).isActive=data[''];
+                "${response['RtnMsg']}", () {
+              getCustomerAddress();
+              Get.back();
+            }, isDismissable: false);
+          } else {
+            customerAddress
+                .firstWhere((element) => element.addressID == data.addressID)
+                .isActive = data[''];
             customerAddress.refresh();
           }
         } else {
           toast(response['RtnMsg']);
         }
       }
-
     }
   }
 
-onSearchChanged(String text) {
-  if (text.isEmpty) {
-    customerAddress(searchList);
-  } else {
-    customerAddress(searchList
-        .where((element) =>
-    element.firstName
-        .toString()
-        .toLowerCase()
-        .contains(text.toLowerCase()) ||
-        element.addressTitle
-            .toString()
-            .toLowerCase()
-            .contains(text.toLowerCase()) ||
-        element.landMark
-            .toString()
-            .toLowerCase()
-            .contains(text.toLowerCase()) ||
-        element.streetName
-            .toString()
-            .toLowerCase()
-            .contains(text.toLowerCase()))
-        .toList());
+  onSearchChanged(String text) {
+    if (text.isEmpty) {
+      customerAddress(searchList);
+    } else {
+      customerAddress(searchList
+          .where((element) =>
+              element.firstName
+                  .toString()
+                  .toLowerCase()
+                  .contains(text.toLowerCase()) ||
+              element.addressTitle
+                  .toString()
+                  .toLowerCase()
+                  .contains(text.toLowerCase()) ||
+              element.landMark
+                  .toString()
+                  .toLowerCase()
+                  .contains(text.toLowerCase()) ||
+              element.streetName
+                  .toString()
+                  .toLowerCase()
+                  .contains(text.toLowerCase()))
+          .toList());
+    }
   }
-}
-
-
 }

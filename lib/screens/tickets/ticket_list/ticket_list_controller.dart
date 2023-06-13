@@ -67,6 +67,7 @@ class TicketListController extends GetxController {
             }
           }
         }
+        image = getLastSegment(image);
 
         var param = {
           "TicketID": ticket.ticketID,
@@ -78,7 +79,7 @@ class TicketListController extends GetxController {
           "ServiceTypeID": ticket.serviceID,
           "ServiceProviderID": res['providerId'],
           "TechnicianID": res['techId'],
-          "AppoinmentDate": "2023-06-10T09:02:28.850Z",
+          "AppoinmentDate": ticket.createdDate,
           "TimeSlotID": ticket.timeSlotID,
           "Reason": res['reason'],
           "Remarks": res['remark'],
@@ -86,7 +87,7 @@ class TicketListController extends GetxController {
           "CUID": box.read(Session.userId)
         };
 
-        var response = await ApiCall().updateATicket(data);
+        var response = await ApiCall().updateATicket(param);
         isLoading(false);
 
         if (response != null) {

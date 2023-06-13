@@ -98,8 +98,11 @@ class NewTicketController extends GetxController {
       if (response != null) {
         if (response['RtnStatus']) {
           cities.clear();
+          (response['RtnData'] as List).sort((a,b)=>a['CityName'].toString().compareTo(b['CityName']));
           for (var e in response['RtnData']) {
-            cities.add({"id": '${e["CityID"]}', "value": "${e['CityName']}"});
+            if(e['IsActive']) {
+              cities.add({"id": '${e["CityID"]}', "value": "${e['CityName']}"});
+            }
           }
           if (cities.isNotEmpty) {
             selectedCity('${cities.first['id']}');
@@ -243,6 +246,8 @@ class NewTicketController extends GetxController {
               }
             }
           }
+          image = getLastSegment(image);
+
 
           var data = {
             "TicketID": 0,
@@ -359,7 +364,7 @@ class NewTicketController extends GetxController {
     }else if(selectedCity.isEmpty){
       toast("Please select the city ");
     }else if(selectedArea.isEmpty){
-      toast("Please select the are");
+      toast("Please select the area");
     }else{
       if (await isNetConnected()) {
         isLoading(true);

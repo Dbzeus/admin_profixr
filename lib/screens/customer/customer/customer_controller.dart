@@ -112,8 +112,8 @@ class CustomerController extends GetxController {
                 Get.context,
                 isUpdated ? "Updated Successful!" : "Added Successful!",
                 "${response['RtnMsg']}", () {
-              Get.back();
-              getCustomers();
+                  getCustomers();
+              isSelectedTag(1);
             }, isDismissable: false);
           } else {
             toast('${response['RtnMsg']}');

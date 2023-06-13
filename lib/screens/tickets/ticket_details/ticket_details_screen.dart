@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/model/TicketHistoryResponse.dart';
@@ -10,6 +9,7 @@ import 'package:profixer_admin/widgets/custom_appbar.dart';
 import '../../../helpers/hexcolor.dart';
 import '../../../helpers/utils.dart';
 import '../../../widgets/custom_loader.dart';
+import '../../../widgets/image_viewer.dart';
 
 class TicketDetailsScreen extends GetView<TicketDetailsController> {
   TicketDetailsScreen({Key? key}) : super(key: key);
@@ -77,13 +77,15 @@ class TicketDetailsScreen extends GetView<TicketDetailsController> {
                                           height: 20,
                                           width: 20,
                                           decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(4),
+                                            borderRadius:
+                                                BorderRadius.circular(4),
                                             color: const Color.fromRGBO(
                                                 0, 169, 206, 1),
                                           ),
                                           child: Center(
                                             child: CachedNetworkImage(
-                                              imageUrl: controller.ticket.complientNatureImg,
+                                              imageUrl: controller
+                                                  .ticket.complientNatureImg,
                                               height: 10,
                                               width: 10,
                                             ),
@@ -92,7 +94,8 @@ class TicketDetailsScreen extends GetView<TicketDetailsController> {
                                       ],
                                     ),
                                     Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Icon(
                                           Icons.location_on,
@@ -291,72 +294,93 @@ class TicketDetailsScreen extends GetView<TicketDetailsController> {
                           const SizedBox(
                             height: 12,
                           ),
-                          controller.ticket.childStatus.isEmpty ? const SizedBox.shrink() : Column(
-                            children: [
-                              const Divider(),
-                              const SizedBox(
-                                height: 12,
-                              ),
-                              SingleChildScrollView(
-                                physics: const BouncingScrollPhysics(),
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: List.generate(
-                                    controller.ticket.childStatus.length,
-                                        (index) => GestureDetector(
-                                      onTap: ()=> controller.ticketUpdate(controller.ticket.childStatus[index]),
+                          controller.ticket.childStatus.isEmpty
+                              ? const SizedBox.shrink()
+                              : Column(
+                                  children: [
+                                    const Divider(),
+                                    const SizedBox(
+                                      height: 12,
+                                    ),
+                                    SingleChildScrollView(
+                                      physics: const BouncingScrollPhysics(),
+                                      scrollDirection: Axis.horizontal,
                                       child: Row(
-                                        children: [
-                                          Container(
-                                            width: 90,
-                                            height: 40,
-                                            decoration: BoxDecoration(
-                                                color: whiteColor,
-                                                borderRadius: BorderRadius.circular(4),
-                                                border: Border.all(
-                                                  color: HexColor.fromHex(
-                                                    controller.ticket.childStatus[index]
-                                                        .colorCode,
-                                                  ),
-                                                )),
-                                            child: Center(
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                                children: [
-                                                  CachedNetworkImage(
-                                                    imageUrl: controller.ticket
-                                                        .childStatus[index].statusImage,
-                                                    width: 18,
-                                                    height: 18,
-                                                  ),
-                                                  Text(
-                                                    controller.ticket.childStatus[index]
-                                                        .childStatusName,
-                                                    style: TextStyle(
-                                                      fontWeight: FontWeight.w600,
-                                                      fontSize: 12,
-                                                      color: HexColor.fromHex(
-                                                        controller.ticket
-                                                            .childStatus[index].colorCode,
-                                                      ),
+                                        children: List.generate(
+                                          controller.ticket.childStatus.length,
+                                          (index) => GestureDetector(
+                                            onTap: () => controller
+                                                .ticketUpdate(controller
+                                                    .ticket.childStatus[index]),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  width: 90,
+                                                  height: 40,
+                                                  decoration: BoxDecoration(
+                                                      color: whiteColor,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4),
+                                                      border: Border.all(
+                                                        color: HexColor.fromHex(
+                                                          controller
+                                                              .ticket
+                                                              .childStatus[
+                                                                  index]
+                                                              .colorCode,
+                                                        ),
+                                                      )),
+                                                  child: Center(
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        CachedNetworkImage(
+                                                          imageUrl: controller
+                                                              .ticket
+                                                              .childStatus[
+                                                                  index]
+                                                              .statusImage,
+                                                          width: 18,
+                                                          height: 18,
+                                                        ),
+                                                        Text(
+                                                          controller
+                                                              .ticket
+                                                              .childStatus[
+                                                                  index]
+                                                              .childStatusName,
+                                                          style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 12,
+                                                            color: HexColor
+                                                                .fromHex(
+                                                              controller
+                                                                  .ticket
+                                                                  .childStatus[
+                                                                      index]
+                                                                  .colorCode,
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ],
                                                     ),
-                                                  )
-                                                ],
-                                              ),
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  width: 12,
+                                                ),
+                                              ],
                                             ),
                                           ),
-                                          const SizedBox(
-                                            width: 12,
-                                          ),
-                                        ],
+                                        ),
                                       ),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
                         ],
                       ),
                     ),
@@ -380,10 +404,11 @@ class TicketDetailsScreen extends GetView<TicketDetailsController> {
                   ],
                 ),
                 Obx(() => controller.isHistoryLoading.value
-                    ? Center(child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: const CircularProgressIndicator(),
-                    ))
+                    ? Center(
+                        child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: const CircularProgressIndicator(),
+                      ))
                     : controller.histories.isEmpty
                         ? const SizedBox.shrink()
                         : Container(
@@ -404,7 +429,8 @@ class TicketDetailsScreen extends GetView<TicketDetailsController> {
                             child: Column(
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(
@@ -422,7 +448,8 @@ class TicketDetailsScreen extends GetView<TicketDetailsController> {
                                     shrinkWrap: true,
                                     physics: NeverScrollableScrollPhysics(),
                                     itemBuilder: (_, index) {
-                                      return _buildTimeLine(controller.histories[index]);
+                                      return _buildTimeLine(
+                                          controller.histories[index]);
                                     })
                                 // _buildTimeLine(
                                 //     "Nov 11",
@@ -474,18 +501,28 @@ _buildTimeLine(TicketHistory history) {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      const SizedBox(width: 12,),
+      const SizedBox(
+        width: 12,
+      ),
       Column(
         children: [
           Text(
-            toShowDateFormat(history.createdDate.split(" ")[0],fromFormat: dmy,toFormat: "MMM dd"),
-            style: TextStyle(fontWeight: FontWeight.bold,fontSize: 12),
+            toShowDateFormat(history.createdDate.split(" ")[0],
+                fromFormat: dmy, toFormat: "MMM dd"),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
           ),
-          const SizedBox(height: 2,),
-          Text(history.createdDate.split(" ")[1],style: TextStyle(fontSize: 10),),
+          const SizedBox(
+            height: 2,
+          ),
+          Text(
+            history.createdDate.split(" ")[1],
+            style: TextStyle(fontSize: 10),
+          ),
         ],
       ),
-      const SizedBox(width: 6,),
+      const SizedBox(
+        width: 6,
+      ),
       Container(
         width: 17,
         height: 17,
@@ -498,27 +535,42 @@ _buildTimeLine(TicketHistory history) {
           size: 12,
         ),
       ),
-      const SizedBox(width: 6,),
+      const SizedBox(
+        width: 6,
+      ),
       Expanded(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               history.statusName,
-              style: TextStyle(fontWeight: FontWeight.bold, color: HexColor.fromHex(history.colorCode),fontSize: 13),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: HexColor.fromHex(history.colorCode),
+                  fontSize: 13),
             ),
-            history.remarks.isEmpty ? const SizedBox.shrink() :Text(
-              history.remarks,
-              style: TextStyle(fontSize: 12),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+            history.remarks.isEmpty
+                ? const SizedBox.shrink()
+                : Text(
+                    history.remarks,
+                    style: TextStyle(fontSize: 12),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+            const SizedBox(
+              height: 4,
             ),
-            const SizedBox(height: 4,),
-            CircleAvatar(
-              backgroundImage: CachedNetworkImageProvider(history.uploadImages),
-              radius: 15,
+            InkWell(
+              onTap: () => open(Get.context!, 0, [history.uploadImages]),
+              child: CircleAvatar(
+                backgroundImage:
+                    CachedNetworkImageProvider(history.uploadImages),
+                radius: 15,
+              ),
             ),
-            const SizedBox(height: 4,),
+            const SizedBox(
+              height: 4,
+            ),
           ],
         ),
       )

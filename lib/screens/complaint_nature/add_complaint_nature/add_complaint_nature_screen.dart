@@ -94,29 +94,36 @@ class AddComplaintNatureScreen extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: Obx(() => DottedBorder(
-                          color: controller.imagePath.value.isNotEmpty
-                              ? primaryColor
-                              : Colors.black26,
-                          strokeWidth: 1,
-                          child: Container(
-                            height: 70,
-                            decoration: BoxDecoration(
-                              image: controller.imagePath.isEmpty
-                                  ? null
-                                  : DecorationImage(
-                                  image: controller
-                                      .imagePath.value.isURL
-                                      ? CachedNetworkImageProvider(
-                                      controller.imagePath
-                                          .value) as ImageProvider
-                                      : FileImage(File(
-                                      controller.imagePath.value)),
-                                  fit: BoxFit.cover),
+                        child: Obx(() => InkWell(
+                          onTap: (){
+                            if(controller.imagePath.value.isNotEmpty){
+                              open(Get.context!, 0, [controller.imagePath.value]);
+                            }
+                          },
+                          child: DottedBorder(
+                            color: controller.imagePath.value.isNotEmpty
+                                ? primaryColor
+                                : Colors.black26,
+                            strokeWidth: 1,
+                            child: Container(
+                              height: 70,
+                              decoration: BoxDecoration(
+                                image: controller.imagePath.isEmpty
+                                    ? null
+                                    : DecorationImage(
+                                    image: controller
+                                        .imagePath.value.isURL
+                                        ? CachedNetworkImageProvider(
+                                        controller.imagePath
+                                            .value) as ImageProvider
+                                        : FileImage(File(
+                                        controller.imagePath.value)),
+                                    fit: BoxFit.cover),
+                              ),
+                              child: controller.imagePath.value.isEmpty
+                                  ? const Center(child: Text('Upload images'))
+                                  : const SizedBox(width: double.infinity,height: double.infinity,),
                             ),
-                            child: controller.imagePath.value.isEmpty
-                                ? const Center(child: Text('Upload images'))
-                                : const Text(""),
                           ),
                         )),
                       ),

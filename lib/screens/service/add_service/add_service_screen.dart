@@ -14,19 +14,26 @@ import 'package:profixer_admin/widgets/custom_loader.dart';
 import '../../../helpers/utils.dart';
 import '../service_controller.dart';
 
-class AddServiceScreen extends StatelessWidget {
-  final controller = Get.find<ServiceController>();
+class AddServiceScreen extends StatefulWidget {
 
   AddServiceScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    int serviceId = 0;
+  State<AddServiceScreen> createState() => _AddServiceScreenState();
+}
 
+class _AddServiceScreenState extends State<AddServiceScreen> {
+  final controller = Get.find<ServiceController>();
+  int serviceId = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     if (Get.arguments['service'] != null) {
       serviceId = Get.arguments['service']['ServiceID'];
       controller.serviceNameController.text =
-          Get.arguments['service']['ServiceName'];
+      Get.arguments['service']['ServiceName'];
       controller.remarkController.text = Get.arguments['service']['Remarks'];
       controller.imagePath(Get.arguments['service']['ServiceImg']);
       /* debugPrint(
@@ -39,6 +46,12 @@ class AddServiceScreen extends StatelessWidget {
       controller.imagePath("");
       controller.selectedIsActive(true);
     }
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
 
     return GestureDetector(
       onTap: () {
@@ -80,33 +93,38 @@ class AddServiceScreen extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: Obx(() => DottedBorder(
-                              color: controller.imagePath.value.isNotEmpty
-                                  ? primaryColor
-                                  : Colors.black26,
-                              strokeWidth: 1,
-                              child: Container(
-                                height: 70,
-                                decoration:
-                                BoxDecoration(
-                                  image: controller.imagePath.isEmpty
-                                      ? null
-                                      : DecorationImage(
-                                          image: controller
-                                                  .imagePath.value.isURL
-                                              ? CachedNetworkImageProvider(
-                                                  controller.imagePath
-                                                      .value) as ImageProvider
-                                              : FileImage(File(
-                                                   controller.imagePath.value )),
-                                          fit: BoxFit.cover,
+                        child: Obx(() => InkWell(
+                          onTap: (){
+                            if(controller.imagePath.value.isNotEmpty){
+                              open(Get.context!, 0, [controller.imagePath.value]);
+                            }
+                          },
+                          child: DottedBorder(
+                                color: controller.imagePath.value.isNotEmpty
+                                    ? primaryColor
+                                    : Colors.black26,
+                                strokeWidth: 1,
+                                child: Container(
+                                  height: 70,
+                                  decoration:
+                                  BoxDecoration(
+                                    image: DecorationImage(
+                                            image: controller
+                                                    .imagePath.value.isURL
+                                                ? CachedNetworkImageProvider(
+                                                    controller.imagePath
+                                                        .value) as ImageProvider
+                                                : FileImage(File(
+                                                     controller.imagePath.value )),
+                                            fit: BoxFit.cover,
+                                    ),
                                   ),
+                                  child: controller.imagePath.value.isEmpty
+                                      ? const Center(child: Text('Upload images'))
+                                      : const SizedBox(width: double.infinity,height: double.infinity,),
                                 ),
-                                child: controller.imagePath.value.isEmpty
-                                    ? const Center(child: Text('Upload images'))
-                                    : const Text(""),
                               ),
-                            )),
+                        )),
                       ),
                       const SizedBox(
                         width: 8,

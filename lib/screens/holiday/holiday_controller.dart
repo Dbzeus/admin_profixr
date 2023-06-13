@@ -48,7 +48,7 @@ class HolidayController extends GetxController {
     }
   }
 
-  getTimeSlots() async {
+  getTimeSlots(int? timeSlotId) async {
     if (await isNetConnected()) {
       isLoading(true);
       var response = await ApiCall().getTimeSlot();
@@ -61,7 +61,11 @@ class HolidayController extends GetxController {
                 .add({"id": '${e["TimeSlotID"]}', "value": "${e['TimeSlot']}"});
           }
           if (timeSlots.isNotEmpty) {
-            selectedTimeSlot('${timeSlots.first['id']}');
+            if(timeSlotId!=null){
+              selectedTimeSlot('$timeSlotId');
+            }else {
+              selectedTimeSlot('${timeSlots.first['id']}');
+            }
           }
         } else {
           toast(response['RtnMsg']);
@@ -71,12 +75,8 @@ class HolidayController extends GetxController {
   }
 
   vaildation(bool isUpdated) {
-    if (reasonController.text.isEmpty &&
-        dateController.text.isEmpty &&
-        selectedTimeSlot.isEmpty &&
-        remarkController.text.isEmpty) {
-      toast("Please Enter All fields");
-    } else if (reasonController.text.isEmpty) {
+
+    if (reasonController.text.isEmpty) {
       toast("Please Enter Reason");
     } else if (dateController.text.isEmpty) {
       toast("Please Enter Date");

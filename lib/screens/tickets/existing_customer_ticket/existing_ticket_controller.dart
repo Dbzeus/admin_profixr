@@ -226,6 +226,7 @@ class ExistingTicketController extends GetxController {
             }
           }
         }
+        image = getLastSegment(image);
 
         var data = {
           "TicketID": 0,

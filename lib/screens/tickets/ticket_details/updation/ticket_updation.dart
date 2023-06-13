@@ -8,6 +8,7 @@ import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/widgets/custom_loader.dart';
 
 import '../../../../helpers/constant_widgets.dart';
+import '../../../../helpers/utils.dart';
 import '../../../../widgets/custom_button.dart';
 import '../../../../widgets/custom_dropdown.dart';
 import '../../../../widgets/custom_edittext.dart';
@@ -30,10 +31,10 @@ Future<dynamic> ticketUpdationDialog(
   context,
   UpdationType type, {
   isDismissable = true,
-}) async{
+}) async {
   final controller = Get.put(TicketUpdationController());
 
-  if(type==UpdationType.ASSIGN){
+  if (type == UpdationType.ASSIGN) {
     controller.getServiceProviders();
   }
 
@@ -112,29 +113,41 @@ Future<dynamic> ticketUpdationDialog(
                       Row(
                         children: [
                           Expanded(
-                            child: Obx(() => DottedBorder(
-                                  color: controller.imagePath.value.isNotEmpty
-                                      ? primaryColor
-                                      : Colors.black26,
-                                  strokeWidth: 1,
-                                  child: Container(
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: controller
-                                                    .imagePath.value.isURL
-                                                ? CachedNetworkImage(
-                                                    imageUrl: controller
-                                                        .imagePath
-                                                        .value) as ImageProvider
-                                                : FileImage(File(controller
-                                                    .imagePath.value)),
-                                            fit: BoxFit.cover),
-                                      ),
-                                      child: controller.imagePath.value.isEmpty
-                                          ? const Center(
-                                              child: Text('Upload images'))
-                                          : const SizedBox.shrink()),
+                            child: Obx(() => InkWell(
+                                  onTap: () {
+                                    if (controller.imagePath.value.isNotEmpty) {
+                                      open(Get.context!, 0,
+                                          [controller.imagePath.value]);
+                                    }
+                                  },
+                                  child: DottedBorder(
+                                    color: controller.imagePath.value.isNotEmpty
+                                        ? primaryColor
+                                        : Colors.black26,
+                                    strokeWidth: 1,
+                                    child: Container(
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: controller
+                                                      .imagePath.value.isURL
+                                                  ? CachedNetworkImage(
+                                                          imageUrl: controller
+                                                              .imagePath.value)
+                                                      as ImageProvider
+                                                  : FileImage(File(controller
+                                                      .imagePath.value)),
+                                              fit: BoxFit.cover),
+                                        ),
+                                        child: controller
+                                                .imagePath.value.isEmpty
+                                            ? const Center(
+                                                child: Text('Upload images'))
+                                            : const SizedBox(
+                                                width: double.infinity,
+                                                height: double.infinity,
+                                              )),
+                                  ),
                                 )),
                           ),
                           const SizedBox(

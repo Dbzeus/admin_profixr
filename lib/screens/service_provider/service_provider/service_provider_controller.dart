@@ -75,8 +75,7 @@ class ServiceProviderController extends GetxController {
   }) async {
     if (await isNetConnected()) {
       isLoading(true);
-      final response = await ApiCall().getServiceProviderService(
-          providerId: serviceProviderId);
+      final response = await ApiCall().getServiceProviderService();
       isLoading(false);
       if (response != null) {
         servicesList.clear();
@@ -102,8 +101,7 @@ class ServiceProviderController extends GetxController {
   }) async {
     if (await isNetConnected()) {
       isLoading(true);
-      var response = await ApiCall().getServiceProviderArea(
-          providerId: serviceProviderId);
+      var response = await ApiCall().getServiceProviderArea();
       isLoading(false);
       if (response != null) {
         areaList.clear();

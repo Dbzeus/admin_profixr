@@ -26,26 +26,24 @@ class _AddHolidayScreenState extends State<AddHolidayScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    controller.getTimeSlots();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-
     if (Get.arguments['holiday'] != null) {
-      controller.holidayId = Get.arguments['holiday']['ServiceID'];
-
+      controller.holidayId = Get.arguments['holiday']['HolidayID'];
       controller.reasonController.text = Get.arguments['holiday']['Reason'];
       controller.remarkController.text = Get.arguments['holiday']['Remarks'];
       controller.dateController.text = toShowDateFormat(Get.arguments['holiday']['HolidayDate']);
-      controller.isFullDay(Get.arguments['holiday']['IsFullDay']);
+      controller.isFullDay(Get.arguments['holiday']['TimeSlot'].toString().toLowerCase().contains("full day"));
+      controller.getTimeSlots(Get.arguments['holiday']['TimeSlotID']);
     } else {
       controller.reasonController.clear();
       controller.remarkController.clear();
       controller.dateController.clear();
       controller.isFullDay(true);
+      controller.getTimeSlots(null);
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     return GestureDetector(
       onTap: () {
@@ -143,7 +141,7 @@ class _AddHolidayScreenState extends State<AddHolidayScreen> {
                   ),
                   const Spacer(),
                   CustomButton(
-                      text: Get.arguments['buttonTitle'],
+                      text: Get.arguments['holiday'] == null ? "Add" : "Update",
                       onTap: () {
                         controller.vaildation(Get.arguments['holiday'] != null);
                       }),

@@ -51,8 +51,7 @@ class ApiCall {
       final response = await _dio.post(loginUrl, data: params);
 
       log('response code ${response.requestOptions.path} ${response.statusCode} $params ${response.data}');
-
-      return UserDataResponse.fromJson(response.data);
+            return UserDataResponse.fromJson(response.data);
     } on DioError catch (e) {
       debugPrint(e.message);
       toast(e.message);
@@ -255,7 +254,8 @@ class ApiCall {
       var params = {
         "ServiceTypeID": serviceTypeId,
       };
-      final response = await _dio.get(getServiceTypeUrl, queryParameters: params);
+      final response =
+          await _dio.get(getServiceTypeUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
@@ -376,7 +376,7 @@ class ApiCall {
           await _dio.get(getProfixerUserUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
-      return  ProfixerResponse.fromJson(response.data);
+      return ProfixerResponse.fromJson(response.data);
     } on DioError catch (e) {
       log(e.message);
       toast(e.message);
@@ -425,7 +425,8 @@ class ApiCall {
     return null;
   }
 
-  Future<ServiceproviderResponse?> getServiceProvider({int providerId = 0}) async {
+  Future<ServiceproviderResponse?> getServiceProvider(
+      {int providerId = 0}) async {
     try {
       var params = {
         "ServiceProviderID": providerId,
@@ -501,17 +502,14 @@ class ApiCall {
     return null;
   }
 
-  Future<AdminResponse?> getServiceProviderAdmin(int serviceProviderId ,int userId ) async {
+  Future<AdminResponse?> getServiceProviderAdmin(
+      int serviceProviderId, int userId) async {
     try {
-      var params = {
-        "ServiceProviderID": serviceProviderId,
-        "UserID" : userId
-      };
+      var params = {"ServiceProviderID": serviceProviderId, "UserID": userId};
       final response =
-      await _dio.get(getServiceProviderAdminUrl, queryParameters: params);
+          await _dio.get(getServiceProviderAdminUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
       return AdminResponse.fromJson(response.data);
-
     } on DioError catch (e) {
       log(e.message);
       toast(e.message);
@@ -521,6 +519,7 @@ class ApiCall {
     }
     return null;
   }
+
   Future<dynamic> insertServiceProviderAdmin(var body) async {
     try {
       /*
@@ -543,7 +542,8 @@ class ApiCall {
 }
       * */
 
-      final response = await _dio.post(insertServiceProviderAdminUrl, data: body);
+      final response =
+          await _dio.post(insertServiceProviderAdminUrl, data: body);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
@@ -657,8 +657,7 @@ class ApiCall {
 }
       * */
 
-      final response =
-          await _dio.post(insertTechnicianUrl, data: body);
+      final response = await _dio.post(insertTechnicianUrl, data: body);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
@@ -726,7 +725,8 @@ class ApiCall {
     return null;
   }
 
-  Future<CustomerAddressResponse?> getCustomerAddress({int customerId = 0}) async {
+  Future<CustomerAddressResponse?> getCustomerAddress(
+      {int customerId = 0}) async {
     try {
       var params = {
         "CustomerID": customerId,
@@ -783,17 +783,18 @@ class ApiCall {
   Future<dynamic> uploadAttachment(List<String> filePaths) async {
     debugPrint(filePaths.toString());
     try {
-
       List<MultipartFile> files = [];
       for (var element in filePaths) {
         if (element.isNotEmpty) {
-          files.add(await MultipartFile.fromFile(element,));
+          files.add(await MultipartFile.fromFile(
+            element,
+          ));
         }
       }
 
       debugPrint('${files.length} ${files.first.toString()}');
 
-      var data =  FormData.fromMap({"files": files});
+      var data = FormData.fromMap({"files": files});
 
       final response = await _dio.post(uploadAttachmentUrl, data: data);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
@@ -835,7 +836,7 @@ class ApiCall {
         "HolidayID": holidayId,
       };
       final response =
-      await _dio.get(deleteHolidayUrl, queryParameters: params);
+          await _dio.get(deleteHolidayUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
@@ -879,13 +880,12 @@ class ApiCall {
     return null;
   }
 
-  Future<dynamic> getTimeSlot({int timeSlotId=0}) async {
+  Future<dynamic> getTimeSlot({int timeSlotId = 0}) async {
     try {
       var params = {
         "TimeSlotID": timeSlotId,
       };
-      final response =
-      await _dio.get(getTimeSlotUrl, queryParameters: params);
+      final response = await _dio.get(getTimeSlotUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
@@ -900,13 +900,15 @@ class ApiCall {
   }
 
   //techinican
-  Future<TechnicianResponse?> getTechnician(int userId,int serviceProviderId) async {
+  Future<TechnicianResponse?> getTechnician(
+      int userId, int serviceProviderId) async {
     try {
       var params = {
-        "ServiceProviderID" : serviceProviderId,
+        "ServiceProviderID": serviceProviderId,
         "UserID": userId,
       };
-      final response = await _dio.get(getTechnicianUrl, queryParameters: params);
+      final response =
+          await _dio.get(getTechnicianUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return TechnicianResponse.fromJson(response.data);
@@ -933,8 +935,7 @@ class ApiCall {
         "FromDate": fromDate,
         "ToDate": toDate,
       };
-      final response =
-          await _dio.get(ticketCountUrl, queryParameters: params);
+      final response = await _dio.get(ticketCountUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return TicketCountResponse.fromJson(response.data);
@@ -1031,8 +1032,7 @@ class ApiCall {
         "FromDate": fromDate,
         "ToDate": toDate,
       };
-      final response =
-      await _dio.get(ticketListUrl, queryParameters: params);
+      final response = await _dio.get(ticketListUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return TicketListResponse.fromJson(response.data);
@@ -1047,14 +1047,16 @@ class ApiCall {
   }
 
   Future<TicketHistoryResponse?> getTicketHistory(
-      int userId, int ticketId,) async {
+    int userId,
+    int ticketId,
+  ) async {
     try {
       var params = {
         "UserID": userId,
         "TicketID": ticketId,
       };
       final response =
-      await _dio.get(ticketHistoryUrl, queryParameters: params);
+          await _dio.get(ticketHistoryUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return TicketHistoryResponse.fromJson(response.data);

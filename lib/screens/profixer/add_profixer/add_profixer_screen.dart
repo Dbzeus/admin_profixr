@@ -122,9 +122,11 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                         await getDate(
                                             initialDate: DateTime(
                                               DateTime.now().year - 18,
+                                              12,
+                                              31,
                                             ),
                                             firstDate: DateTime(
-                                              DateTime.now().year - 18,
+                                              DateTime.now().year - 80,
                                             ),
                                             lastDate: DateTime(
                                                 DateTime.now().year - 18,
@@ -527,7 +529,9 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                     ),
                                     Expanded(
                                       child: CustomButton(
-                                        text: profixerData== null ? "Add" : "Update",
+                                        text: profixerData == null
+                                            ? "Add"
+                                            : "Update",
                                         btnColor: primaryColor,
                                         onTap: () {
                                           var params = {
@@ -548,18 +552,18 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                             "CurrentAddress": controller
                                                 .currentAddressController.text,
                                             "PermanentAddress": controller
-                                                .permanentAddressController
+                                                 .permanentAddressController
                                                 .text,
                                             "IsRelived": controller
                                                 .selectedRelieveIsActive.value,
-                                            "RelivedDate": controller
+                                            "RelivedDate": controller.selectedRelieveIsActive.value ? controller
                                                     .relievedDateController
                                                     .text
                                                     .isEmpty
                                                 ? ""
                                                 : toSendDateFormat(controller
                                                     .relievedDateController
-                                                    .text),
+                                                    .text) : "01-01-1900",
                                             "RelivedReason": controller
                                                 .relievedReasonController.text,
                                             "UserName": controller

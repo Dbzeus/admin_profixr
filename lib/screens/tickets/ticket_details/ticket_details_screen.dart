@@ -102,12 +102,14 @@ class TicketDetailsScreen extends GetView<TicketDetailsController> {
                                         const SizedBox(
                                           width: 4,
                                         ),
-                                        Text(
-                                          "${controller.ticket.customerAddress}",
-                                          maxLines: 3,
-                                          style: const TextStyle(
-                                            color: blackColor,
-                                            fontSize: 10,
+                                        Expanded(
+                                          child: Text(
+                                            "${controller.ticket.customerAddress}",
+                                            maxLines: 3,
+                                            style: const TextStyle(
+                                              color: blackColor,
+                                              fontSize: 10,
+                                            ),
                                           ),
                                         ),
                                       ],

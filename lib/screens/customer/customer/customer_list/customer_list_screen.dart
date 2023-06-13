@@ -65,6 +65,7 @@ class CustomerListScreen extends GetView<CustomerController> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    controller.searchController.clear();
                     Get.toNamed(Routes.addCustomer, arguments: {
                       "title": "Add Customer",
                       "buttonTitle": "Add",
@@ -112,6 +113,7 @@ class CustomerListScreen extends GetView<CustomerController> {
   _buildMenu(Customer data) {
     return GestureDetector(
       onTap: () {
+        controller.searchController.clear();
         Get.toNamed(Routes.addCustomer, arguments: {
           "title": "Edit Customer",
           "buttonTitle": "Save Changes",

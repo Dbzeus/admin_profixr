@@ -67,6 +67,7 @@ class CityListScreen extends GetView<CityController> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    controller.searchController.clear();
                     Get.toNamed(Routes.addCity,
                         arguments: {"title": "Add City", "buttonTitle": "Add","city": null,});
                   },
@@ -113,6 +114,7 @@ class CityListScreen extends GetView<CityController> {
   _buildCityTile(city) {
     return GestureDetector(
       onTap: () {
+        controller.searchController.clear();
         Get.toNamed(Routes.addCity, arguments: {
           "title": "Edit City",
           "buttonTitle": "Save Changes",

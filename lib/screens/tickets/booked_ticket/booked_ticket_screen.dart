@@ -123,6 +123,7 @@ class BookedTicketScreen extends GetView<BookedTicketController> {
   _buildTickets(Ticket item) {
     return GestureDetector(
       onTap: () {
+        controller.searchController.clear();
         Get.toNamed(Routes.ticketDetails,arguments: item);
       },
       child: Container(

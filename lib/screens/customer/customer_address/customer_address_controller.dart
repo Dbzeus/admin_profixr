@@ -112,8 +112,8 @@ class CustomerAddressController extends GetxController {
         doorNoController.text.isEmpty &&
         streetNameController.text.isEmpty &&
         selectedCity.isEmpty &&
-        selectedArea.isEmpty &&
-        landmarkController.text.isEmpty
+        selectedArea.isEmpty
+
 
     ) {
       toast("Please Enter All Fields");
@@ -137,10 +137,6 @@ class CustomerAddressController extends GetxController {
     selectedArea.isEmpty
     ) {
       toast("Please Select Area");
-    } else if (
-    landmarkController.text.isEmpty
-    ) {
-      toast("Please Enter Landmark");
     } else {
       var data = {
         "AddressID": address?.addressID ?? 0,
@@ -166,6 +162,7 @@ class CustomerAddressController extends GetxController {
     if (await isNetConnected()) {
       isLoading(true);
       var response = await ApiCall().insertCustomerAddress(data);
+      isLoading(false);
       if (response != null) {
         if (response['RtnStatus']) {
           if(showDialog) {
@@ -185,7 +182,7 @@ class CustomerAddressController extends GetxController {
           toast(response['RtnMsg']);
         }
       }
-      isLoading(false);
+
     }
   }
 

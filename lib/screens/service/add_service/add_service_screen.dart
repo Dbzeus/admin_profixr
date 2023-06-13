@@ -29,9 +29,9 @@ class AddServiceScreen extends StatelessWidget {
           Get.arguments['service']['ServiceName'];
       controller.remarkController.text = Get.arguments['service']['Remarks'];
       controller.imagePath(Get.arguments['service']['ServiceImg']);
-      debugPrint(
+      /* debugPrint(
           Get.arguments['service']['ServiceImg'].toString().isURL.toString());
-      debugPrint(Get.arguments['service']['ServiceImg'].toString());
+      debugPrint(Get.arguments['service']['ServiceImg'].toString());*/
       controller.selectedIsActive(Get.arguments['service']['IsActive']);
     } else {
       controller.serviceNameController.clear();
@@ -87,7 +87,8 @@ class AddServiceScreen extends StatelessWidget {
                               strokeWidth: 1,
                               child: Container(
                                 height: 70,
-                                decoration: BoxDecoration(
+                                decoration:
+                                BoxDecoration(
                                   image: controller.imagePath.isEmpty
                                       ? null
                                       : DecorationImage(
@@ -97,8 +98,9 @@ class AddServiceScreen extends StatelessWidget {
                                                   controller.imagePath
                                                       .value) as ImageProvider
                                               : FileImage(File(
-                                                  controller.imagePath.value)),
-                                          fit: BoxFit.cover),
+                                                   controller.imagePath.value )),
+                                          fit: BoxFit.cover,
+                                  ),
                                 ),
                                 child: controller.imagePath.value.isEmpty
                                     ? const Center(child: Text('Upload images'))
@@ -118,7 +120,8 @@ class AddServiceScreen extends StatelessWidget {
                                   controller.imagePath(
                                       await getImageFromGallery() ??
                                           controller.imagePath.value);
-                                  debugPrint(controller.imagePath.value);
+                                  debugPrint(
+                                      "Gallery image${controller.imagePath.value}");
                                 },
                                 child: Container(
                                   padding: EdgeInsets.all(12),
@@ -139,6 +142,8 @@ class AddServiceScreen extends StatelessWidget {
                                 onTap: () async {
                                   controller.imagePath(await getImageCamera() ??
                                       controller.imagePath.value);
+                                  debugPrint(
+                                      "Camera image${controller.imagePath.value}");
                                 },
                                 child: Container(
                                   padding: EdgeInsets.all(12),

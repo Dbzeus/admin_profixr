@@ -183,11 +183,10 @@ class AddAdminServiceProvider extends StatelessWidget {
                               size: 22,
                             ),
                             onTab: () async {
-                              controller.adminDobController.text = getDate(
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime.now(),
-                                  lastDate:
-                                  DateTime(DateTime.now().year + 1, 12, 31)
+                              controller.adminDobController.text = await getDate(
+                                  initialDate: DateTime(DateTime.now().year -18, 12, 31),
+                                  firstDate: DateTime(DateTime.now().year -80, 12, 31),
+                                  lastDate: DateTime(DateTime.now().year -18, 12, 31)
                               );
 
                             },

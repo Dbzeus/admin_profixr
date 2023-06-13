@@ -64,6 +64,7 @@ class AreaListScreen extends GetView<AreaController> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    controller.searchController.clear();
                     Get.toNamed(Routes.addArea, arguments: {
                       "title": "Add Area",
                       "buttonTitle": "Add",
@@ -112,6 +113,7 @@ class AreaListScreen extends GetView<AreaController> {
   _buildCityTile(area) {
     return GestureDetector(
       onTap: () {
+        controller.searchController.clear();
         Get.toNamed(Routes.addArea, arguments: {
           "title": "Edit Area",
           "buttonTitle": "Save Changes",

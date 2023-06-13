@@ -67,6 +67,7 @@ class HolidayListScreen extends GetView<HolidayController> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    controller.searchController.clear();
                     Get.toNamed(Routes.addHoliday, arguments: {
                       "title": "Add Holiday",
                       "buttonTitle": "Add"

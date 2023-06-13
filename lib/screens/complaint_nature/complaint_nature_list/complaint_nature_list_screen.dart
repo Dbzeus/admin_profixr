@@ -79,6 +79,7 @@ class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
                   ),
                   GestureDetector(
                     onTap: () {
+                      controller.searchController.clear();
                       Get.toNamed(Routes.addComplaintNature,
                           arguments: {"title": "Add Complaint Nature", "buttonTitle": "Add","complaintNature": null,});
                     },
@@ -137,7 +138,7 @@ class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
   _buildServices(data) {
     return GestureDetector(
       onTap: () {
-        debugPrint("data $data");
+        controller.searchController.clear();
         Get.focusScope?.unfocus();
         Get.toNamed(Routes.addComplaintNature,arguments: {
           "title": "Edit Complaint Nature",
@@ -211,33 +212,14 @@ class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
                   ],
                 ),
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    height: 20,
-                    width: 20,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: const Color.fromRGBO(0, 169, 206, 1),
-                    ),
-                    child: Center(
-                      child: SvgPicture.asset(
-                        'assets/icon/waterdrop.svg',
-                        height: 10,
-                        width: 10,
-                      ),
-                    ),
-                  ),
-                  Switch(
-                      value: data["IsActive"],
-                      activeColor: Colors.green.shade200,
-                      inactiveThumbColor: Colors.red.shade200,
-                      onChanged: (val) {
-                        controller.updateComplaintNature(val,data);
-                      })
-                ],
-              )
+
+              Switch(
+                  value: data["IsActive"],
+                  activeColor: Colors.green.shade200,
+                  inactiveThumbColor: Colors.red.shade200,
+                  onChanged: (val) {
+                    controller.updateComplaintNature(val,data);
+                  })
             ],
           )),
     );

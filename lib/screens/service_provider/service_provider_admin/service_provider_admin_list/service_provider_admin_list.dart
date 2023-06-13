@@ -56,6 +56,7 @@ class ServiceProviderAdminList extends GetView<ServiceProviderAdminController> {
             ),
             GestureDetector(
               onTap: () {
+                controller.searchController.clear();
                 Get.toNamed(Routes.addAdminServiceProvider, arguments: {
                   "title": "Add Admin",
                   "buttonTitle": "Next",
@@ -109,6 +110,7 @@ class ServiceProviderAdminList extends GetView<ServiceProviderAdminController> {
   _buildList(AdminData data) {
     return GestureDetector(
       onTap: () {
+        controller.searchController.clear();
         Get.toNamed(Routes.addAdminServiceProvider, arguments: {
           "title": "Edit Admin",
           "buttonTitle": "Save Changes",

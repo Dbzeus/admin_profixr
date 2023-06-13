@@ -77,6 +77,7 @@ class _AddressListState extends State<AddressList> {
             ),
             GestureDetector(
               onTap: () {
+                controller.searchController.clear();
                 Get.toNamed(Routes.addCustomerAddress, arguments: {
                   "title": "Add Address",
                   "buttonTitle": "Save",
@@ -130,6 +131,7 @@ class _AddressListState extends State<AddressList> {
   _buildList(CustomerAddress data) {
     return GestureDetector(
       onTap: () {
+        controller.searchController.clear();
         Get.toNamed(Routes.addCustomerAddress, arguments: {
           "title": "Edit Address",
           "buttonTitle": "Save Changes",
@@ -213,7 +215,7 @@ class _AddressListState extends State<AddressList> {
                     debugPrint(val.toString());
                     data.isActive = val;
                     debugPrint(data.isActive.toString());
-                    controller.enalbeDisableAddress(data, data.isActive,
+                    controller.insertCustomerAddress(data, data.isActive,
                         showDialog: false);
                   })
             ],

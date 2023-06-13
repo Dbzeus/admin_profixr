@@ -14,6 +14,7 @@ import 'package:profixer_admin/widgets/custom_edittext.dart';
 import 'package:profixer_admin/widgets/custom_loader.dart';
 
 import '../../../helpers/utils.dart';
+import '../../../widgets/spinner.dart';
 
 class AddComplaintNatureScreen extends StatelessWidget {
   final controller = Get.find<ComplaintNatureController>();
@@ -59,6 +60,17 @@ class AddComplaintNatureScreen extends StatelessWidget {
                     height: 12,
                   ),
                   Obx(
+                        () => Spinner(
+                      value: controller.selectedService.value,
+                      items: controller.services,
+                      onChanged: (val) {
+                        if (val == null && val==controller.selectedService.value) return;
+                        controller.selectedService(val);
+                      },
+                      hint: 'Service',
+                    ),
+                  ),
+                  /*Obx(
                     () => CustomDropDown(
                       hintText: "Service",
                       dropDownValue: controller.selectedService.value,
@@ -67,7 +79,7 @@ class AddComplaintNatureScreen extends StatelessWidget {
                         controller.selectedService(val);
                       },
                     ),
-                  ),
+                  ),*/
                   const SizedBox(
                     height: 32,
                   ),

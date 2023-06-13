@@ -19,6 +19,7 @@ class ProfixerController extends GetxController {
   TextEditingController relievedReasonController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
   TextEditingController permanentAddressController = TextEditingController();
+  TextEditingController identityController = TextEditingController();
   TextEditingController currentAddressController = TextEditingController();
 
   TextEditingController searchController = TextEditingController();

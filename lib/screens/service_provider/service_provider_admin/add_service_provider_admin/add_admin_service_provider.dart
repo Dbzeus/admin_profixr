@@ -54,6 +54,7 @@ class AddAdminServiceProvider extends StatelessWidget {
       controller.adminPermenantAddressController.clear();
       controller.adminDobController.clear();
       controller.adminDojController.clear();
+      controller.identityController.clear();
       controller.isConfirm(true);
     }
     return GestureDetector(

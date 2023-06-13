@@ -702,7 +702,7 @@ class _AddServiceProviderScreenState extends State<AddServiceProviderScreen> {
                                   ],
                                 ),
                               )
-                        : ServiceProviderAdminList()
+                        : ServiceProviderAdminList(controller.serviceProviderId)
                   ],
                 ),
               ),

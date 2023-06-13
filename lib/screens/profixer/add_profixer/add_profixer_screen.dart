@@ -225,11 +225,9 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                   onTab: () async {
                                     controller.dojController.text =
                                         await getDate(
-                                            initialDate: DateTime.now(),
-                                            firstDate: DateTime(
-                                              DateTime.now().year - 18,
-                                            ),
-                                            lastDate: DateTime.now());
+                                        initialDate: DateTime.now(),
+                                    firstDate: DateTime(DateTime.now().year -80, 12, 31),
+                                    lastDate: DateTime(DateTime.now().year + 1));
                                   },
                                 ),
                                 const SizedBox(

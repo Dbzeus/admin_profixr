@@ -5,7 +5,7 @@ import '../helpers/custom_colors.dart';
 import 'custom_button.dart';
 
 class MultiSelectWidget extends StatefulWidget {
-  MultiSelectWidget({Key? key, required this.title, required this.items, })
+  MultiSelectWidget({Key? key, required this.title, required this.items,})
       : super(key: key);
 
   String title = "Multi Select";
@@ -29,14 +29,14 @@ class _MultiSelectWidgetState extends State<MultiSelectWidget> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    debugPrint('widget item ${widget.items.toString()}');
+    searchItems = widget.items.value;
     selectedItems =
         widget.items.where((p0) => p0['isSelected'] == true).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-  searchItems =widget.items;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -44,33 +44,6 @@ class _MultiSelectWidgetState extends State<MultiSelectWidget> {
       ),
       body: Column(
         children: [
-          /*Obx(() {
-            return Container(
-              margin: const EdgeInsets.all(6),
-              child: BoxEditText(
-                placeholder: 'Search',
-                controller: controller.query.value,
-                onChanged: (val) {
-                  if(val!=null) {
-                    controller.filter(val);
-                  }
-                },
-                fillColor: Colors.grey.withOpacity(0.2),
-                textInputAction: TextInputAction.search,
-                prefixIcon: const Icon(Icons.search),
-                suffixIcon: controller.searchQuery.isEmpty
-                    ? const SizedBox.shrink()
-                    : InkWell(
-                    onTap: () {
-                      Get.focusScope?.unfocus();
-                      controller.query.value.clear();
-                      controller.searchQuery('');
-                      controller.filterList(false);
-                    },
-                    child: const Icon(Icons.close)),
-              ),
-            );
-          }),*/
           Container(
            width: MediaQuery.of(context).size.width,
            margin: const EdgeInsets.all(12),
@@ -147,9 +120,7 @@ class _MultiSelectWidgetState extends State<MultiSelectWidget> {
 
   onSearchChanged(String text) {
     if (text.isEmpty) {
-      debugPrint("search" + searchItems.toString());
       widget.items(searchItems);
-      debugPrint("search" + widget.items.toString());
     } else {
       widget.items(searchItems
           .where((element) =>

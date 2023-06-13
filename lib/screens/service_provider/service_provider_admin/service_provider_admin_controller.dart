@@ -46,22 +46,19 @@ class ServiceProviderAdminController extends GetxController {
   RxString mobileNoDropDownValue = "+966".obs;
   List<String> mobileItems = ["+966", "+967", "+968"];
 
-  int serviceProviderId = -1;
 
   final box = GetStorage();
 
-  @override
-  void onInit() {
-    super.onInit();
-    getServiceProviderAdmin();
-  }
+  var serviceProviderId=0;
+
 
   //for admin
-  getServiceProviderAdmin() async {
+  getServiceProviderAdmin(int serviceProviderId) async {
+    this.serviceProviderId=serviceProviderId;
     if (await isNetConnected()) {
       isLoading(true);
       AdminResponse? response =
-      await ApiCall().getServiceProviderAdmin(serviceProviderId, box.read(Session.userId));
+      await ApiCall().getServiceProviderAdmin(serviceProviderId,0);
       isLoading(false);
       if (response != null) {
         if (response.rtnStatus) {
@@ -87,7 +84,7 @@ class ServiceProviderAdminController extends GetxController {
                   () {
                 Get.back();
               });
-          getServiceProviderAdmin();
+          getServiceProviderAdmin(serviceProviderId);
         }
         toast(response['RtnMsg']);
       }
@@ -106,7 +103,7 @@ class ServiceProviderAdminController extends GetxController {
                   () {
                 Get.back();
               });
-          getServiceProviderAdmin();
+          getServiceProviderAdmin(serviceProviderId);
         }
         toast(response['RtnMsg']);
       }

@@ -261,10 +261,8 @@ class _AddTechnicianScreenState extends State<AddTechnicianScreen> {
                                     controller.dojController.text =
                                         await getDate(
                                             initialDate: DateTime.now(),
-                                            firstDate: DateTime(
-                                              DateTime.now().year - 18,
-                                            ),
-                                            lastDate: DateTime.now());
+                                            firstDate: DateTime(DateTime.now().year -80, 12, 31),
+                                            lastDate: DateTime(DateTime.now().year + 1));
                                   },
                                 ),
                                 const SizedBox(

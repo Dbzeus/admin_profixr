@@ -1,8 +1,8 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:profixer_admin/helpers/custom_dialog.dart';
@@ -106,7 +106,6 @@ toast(String? msg) {
 }
 
 notificationPermission() async {
-
   var status = await Permission.notification.request();
   if (status == PermissionStatus.granted) {
     // Permission granted
@@ -114,9 +113,7 @@ notificationPermission() async {
       status == PermissionStatus.restricted) {
     // Permission denied or restricted, show an explanation
     customDialog(Get!.context, 'Notification Permission',
-        'Please enable notification access in app settings.', () {
-
-        },
+        'Please enable notification access in app settings.', () {},
         btnText: "OK");
     /* showCustomAlertDialog(title: 'Notification Permission',
       content: 'Please enable notification access in app settings.',
@@ -126,19 +123,20 @@ notificationPermission() async {
   } else if (status == PermissionStatus.permanentlyDenied) {
     // Permission permanently denied, open app settings
 
-    customDialog(Get!.context, 'Notification Permission',
-        'Please enable notification access in app settings.', () {
+    customDialog(
+      Get!.context,
+      'Notification Permission',
+      'Please enable notification access in app settings.',
+      () {
         openAppSettings();
       },
-        btnText: "Settings",
+      btnText: "Settings",
     );
-   /* showCustomAlertDialog(
+    /* showCustomAlertDialog(
         title: 'Notification Permission',
         content: 'Please enable notification access in app settings.',
         confirm: "Settings",
         onTabConfirm: () => openAppSettings(),
         isDismissable: false);*/
   }
-
-
 }

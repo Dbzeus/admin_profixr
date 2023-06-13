@@ -209,7 +209,7 @@ class AddAdminServiceProvider extends StatelessWidget {
                             ),
                             onTab: () async {
                               controller.adminDobController.text = await getDate(
-                                  initialDate: DateTime(DateTime.now().year -18, 12, 31),
+                                  initialDate: DateTime(DateTime.now().year -18, DateTime.now().month, DateTime.now().day),
                                   firstDate: DateTime(DateTime.now().year -80, 12, 31),
                                   lastDate: DateTime(DateTime.now().year -18, 12, 31)
                               );
@@ -231,10 +231,10 @@ class AddAdminServiceProvider extends StatelessWidget {
                               size: 22,
                             ),
                             onTab: () async {
-                              controller.adminDojController.text = getDate(
+                              controller.adminDojController.text = await getDate(
                                   initialDate: DateTime.now(),
-                                  firstDate: DateTime.now(),
-                                  lastDate: DateTime(DateTime.now().year + 1, 12, 31)
+                                  firstDate: DateTime(DateTime.now().year -80, 12, 31),
+                                  lastDate: DateTime(DateTime.now().year + 1)
                               );
                             },
                           ),

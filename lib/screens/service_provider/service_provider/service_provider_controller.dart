@@ -162,24 +162,6 @@ class ServiceProviderController extends GetxController {
     }
   }
 
-  //for admin
-  getServiceProviderAdmin(int serviceProviderId) async {
-    if (await isNetConnected()) {
-      isLoading(true);
-      AdminResponse? response =
-          await ApiCall().getServiceProviderAdmin(serviceProviderId, box.read(Session.userId));
-      isLoading(false);
-      if (response != null) {
-        if (response.rtnStatus) {
-          serviceProviderAdmin(response.rtnData);
-          // searchList = response['RtnData'];
-        } else {
-          toast(response.rtnMsg);
-        }
-      }
-    }
-  }
-
   getSelectedServiceItems() {
     return servicesList.map((element) => {
       'id':element['id'],

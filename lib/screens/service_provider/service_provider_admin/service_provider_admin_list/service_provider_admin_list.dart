@@ -7,11 +7,25 @@ import '../../../../helpers/custom_colors.dart';
 import '../../../../routes/app_routes.dart';
 import '../service_provider_admin_controller.dart';
 
-class ServiceProviderAdminList extends GetView<ServiceProviderAdminController> {
+class ServiceProviderAdminList extends StatefulWidget{
+  var serviceProviderId=0;
+
+  ServiceProviderAdminList(this.serviceProviderId, {Key? key}) : super(key: key);
+
+  @override
+  State<ServiceProviderAdminList> createState() => _ServiceProviderAdminListState();
+}
+
+class _ServiceProviderAdminListState extends State<ServiceProviderAdminList> {
   @override
   final controller = Get.put(ServiceProviderAdminController());
 
-  ServiceProviderAdminList({Key? key}) : super(key: key);
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller.getServiceProviderAdmin(widget.serviceProviderId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +96,10 @@ class ServiceProviderAdminList extends GetView<ServiceProviderAdminController> {
         ),
         Obx(
           () => controller.isLoading.value
-              ? const Center(child: CircularProgressIndicator())
+              ? const Center(child: Padding(
+                padding: EdgeInsets.only(top: 64),
+                child: CircularProgressIndicator(),
+              ))
               : controller.serviceProviderAdmin.isEmpty
                   ? Center(
                       child: Column(

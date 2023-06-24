@@ -50,7 +50,32 @@ void open(BuildContext context, final int index, var images) {
       backgroundDecoration: const BoxDecoration(
         color: Colors.black,
       ),
-      initialIndex: index.obs,
+      initialIndex: index.obs
     ),
   );
 }
+
+
+
+/*class CustomClipperImage extends CustomClipper<Path> {
+  @override
+  getClip(Size size) {
+    var path = Path();
+    path.lineTo(0, size.height); // for bottom bar left side height
+
+    path.lineTo(size.width, size.height); // for bottom bar right side height
+    path.lineTo(size.width,0.0); // for right side clip bottombar clip
+    //path.lineTo(2*size.width/3, 0.0);
+    path.lineTo(1.2* size.width/3, 0.0);
+    var firstEnd = Offset(size.width / 2, size.height/2);
+    path.arcToPoint(Offset(size.width/3, 0),radius:Radius.circular(8));
+
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper oldClipper) {
+    return false;
+  }
+}*/

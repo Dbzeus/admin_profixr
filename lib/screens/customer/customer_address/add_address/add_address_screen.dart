@@ -121,7 +121,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                         if (val == null && val==controller.selectedArea.value) return;
                         controller.selectedArea(val);
                       },
-                      hint: 'CiAreaty',
+                      hint: 'Area',
                     ),
                   ),
                   /*Obx(() =>

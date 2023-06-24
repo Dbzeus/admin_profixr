@@ -32,18 +32,18 @@ class LoginController extends GetxController {
         UserDataResponse? loginResponse = await ApiCall().checkLogin(
             mobNoController.text, passwordController.text, " ", " ");
         isLoading(false);
-debugPrint("1");
+        debugPrint("1");
         if (loginResponse != null) {
           debugPrint("2");
           if (loginResponse.rtnStatus) {
             debugPrint("3");
             toast(loginResponse.rtnMsg);
-            storeSessions(loginResponse.rtnData);
+            storeSessions(loginResponse.rtnData!);
             Get.offAllNamed(
               Routes.main,
             );
           } else {
-            debugPrint("4");
+
             toast(loginResponse.rtnMsg);
           }
         }else{
@@ -83,3 +83,6 @@ debugPrint("1");
     }
   }
 }
+
+
+

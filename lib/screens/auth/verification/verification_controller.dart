@@ -47,7 +47,7 @@ class VerificationController extends GetxController {
           if (loginResponse != null) {
             if (loginResponse.rtnStatus) {
               toast(loginResponse.rtnMsg);
-              storeSessions(loginResponse.rtnData);
+              storeSessions(loginResponse.rtnData!);
               Get.offAllNamed(Routes.main);
             } else {
               toast(loginResponse.rtnMsg);

@@ -1,3 +1,5 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -6,6 +8,7 @@ import 'package:profixer_admin/screens/main/main_controller.dart';
 import 'package:profixer_admin/screens/main/menu/menu_screen.dart';
 import 'package:profixer_admin/screens/main/profile/profile_screen.dart';
 
+import '../../helpers/utils.dart';
 import 'home/home_screen.dart';
 
 class MainScreen extends GetView<MainController> {
@@ -28,6 +31,7 @@ class MainScreen extends GetView<MainController> {
       body: Obx(
         () => pages[index.value],
       ),
+
       /*bottomNavigationBar: Obx(() => Container(
             width: MediaQuery.of(context).size.width,
             height: 65,
@@ -64,43 +68,75 @@ class MainScreen extends GetView<MainController> {
             ),
           )),*/
       bottomNavigationBar: Obx(
-        () => BottomNavigationBar(
-            elevation: 12,
-            selectedFontSize: 12,
-            unselectedFontSize: 12,
-            showUnselectedLabels: false,
-            selectedItemColor: blackColor,
-            unselectedItemColor: hintColor,
-            backgroundColor: primaryColor,
-            currentIndex: index.value,
-            onTap: (i) => index(i),
-            showSelectedLabels: false,
-            items: [
-              BottomNavigationBarItem(
-                icon: SvgPicture.asset(
-                  'assets/icon/menu/home.svg',
-                  width: 20,
-                  height: 20,
-                  color: index.value == 0 ? blackColor : Colors.white,
-                ),
-                label:"",
-              ),
-              BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                'assets/icon/menu/shop.svg',
-                width: 20,
-                height: 20,
-                color: index.value == 1 ? blackColor : Colors.white,
-              ),label:"",),
-              BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
-                'assets/icon/menu/profile.svg',
-                width: 20,
-                height: 20,
-                color: index.value == 2 ? blackColor : Colors.white,
-              ),label:"",),
-            ]),
+        () => CurvedNavigationBar(
+          height: 60,
+          index: index.value,
+          onTap: (i) => index(i),
+          color: primaryColor,
+          backgroundColor: Colors.white,
+          buttonBackgroundColor: Colors.white,
+          items: [
+            SvgPicture.asset(
+              'assets/icon/menu/home.svg',
+              width: 20,
+              height: 20,
+              color: index.value == 0 ? blackColor : Colors.white,
+            ),
+            SvgPicture.asset(
+              'assets/icon/menu/shop.svg',
+              width: 20,
+              height: 20,
+              color: index.value == 1 ? blackColor : Colors.white,
+            ),
+            SvgPicture.asset(
+              'assets/icon/menu/profile.svg',
+              width: 20,
+              height: 20,
+              color: index.value == 2 ? blackColor : Colors.white,
+            ),
+          ],
+        ),
       ),
+
+      /*Obx(
+            () =>BottomNavigationBar(
+                elevation: 12,
+                selectedFontSize: 12,
+                unselectedFontSize: 12,
+                showUnselectedLabels: false,
+                selectedItemColor: blackColor,
+                unselectedItemColor: hintColor,
+                backgroundColor: primaryColor,
+                currentIndex: index.value,
+                onTap: (i) => index(i),
+                showSelectedLabels: false,
+                items: [
+                  BottomNavigationBarItem(
+                    icon: SvgPicture.asset(
+                      'assets/icon/menu/home.svg',
+                      width: 20,
+                      height: 20,
+                      color: index.value == 0 ? blackColor : Colors.white,
+                    ),
+                    label: "",
+                  ),
+                  BottomNavigationBarItem(
+                    icon: SvgPicture.asset(
+                      'assets/icon/menu/shop.svg',
+                      width: 20,
+                      height: 20,
+                      color: index.value == 1 ? blackColor : Colors.white,
+                    ), label: "",),
+                  BottomNavigationBarItem(
+                    icon: SvgPicture.asset(
+                      'assets/icon/menu/profile.svg',
+                      width: 20,
+                      height: 20,
+                      color: index.value == 2 ? blackColor : Colors.white,
+                    ), label: "",),
+                ])
+
+      ),*/
     );
   }
 }

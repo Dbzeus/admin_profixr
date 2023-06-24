@@ -21,7 +21,7 @@ class UserDataResponse {
   }
   late bool rtnStatus;
   late String rtnMsg;
-  late UserData rtnData;
+  late UserData? rtnData;
   late dynamic otherMsg;
   late dynamic id;
 
@@ -30,7 +30,7 @@ class UserDataResponse {
     map['RtnStatus'] = rtnStatus;
     map['RtnMsg'] = rtnMsg;
     if (rtnData != null) {
-      map['RtnData'] = rtnData.toJson();
+      map['RtnData'] = rtnData!.toJson();
     }
     map['OtherMsg'] = otherMsg;
     map['ID'] = id;

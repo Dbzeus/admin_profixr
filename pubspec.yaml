@@ -28,6 +28,8 @@ dependencies:
   flutter_html:
   search_choices:
   photo_view:
+  curved_navigation_bar: ^1.0.3
+  dot_navigation_bar: ^1.0.1+4
 
 #  timelineview:
 
@@ -36,11 +38,12 @@ flutter_native_splash:
   ios: true
   web: false
 
-  color: "#ffffff"
-#  background_image: "assets/splashscreen/splashscreen.png"
+ # color: "#ffffff"
+  #background_image: "assets/splashscreen/splashscreen.png"
   android_12:
-    image: assets/splashscreen/splashscreen.png
-    icon_background_color: "#ffffff"
+    image: "assets/splashscreen/splashscreen1.png"
+    background_image_android: "assets/splashscreen/splashscreen1.png"
+    #icon_background_color: "#ffffff"
 #    image_dark: assets/images/rasta.png
 #    icon_background_color_dark: "#121212"
     fullscreen: true

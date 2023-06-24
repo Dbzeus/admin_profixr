@@ -8,7 +8,6 @@ import 'package:profixer_admin/helpers/custom_colors.dart';
 import 'package:profixer_admin/routes/app_pages.dart';
 import 'package:profixer_admin/routes/app_routes.dart';
 
-import 'helpers/theme_handler.dart';
 import 'helpers/utils.dart';
 
 void main() async {
@@ -39,9 +38,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Profixer Admin',
-      theme: lightTheme,
+      // theme: lightTheme,
       //darkTheme: darkTheme,
-      themeMode: ThemeMode.system,
+      // themeMode: ThemeMode.system,
       getPages: AppPages.routes,
       initialRoute: initialRoute,
       navigatorKey: alice.getNavigatorKey(),

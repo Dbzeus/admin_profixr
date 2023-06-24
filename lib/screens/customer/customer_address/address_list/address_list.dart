@@ -76,11 +76,13 @@ class _AddressListState extends State<AddressList> {
             ),
             GestureDetector(
               onTap: () {
-                controller.searchController.clear();
-                Get.toNamed(Routes.addCustomerAddress, arguments: {
-                  "title": "Add Address",
-                  "buttonTitle": "Save",
-                });
+                if(controller.customerId!=0) {
+                  controller.searchController.clear();
+                  Get.toNamed(Routes.addCustomerAddress, arguments: {
+                    "title": "Add Address",
+                    "buttonTitle": "Save",
+                  });
+                }
               },
               child: Container(
                 height: 50,

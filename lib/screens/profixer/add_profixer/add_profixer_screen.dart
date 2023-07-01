@@ -71,7 +71,7 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
         Get.focusScope!.unfocus();
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+         resizeToAvoidBottomInset: false,
         appBar: CustomAppBar(
           title: Get.arguments["title"].toString(),
         ),
@@ -79,11 +79,17 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
           children: [
             Obx(
               () => Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    controller.isConfirm.value
-                        ? Expanded(
+                padding: const EdgeInsets.only(
+                  top: 16,
+                  left: 16,
+                  right: 16,
+                ),
+                child: controller.isConfirm.value
+                    ? CustomScrollView(
+                        slivers: [
+                          SliverFillRemaining(
+                            hasScrollBody: false,
+
                             child: Column(
                               children: [
                                 CustomEditText(
@@ -121,7 +127,10 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                   onTab: () async {
                                     controller.dobController.text =
                                         await getDate(
-                                            initialDate: DateTime(DateTime.now().year -18, DateTime.now().month, DateTime.now().day),
+                                            initialDate: DateTime(
+                                                DateTime.now().year - 18,
+                                                DateTime.now().month,
+                                                DateTime.now().day),
                                             firstDate: DateTime(
                                               DateTime.now().year - 80,
                                             ),
@@ -178,40 +187,56 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                   controller: controller.passwordController,
                                 ),
                                 const Spacer(),
+                                const SizedBox(
+                                  height: 10,
+                                ),
                                 CustomButton(
                                   text: "Next",
                                   btnColor: primaryColor,
                                   onTap: () {
-                                    if (controller.firstNameController.text.isEmpty) {
+                                    if (controller
+                                        .firstNameController.text.isEmpty) {
                                       toast("Please Enter First Name");
-                                    } else if (controller.lastNameController.text.isEmpty) {
+                                    } else if (controller
+                                        .lastNameController.text.isEmpty) {
                                       toast("Please Enter Last Name");
-                                    } else if (controller.designationController.text.isEmpty) {
+                                    } else if (controller
+                                        .designationController.text.isEmpty) {
                                       toast("Please Enter Designation");
-                                    } else if (controller.dobController.text.isEmpty) {
-                                      toast("Please Enter Your Date of Birth Address");
-                                    } else if (controller.mobileController.text.isEmpty) {
+                                    } else if (controller
+                                        .dobController.text.isEmpty) {
+                                      toast(
+                                          "Please Enter Your Date of Birth Address");
+                                    } else if (controller
+                                        .mobileController.text.isEmpty) {
                                       toast("Please Enter Mobile Number");
-                                    } else if (controller.userNameController.text.isEmpty) {
+                                    } else if (controller
+                                        .userNameController.text.isEmpty) {
                                       toast("Please Enter UserName");
-                                    }else if (controller.passwordController.text.isEmpty) {
+                                    } else if (controller
+                                        .passwordController.text.isEmpty) {
                                       toast("Please Enter Password");
-                                    }else{
-                                      controller
-                                          .isConfirm(!controller.isConfirm.value);
+                                    } else {
+                                      controller.isConfirm(
+                                          !controller.isConfirm.value);
                                     }
-
                                   },
+                                ),
+                                const SizedBox(
+                                  height: 10,
                                 ),
                               ],
                             ),
                           )
-                        : Expanded(
+                        ],
+                      )
+                    : CustomScrollView(
+                        slivers: [
+                          SliverFillRemaining(
+                            hasScrollBody: false,
+                            fillOverscroll: true,
                             child: Column(
                               children: [
-                                const SizedBox(
-                                  height: 10,
-                                ),
                                 CustomEditText(
                                   hintText: "Date of Joining",
                                   showCursor: false,
@@ -226,13 +251,17 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                   onTab: () async {
                                     controller.dojController.text =
                                         await getDate(
-                                        initialDate: DateTime.now(),
-                                    firstDate: DateTime(DateTime.now().year -80, 12, 31),
-                                    lastDate: DateTime(DateTime.now().year + 1));
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime(
+                                                DateTime.now().year - 80,
+                                                12,
+                                                31),
+                                            lastDate: DateTime(
+                                                DateTime.now().year + 1));
                                   },
                                 ),
                                 const SizedBox(
-                                  height: 10,
+                                  height: 8,
                                 ),
                                 CustomEditText(
                                   hintText: "Current Address",
@@ -242,7 +271,7 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                   minLines: 2,
                                 ),
                                 const SizedBox(
-                                  height: 10,
+                                  height: 8,
                                 ),
                                 CustomEditText(
                                   hintText: "Permanent Address",
@@ -252,14 +281,14 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                   minLines: 2,
                                 ),
                                 const SizedBox(
-                                  height: 10,
+                                  height: 8,
                                 ),
                                 CustomEditText(
                                   hintText: "National ID",
                                   controller: controller.identityController,
                                 ),
                                 const SizedBox(
-                                  height: 10,
+                                  height: 8,
                                 ),
                                 Obx(
                                   () => Row(
@@ -382,7 +411,7 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                     ? Column(
                                         children: [
                                           const SizedBox(
-                                            height: 10,
+                                            height: 8,
                                           ),
                                           CustomEditText(
                                             hintText: "Relieved Date",
@@ -535,6 +564,9 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                     ],
                                   ),
                                 ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
                                 const Spacer(),
                                 Row(
                                   children: [
@@ -553,17 +585,31 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                             : "Update",
                                         btnColor: primaryColor,
                                         onTap: () {
-                                          if (controller.dojController.text.isEmpty) {
-                                            toast("Please Enter Date of joining");
-                                          } else if (controller.currentAddressController.text.isEmpty) {
-                                            toast("Please Enter Current address");
-                                          } else if (controller.permanentAddressController.text.isEmpty) {
-                                            toast("Please Enter Permanent Address");
-                                          }else if (controller.identityController.text.isEmpty) {
+                                          if (controller
+                                              .dojController.text.isEmpty) {
+                                            toast(
+                                                "Please Enter Date of joining");
+                                          } else if (controller
+                                              .currentAddressController
+                                              .text
+                                              .isEmpty) {
+                                            toast(
+                                                "Please Enter Current address");
+                                          } else if (controller
+                                              .permanentAddressController
+                                              .text
+                                              .isEmpty) {
+                                            toast(
+                                                "Please Enter Permanent Address");
+                                          } else if (controller
+                                              .identityController
+                                              .text
+                                              .isEmpty) {
                                             toast("Please Enter National ID");
-                                          }else{
+                                          } else {
                                             var params = {
-                                              "UserID": profixerData?.userID ?? 0,
+                                              "UserID":
+                                                  profixerData?.userID ?? 0,
                                               "FirstName": controller
                                                   .firstNameController.text,
                                               "LastName": controller
@@ -571,29 +617,36 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                               "Desigination": controller
                                                   .designationController.text
                                                   .trim(),
-                                              "DOB": toSendDateFormat(
-                                                  controller.dobController.text),
-                                              "DOJ": toSendDateFormat(
-                                                  controller.dojController.text),
+                                              "DOB": toSendDateFormat(controller
+                                                  .dobController.text),
+                                              "DOJ": toSendDateFormat(controller
+                                                  .dojController.text),
                                               "MobileNo": controller
                                                   .mobileController.text,
                                               "CurrentAddress": controller
-                                                  .currentAddressController.text,
+                                                  .currentAddressController
+                                                  .text,
                                               "PermanentAddress": controller
                                                   .permanentAddressController
                                                   .text,
                                               "IsRelived": controller
-                                                  .selectedRelieveIsActive.value,
-                                              "RelivedDate": controller.selectedRelieveIsActive.value ? controller
-                                                  .relievedDateController
-                                                  .text
-                                                  .isEmpty
-                                                  ? ""
-                                                  : toSendDateFormat(controller
-                                                  .relievedDateController
-                                                  .text) : "01-01-1900",
+                                                  .selectedRelieveIsActive
+                                                  .value,
+                                              "RelivedDate": controller
+                                                      .selectedRelieveIsActive
+                                                      .value
+                                                  ? controller
+                                                          .relievedDateController
+                                                          .text
+                                                          .isEmpty
+                                                      ? ""
+                                                      : toSendDateFormat(controller
+                                                          .relievedDateController
+                                                          .text)
+                                                  : "01-01-1900",
                                               "RelivedReason": controller
-                                                  .relievedReasonController.text,
+                                                  .relievedReasonController
+                                                  .text,
                                               "UserName": controller
                                                   .userNameController.text,
                                               "Password": controller
@@ -604,21 +657,24 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                                   .read(Session.userId),
                                             };
                                             controller.insertUpdateProfixer(
-                                                controller.selectedIsActive.value,
+                                                controller
+                                                    .selectedIsActive.value,
                                                 params,
                                                 profixerData != null);
                                           }
-
                                         },
                                       ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
                                     ),
                                   ],
                                 )
                               ],
                             ),
-                          ),
-                  ],
-                ),
+                          )
+                        ],
+                      ),
               ),
             ),
             Obx(() => controller.isLoading.value

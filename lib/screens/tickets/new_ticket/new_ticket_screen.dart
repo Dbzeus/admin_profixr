@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:profixer_admin/helpers/constant_widgets.dart';
 import 'package:profixer_admin/helpers/custom_colors.dart';
@@ -50,7 +51,7 @@ class NewTicketScreen extends GetView<NewTicketController> {
           Get.focusScope!.unfocus();
         },
         child: Scaffold(
-          resizeToAvoidBottomInset: false,
+          resizeToAvoidBottomInset: true,
           appBar: CustomAppBar(
             title: "New Ticket",
           ),
@@ -62,20 +63,43 @@ class NewTicketScreen extends GetView<NewTicketController> {
                   currentStep: controller.currentStep.value,
                   type: StepperType.horizontal,
                   controlsBuilder: (_, __) {
-                    return Obx(() => CustomButton(
-                          text: controller.currentStep.value == 2
-                              ? 'Book'
-                              : 'Next',
-                          onTap: () {
-                            if (controller.currentStep.value == 0) {
+                    return Obx(() => controller.currentStep.value == 0
+                        ? CustomButton(
+                            text: 'Next',
+                            onTap: () {
+
                               controller.saveCustomer();
-                            } else if (controller.currentStep.value == 1) {
-                              controller.saveCustomerAddress();
-                            } else {
-                              controller.bookATicket();
-                            }
-                          },
-                        ));
+                            },
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              CustomButton(
+                                width: 150,
+                                text: 'Back',
+                                onTap: () {
+                                  if(controller.currentStep.value >0){
+                                    controller.currentStep--;
+                                  }
+                                },
+                              ),
+                              CustomButton(
+                                width: 150,
+                                text: controller.currentStep.value == 2
+                                    ? 'Book'
+                                    : 'Next',
+                                onTap: () {
+                                 if (controller.currentStep.value ==
+                                      1) {
+
+                                    controller.saveCustomerAddress();
+                                  } else {
+                                    controller.bookATicket();
+                                  }
+                                },
+                              ),
+                            ],
+                          ));
                   },
                 ),
               ),
@@ -88,76 +112,81 @@ class NewTicketScreen extends GetView<NewTicketController> {
   }
 
   personalForm() {
-    return Column(
-      children: [
-        CustomEditText(
-            hintText: "Customer Name",
-            controller: controller.customerNameController),
-        const SizedBox(
-          height: 10,
+    return Scrollable(
+        viewportBuilder: (BuildContext context, ViewportOffset offset) {
+      return SingleChildScrollView(
+        child: Column(
+          children: [
+            CustomEditText(
+                hintText: "Customer Name",
+                controller: controller.customerNameController),
+            const SizedBox(
+              height: 10,
+            ),
+            CustomEditText(
+              hintText: "Customer Mobile Number",
+              controller: controller.customerMobileNoController,
+              keyboardType: TextInputType.phone,
+              maxLength: 10,
+              prefixIcon: Obx(
+                () => DropdownButton(
+                    value: controller.mobileNoDropDownValue.value,
+                    style: const TextStyle(color: primaryColor, fontSize: 16),
+                    underline: const SizedBox(),
+                    icon: const Icon(
+                      Icons.keyboard_arrow_down,
+                      color: primaryColor,
+                      size: 16,
+                    ),
+                    items: controller.mobileItems.map((String items) {
+                      return DropdownMenuItem(
+                        value: items,
+                        child: Text(items),
+                      );
+                    }).toList(),
+                    onChanged: (val) {
+                      controller.mobileNoDropDownValue(val.toString());
+                    }),
+              ),
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            CustomEditText(
+                hintText: "Email", controller: controller.emailController),
+            const SizedBox(
+              height: 12,
+            ),
+            CustomEditText(
+              hintText: "Date of Birth",
+              showCursor: false,
+              keyboardType: TextInputType.none,
+              controller: controller.dobController,
+              suffixIcon: const Icon(
+                Icons.calendar_month_rounded,
+                color: blackColor,
+                size: 22,
+              ),
+              onTab: () async {
+                controller.dobController.text = await getDate(
+                    initialDate: DateTime(DateTime.now().year - 18,
+                        DateTime.now().month, DateTime.now().day),
+                    firstDate: DateTime(DateTime.now().year - 80, 12, 31),
+                    lastDate: DateTime(DateTime.now().year - 18, 12, 31));
+              },
+            ),
+            const SizedBox(
+              height: 12,
+            ),
+            CustomEditText(
+                hintText: "Remarks", controller: controller.remarksController),
+            const SizedBox(
+              height: 60,
+            ),
+          ],
         ),
-        CustomEditText(
-          hintText: "Customer Mobile Number",
-          controller: controller.customerMobileNoController,
-          keyboardType: TextInputType.phone,
-          maxLength: 10,
-          prefixIcon: Obx(
-            () => DropdownButton(
-                value: controller.mobileNoDropDownValue.value,
-                style: const TextStyle(color: primaryColor, fontSize: 16),
-                underline: const SizedBox(),
-                icon: const Icon(
-                  Icons.keyboard_arrow_down,
-                  color: primaryColor,
-                  size: 16,
-                ),
-                items: controller.mobileItems.map((String items) {
-                  return DropdownMenuItem(
-                    value: items,
-                    child: Text(items),
-                  );
-                }).toList(),
-                onChanged: (val) {
-                  controller.mobileNoDropDownValue(val.toString());
-                }),
-          ),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        CustomEditText(
-            hintText: "Email", controller: controller.emailController),
-        const SizedBox(
-          height: 12,
-        ),
-        CustomEditText(
-          hintText: "Date of Birth",
-          showCursor: false,
-          keyboardType: TextInputType.none,
-          controller: controller.dobController,
-          suffixIcon: const Icon(
-            Icons.calendar_month_rounded,
-            color: blackColor,
-            size: 22,
-          ),
-          onTab: () async {
-            controller.dobController.text = await getDate(
-                initialDate: DateTime(DateTime.now().year -18, DateTime.now().month, DateTime.now().day),
-                firstDate: DateTime(DateTime.now().year -80, 12, 31),
-                lastDate: DateTime(DateTime.now().year -18, 12, 31)
-            );
-          },
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        CustomEditText(
-            hintText: "Remarks", controller: controller.remarksController),
-        const SizedBox(
-          height: 64,
-        ),
-      ],
-    );
+      );
+    });
   }
 
   addressForm() {
@@ -234,7 +263,7 @@ class NewTicketScreen extends GetView<NewTicketController> {
           ],
         ),
         const SizedBox(
-          height: 64,
+          height: 20,
         ),
       ],
     );
@@ -335,8 +364,8 @@ class NewTicketScreen extends GetView<NewTicketController> {
             Expanded(
               child: Obx(
                 () => InkWell(
-                  onTap: (){
-                    if(controller.imagePath.value.isNotEmpty){
+                  onTap: () {
+                    if (controller.imagePath.value.isNotEmpty) {
                       open(Get.context!, 0, [controller.imagePath.value]);
                     }
                   },
@@ -438,7 +467,7 @@ class NewTicketScreen extends GetView<NewTicketController> {
           ],
         ),
         const SizedBox(
-          height: 64,
+          height: 20,
         ),
       ],
     );

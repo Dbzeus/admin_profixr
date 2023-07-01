@@ -30,7 +30,7 @@ class ProfixerController extends GetxController {
   RxBool selectedIsActive = true.obs;
   RxBool selectedRelieveIsActive = true.obs;
 
-  RxList profixers = RxList();
+  RxList<ProfixerData> profixers = RxList();
 
   String dateFormat = "MM/dd/yyyy";
 
@@ -48,13 +48,18 @@ class ProfixerController extends GetxController {
   getProfixer() async {
     if (await isNetConnected()) {
       isLoading(true);
+      debugPrint("1");
       ProfixerResponse? response = await ApiCall().getProfixerUser();
       isLoading(false);
+      debugPrint("2");
       if (response != null) {
+        debugPrint("3");
         if (response.rtnStatus) {
+          debugPrint("4");
           profixers(response.rtnData);
           // searchList = response['RtnData'];
         } else {
+          debugPrint("5");
           toast(response.rtnMsg);
         }
       }
@@ -69,9 +74,9 @@ class ProfixerController extends GetxController {
   }) async {
     if (await isNetConnected()) {
       isLoading(true);
-      if(data is ProfixerData){
-        data.isActive=val;
-      }else {
+      if (data is ProfixerData) {
+        data.isActive = val;
+      } else {
         data["IsActive"] = val;
       }
       var response = await ApiCall().insertProfixerUser(data);

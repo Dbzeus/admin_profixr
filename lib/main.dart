@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
       title: 'Profixer Admin',
       theme: lightTheme,
       //darkTheme: darkTheme,
-      themeMode: ThemeMode.system,
+      //themeMode: ThemeMode.system,
       getPages: AppPages.routes,
       initialRoute: initialRoute,
       navigatorKey: alice.getNavigatorKey(),

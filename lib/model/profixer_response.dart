@@ -77,7 +77,8 @@ class ProfixerData {
       this.relivedDate, 
       this.relivedReason, 
       this.isActive, 
-      this.userNAme, 
+      this.userNAme,
+      this.nationalId,
       this.password,);
 
   ProfixerData.fromJson(dynamic json) {
@@ -91,6 +92,7 @@ class ProfixerData {
     mobileNo = json['MobileNo'];
     currentAddress = json['CurrentAddress'];
     permanentAddress = json['PermanentAddress'];
+    nationalId = json['NationalID'];
     isRelived = json['IsRelived'];
     relivedDate = json['RelivedDate'];
     relivedReason = json['RelivedReason'];
@@ -113,6 +115,7 @@ class ProfixerData {
  late String relivedReason;
  late bool isActive;
  late String userNAme;
+ late String nationalId;
  late String password;
 
   Map<String, dynamic> toJson() {
@@ -127,6 +130,7 @@ class ProfixerData {
     map['MobileNo'] = mobileNo;
     map['CurrentAddress'] = currentAddress;
     map['PermanentAddress'] = permanentAddress;
+    map['NationalID'] = nationalId;
     map['IsRelived'] = isRelived;
     map['RelivedDate'] = relivedDate;
     map['RelivedReason'] = relivedReason;

@@ -13,7 +13,7 @@ dependencies:
 
   google_fonts:
   get:
-  connectivity_plus:
+  connectivity_plus:  
   get_storage:
   alice:
   dio:

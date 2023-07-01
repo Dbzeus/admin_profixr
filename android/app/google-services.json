@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "748288119196",
+    "project_id": "profixer-admin",
+    "storage_bucket": "profixer-admin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:748288119196:android:f5659cddf35073afc57859",
+        "android_client_info": {
+          "package_name": "com.profixer.business"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "748288119196-9td7hh60i6jt1cec45vh9fhujgb2udki.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgTZXpFxwTSlH1303ziYRaPoJAa-aM6tE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "748288119196-9td7hh60i6jt1cec45vh9fhujgb2udki.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -162,6 +162,7 @@ class ProfixerListScreen extends GetView<ProfixerController> {
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
                         data.firstName.toString(),
@@ -203,7 +204,7 @@ class ProfixerListScreen extends GetView<ProfixerController> {
                             data.desigination,
                             style: TextStyle(
                               color: blackColor,
-                              fontSize: 12,
+                              fontSize: 10,
                             ),
                           ),
                         ],
@@ -213,6 +214,7 @@ class ProfixerListScreen extends GetView<ProfixerController> {
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Text(
                       data.lastName.toString(),

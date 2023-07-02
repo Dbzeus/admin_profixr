@@ -3,10 +3,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-const AndroidNotificationChannel channel = AndroidNotificationChannel(
+ AndroidNotificationChannel channel = AndroidNotificationChannel(
   'Profixer',
   'Profixer',
-  description: 'Profixer app notification',
+   'Profixer app notification',
   importance: Importance.max,
   playSound: true,
   enableLights: true,
@@ -30,7 +30,7 @@ class FirebaseNotification {
     var initializationsSettingsAndroid =
         const AndroidInitializationSettings('mipmap/ic_launcher');
 
-    const initializationSettingsIOS = DarwinInitializationSettings(
+    IOSInitializationSettings  initializationSettingsIOS = IOSInitializationSettings(
       requestSoundPermission: true,
       requestBadgePermission: true,
       requestAlertPermission: true,
@@ -71,7 +71,7 @@ class FirebaseNotification {
     if (notification != null && android != null) {
       AndroidNotificationDetails notificationDetails =
           AndroidNotificationDetails(channel.id, channel.name,
-              channelDescription: channel.description,
+               channel.description,
               styleInformation:
                   BigTextStyleInformation(notification.body ?? ''),
               importance: Importance.max,
@@ -101,7 +101,7 @@ class FirebaseNotification {
           summaryText: "${activeNotifications.length - 1} messages");
       AndroidNotificationDetails groupNotificationDetails =
           AndroidNotificationDetails(channel.id, channel.name,
-              channelDescription: channel.description,
+               channel.description,
               styleInformation: inboxStyleInformation,
               setAsGroupSummary: true,
               groupKey: channel.id);

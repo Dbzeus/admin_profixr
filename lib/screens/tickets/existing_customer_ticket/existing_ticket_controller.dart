@@ -189,8 +189,7 @@ class ExistingTicketController extends GetxController {
         selectedService.isEmpty &&
         selectedCNature.isEmpty &&
         selectedType.isEmpty &&
-        selectedTimeSlot.isEmpty &&
-    bookingRemarksController.text.isEmpty
+        selectedTimeSlot.isEmpty
     ){
       toast("Please fill all the fields");
     }else if(customerNameController.text.isEmpty){
@@ -207,8 +206,6 @@ class ExistingTicketController extends GetxController {
       toast("Please select the service type ");
     }else if(selectedTimeSlot.isEmpty){
       toast("Please select the Timeslot");
-    }else if(bookingRemarksController.text.isEmpty){
-      toast("Please enter remarks ");
     }else{if (await isNetConnected()) {
       try {
         debugPrint("is book called");

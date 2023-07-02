@@ -12,7 +12,6 @@ import 'package:profixer_admin/widgets/custom_button.dart';
 import 'package:profixer_admin/widgets/custom_edittext.dart';
 import 'package:profixer_admin/widgets/custom_loader.dart';
 
-
 class AddCustomerScreen extends StatelessWidget {
   final controller = Get.find<CustomerController>();
 
@@ -22,20 +21,19 @@ class AddCustomerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
-    if (customerData!=null)  {
-     controller.customerId = customerData!.customerID;
+    if (customerData != null) {
+      controller.customerId = customerData!.customerID;
       controller.userId = customerData!.userID;
 
       controller.nameController.text = customerData!.firstName.toString();
       controller.remarkController.text = customerData!.remarks.toString();
       controller.dobController.text =
           toShowDateFormat(customerData!.dob.toString());
-      controller.mobileController.text =customerData!.mobileNo.toString();
+      controller.mobileController.text = customerData!.mobileNo.toString();
       controller.emailController.text = customerData!.emailID.toString();
       controller.permanentAddressController.text =
           customerData!.currentAddress.toString();
+      controller.identityController.text = customerData!.nationalId.toString();
     } else {
       controller.nameController.clear();
       controller.remarkController.clear();
@@ -43,6 +41,7 @@ class AddCustomerScreen extends StatelessWidget {
       controller.mobileController.clear();
       controller.emailController.clear();
       controller.permanentAddressController.clear();
+      controller.identityController.clear();
     }
 
     return GestureDetector(
@@ -52,22 +51,21 @@ class AddCustomerScreen extends StatelessWidget {
       child: Stack(
         children: [
           Scaffold(
-            resizeToAvoidBottomInset: false,
+            resizeToAvoidBottomInset: true,
             appBar: CustomAppBar(title: Get.arguments['title']),
             body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Obx(()=>
-                 Column(
+              padding:
+                  const EdgeInsets.only(top: 16.0, right: 16.0, left: 16.0),
+              child: Obx(
+                () => Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(
                       height: 15,
                     ),
-
                     Obx(
-                          () => SizedBox(
+                      () => SizedBox(
                         width: double.infinity,
-
                         child: CupertinoSlidingSegmentedControl(
                           thumbColor: primaryColor,
                           backgroundColor: cardBgColor,
@@ -99,101 +97,141 @@ class AddCustomerScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    controller.isSelectedTag.value == 0 ?
-                    Expanded(
-                      child: Column(
-                        children: [
-
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          CustomEditText(
-                              hintText: "Customer Name",
-                              controller: controller.nameController),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CustomEditText(
-                            hintText: "Mobile Number",
-                            controller: controller.mobileController,
-                            maxLength: 10,
-                            keyboardType: TextInputType.phone,
-                            prefixIcon: Obx(
-                              () => DropdownButton(
-                                  value: controller.mobileNoDropDownValue.value,
-                                  style: const TextStyle(
-                                      color: primaryColor, fontSize: 16),
-                                  underline: const SizedBox(),
-                                  icon: const Icon(
-                                    Icons.keyboard_arrow_down,
-                                    color: primaryColor,
-                                    size: 16,
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    controller.isSelectedTag.value == 0
+                        ? Expanded(
+                            child: CustomScrollView(
+                              slivers: [
+                                SliverFillRemaining(
+                                  hasScrollBody: false,
+                                  child: Column(
+                                    children: [
+                                      CustomEditText(
+                                          hintText: "Customer Name",
+                                          controller:
+                                              controller.nameController),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      CustomEditText(
+                                        hintText: "Mobile Number",
+                                        controller: controller.mobileController,
+                                        maxLength: 10,
+                                        keyboardType: TextInputType.phone,
+                                        prefixIcon: Obx(
+                                          () => DropdownButton(
+                                              value: controller
+                                                  .mobileNoDropDownValue.value,
+                                              style: const TextStyle(
+                                                  color: primaryColor,
+                                                  fontSize: 16),
+                                              underline: const SizedBox(),
+                                              icon: const Icon(
+                                                Icons.keyboard_arrow_down,
+                                                color: primaryColor,
+                                                size: 16,
+                                              ),
+                                              items: controller.mobileItems
+                                                  .map((String items) {
+                                                return DropdownMenuItem(
+                                                  value: items,
+                                                  child: Text(items),
+                                                );
+                                              }).toList(),
+                                              onChanged: (val) {
+                                                controller
+                                                    .mobileNoDropDownValue(
+                                                        val.toString());
+                                              }),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      CustomEditText(
+                                          hintText: "Email",
+                                          controller:
+                                              controller.emailController),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      CustomEditText(
+                                          hintText: "Permanent Address",
+                                          maxLines: 4,
+                                          controller: controller
+                                              .permanentAddressController),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      CustomEditText(
+                                        hintText: "National ID",
+                                        controller:
+                                            controller.identityController,
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      CustomEditText(
+                                        hintText: "Date Of Birth",
+                                        showCursor: false,
+                                        keyboardType: TextInputType.none,
+                                        controller: controller.dobController,
+                                        suffixIcon: const Icon(
+                                          Icons.calendar_month_rounded,
+                                          color: blackColor,
+                                          size: 22,
+                                        ),
+                                        onTab: () async {
+                                          controller
+                                                  .dobController.text =
+                                              await getDate(
+                                                  initialDate: DateTime(
+                                                      DateTime.now().year - 18,
+                                                      DateTime.now().month,
+                                                      DateTime.now().day),
+                                                  firstDate: DateTime(
+                                                      DateTime.now().year - 80,
+                                                      1,
+                                                      1),
+                                                  lastDate: DateTime(
+                                                      DateTime.now().year - 18,
+                                                      12,
+                                                      31));
+                                        },
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      CustomEditText(
+                                          hintText: "Remarks",
+                                          maxLines: 4,
+                                          minLines: 1,
+                                          controller:
+                                              controller.remarkController),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      const Spacer(),
+                                      CustomButton(
+                                          text: Get.arguments['buttonTitle'],
+                                          onTap: () {
+                                            controller.validation(
+                                                Get.arguments['customer'] !=
+                                                    null);
+                                          }),
+                                      const SizedBox(
+                                        height: 10,
+                                      )
+                                    ],
                                   ),
-                                  items: controller.mobileItems.map((String items) {
-                                    return DropdownMenuItem(
-                                      value: items,
-                                      child: Text(items),
-                                    );
-                                  }).toList(),
-                                  onChanged: (val) {
-                                    controller.mobileNoDropDownValue(val.toString());
-                                  }),
+                                )
+                              ],
                             ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CustomEditText(
-                              hintText: "Email",
-                              controller: controller.emailController),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CustomEditText(
-                              hintText: "Permanent Address",
-                              maxLines: 4,
-                              controller: controller.permanentAddressController),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CustomEditText(
-                            hintText: "Date Of Birth",
-                            showCursor: false,
-                            keyboardType: TextInputType.none,
-                            controller: controller.dobController,
-                            suffixIcon: const Icon(
-                              Icons.calendar_month_rounded,
-                              color: blackColor,
-                              size: 22,
-                            ),
-                            onTab: () async {
-                              controller.dobController.text = await getDate(
-                                  initialDate: DateTime(DateTime.now().year -18, DateTime.now().month, DateTime.now().day),
-                                  firstDate: DateTime(DateTime.now().year -80, 1, 1),
-                                  lastDate: DateTime(DateTime.now().year -18, 12, 31)
-                              );
-                            },
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CustomEditText(
-                              hintText: "Remarks",
-                              maxLines: 4,
-                              minLines: 2,
-                              controller: controller.remarkController),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const Spacer(),
-                          CustomButton(
-                              text: Get.arguments['buttonTitle'],
-                              onTap: () {
-                                controller.validation(Get.arguments['customer'] != null);
-                              }),
-                        ],
-                      ),
-                    ) : Expanded(child: AddressList(customerData?.customerID ?? 0))
+                          )
+                        : Expanded(
+                            child: AddressList(customerData?.customerID ?? 0))
                   ],
                 ),
               ),

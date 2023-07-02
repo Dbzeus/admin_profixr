@@ -12,7 +12,6 @@ import 'package:profixer_admin/widgets/custom_button.dart';
 import 'package:profixer_admin/widgets/custom_edittext.dart';
 import 'package:profixer_admin/widgets/custom_loader.dart';
 
-
 import '../service_provider_admin_controller.dart';
 
 class AddAdminServiceProvider extends StatelessWidget {
@@ -62,7 +61,7 @@ class AddAdminServiceProvider extends StatelessWidget {
         Get.focusScope!.unfocus();
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         appBar: CustomAppBar(
           title: title,
           onTap: () {
@@ -77,122 +76,158 @@ class AddAdminServiceProvider extends StatelessWidget {
           children: [
             Obx(
               () => Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.only(
+                  top: 16,
+                  left: 16,
+                  right: 16,
+                ),
                 child: controller.isConfirm.value
-                    ? Column(
-                        children: [
-                          CustomEditText(
-                              hintText: "First Name",
-                              controller: controller.adminFirstNameController),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CustomEditText(
-                              hintText: "Last Name",
-                              controller: controller.adminLastNameController),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CustomEditText(
-                            hintText: "Mobile Number",
-                            controller: controller.adminMobNoController,
-                            maxLength: 10,
-                            keyboardType: TextInputType.phone,
-                            prefixIcon: Obx(
-                              () => DropdownButton(
-                                  value: controller.mobileNoDropDownValue.value,
-                                  style: const TextStyle(
-                                      color: primaryColor, fontSize: 16),
-                                  underline: const SizedBox(),
-                                  icon: const Icon(
-                                    Icons.keyboard_arrow_down,
-                                    color: primaryColor,
-                                    size: 16,
+                    ? CustomScrollView(
+                  physics: const BouncingScrollPhysics(),
+                        slivers: [
+                          SliverFillRemaining(
+                            hasScrollBody: false,
+                            fillOverscroll: true,
+                            child: Column(
+                              children: [
+                                CustomEditText(
+                                    hintText: "First Name",
+                                    controller:
+                                        controller.adminFirstNameController),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                CustomEditText(
+                                    hintText: "Last Name",
+                                    controller:
+                                        controller.adminLastNameController),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                CustomEditText(
+                                  hintText: "Mobile Number",
+                                  controller: controller.adminMobNoController,
+                                  maxLength: 10,
+                                  keyboardType: TextInputType.phone,
+                                  prefixIcon: Obx(
+                                    () => DropdownButton(
+                                        value: controller
+                                            .mobileNoDropDownValue.value,
+                                        style: const TextStyle(
+                                            color: primaryColor, fontSize: 16),
+                                        underline: const SizedBox(),
+                                        icon: const Icon(
+                                          Icons.keyboard_arrow_down,
+                                          color: primaryColor,
+                                          size: 16,
+                                        ),
+                                        items: controller.mobileItems
+                                            .map((String items) {
+                                          return DropdownMenuItem(
+                                            value: items,
+                                            child: Text(items),
+                                          );
+                                        }).toList(),
+                                        onChanged: (val) {
+                                          controller.mobileNoDropDownValue(
+                                              val.toString());
+                                        }),
                                   ),
-                                  items: controller.mobileItems.map((String items) {
-                                    return DropdownMenuItem(
-                                      value: items,
-                                      child: Text(items),
-                                    );
-                                  }).toList(),
-                                  onChanged: (val) {
-                                    controller
-                                        .mobileNoDropDownValue(val.toString());
-                                  }),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                CustomEditText(
+                                  hintText: "Email",
+                                  controller: controller.adminEmailController,
+                                  keyboardType: TextInputType.emailAddress,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                CustomEditText(
+                                    hintText: "User Name",
+                                    controller:
+                                        controller.adminUserNameController),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                CustomEditText(
+                                    hintText: "Create a new password",
+                                    controller:
+                                        controller.adminPasswordController),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                CustomEditText(
+                                  hintText: "National ID",
+                                  controller: controller.identityController,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                const Spacer(),
+                                CustomButton(
+                                  text: "Next",
+                                  btnColor: primaryColor,
+                                  onTap: () {
+                                    if (controller.adminFirstNameController.text
+                                        .isEmpty) {
+                                      toast("Please Enter Your First Name ");
+                                    } else if (controller
+                                        .adminLastNameController.text.isEmpty) {
+                                      toast("Please Enter Last Name");
+                                    } else if (controller
+                                        .adminMobNoController.text.isEmpty) {
+                                      toast("Please Enter Your Mobile Number");
+                                    } else if (controller
+                                        .adminEmailController.text.isEmpty) {
+                                      toast("Please Enter Email ID");
+                                    } else if (controller
+                                        .adminUserNameController.text.isEmpty) {
+                                      toast("Please Enter User Name");
+                                    } else if (controller
+                                        .adminPasswordController.text.isEmpty) {
+                                      toast("Please Enter Your Password");
+                                    } else if (controller
+                                        .identityController.text.isEmpty) {
+                                      toast("Please Enter Your National ID");
+                                    } else {
+                                      controller.isConfirm(
+                                          !controller.isConfirm.value);
+                                    }
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                              ],
                             ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CustomEditText(
-                            hintText: "Email",
-                            controller: controller.adminEmailController,
-                            keyboardType: TextInputType.emailAddress,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CustomEditText(
-                              hintText: "User Name",
-                              controller: controller.adminUserNameController),
-
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CustomEditText(
-                              hintText: "Create a new password",
-                              controller: controller.adminPasswordController),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CustomEditText(
-                            hintText: "National ID",
-                            controller: controller.identityController,
-                          ),
-
-                          const Spacer(),
-                          CustomButton(
-                            text: "Next",
-                            btnColor: primaryColor,
-                            onTap: () {
-                              if (controller.adminFirstNameController.text.isEmpty) {
-                                toast("Please Enter Your First Name ");
-                              } else if (controller.adminLastNameController.text.isEmpty) {
-                                toast("Please Enter Last Name");
-                              } else if (controller.adminMobNoController.text.isEmpty) {
-                                toast("Please Enter Your Mobile Number");
-                              } else if (controller.adminEmailController.text.isEmpty) {
-                                toast("Please Enter Email ID");
-                              }else if (controller.adminUserNameController.text.isEmpty) {
-                                toast("Please Enter User Name");
-                              }
-                              else if (controller.adminPasswordController.text.isEmpty) {
-                                toast("Please Enter Your Password");
-                              }else if (controller.identityController.text.isEmpty) {
-                                toast("Please Enter Your National ID");
-                              }else{
-                                controller.isConfirm(!controller.isConfirm.value);
-                              }
-
-                            },
-                          ),
+                          )
                         ],
                       )
-                    : Column(
+                    : CustomScrollView(
+                  physics:const  NeverScrollableScrollPhysics(),
+                                    slivers: [
+                    SliverFillRemaining(
+                      hasScrollBody: false,
+                      child: Column(
                         children: [
                           const SizedBox(
                             height: 10,
                           ),
                           CustomEditText(
                             hintText: "Current Address",
-                            controller: controller.adminCurrentAddressController,
+                            controller:
+                            controller.adminCurrentAddressController,
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           CustomEditText(
                             hintText: "Permanent Address",
-                            controller: controller.adminPermenantAddressController,
+                            controller:
+                            controller.adminPermenantAddressController,
                           ),
                           const SizedBox(
                             height: 10,
@@ -209,12 +244,16 @@ class AddAdminServiceProvider extends StatelessWidget {
                               size: 22,
                             ),
                             onTab: () async {
-                              controller.adminDobController.text = await getDate(
-                                  initialDate: DateTime(DateTime.now().year -18, DateTime.now().month, DateTime.now().day),
-                                  firstDate: DateTime(DateTime.now().year -80, 12, 31),
-                                  lastDate: DateTime(DateTime.now().year -18, 12, 31)
-                              );
-
+                              controller.adminDobController.text =
+                              await getDate(
+                                  initialDate: DateTime(
+                                      DateTime.now().year - 18,
+                                      DateTime.now().month,
+                                      DateTime.now().day),
+                                  firstDate: DateTime(
+                                      DateTime.now().year - 80, 12, 31),
+                                  lastDate: DateTime(
+                                      DateTime.now().year - 18, 12, 31));
                             },
                           ),
                           const SizedBox(
@@ -232,11 +271,13 @@ class AddAdminServiceProvider extends StatelessWidget {
                               size: 22,
                             ),
                             onTab: () async {
-                              controller.adminDojController.text = await getDate(
+                              controller.adminDojController.text =
+                              await getDate(
                                   initialDate: DateTime.now(),
-                                  firstDate: DateTime(DateTime.now().year -80, 12, 31),
-                                  lastDate: DateTime(DateTime.now().year + 1)
-                              );
+                                  firstDate: DateTime(
+                                      DateTime.now().year - 80, 12, 31),
+                                  lastDate:
+                                  DateTime(DateTime.now().year + 1));
                             },
                           ),
                           const SizedBox(
@@ -246,7 +287,7 @@ class AddAdminServiceProvider extends StatelessWidget {
                             height: 16,
                           ),
                           Obx(
-                            () => Row(
+                                () => Row(
                               children: [
                                 const Expanded(child: Text('Status')),
                                 InkWell(
@@ -267,12 +308,14 @@ class AddAdminServiceProvider extends StatelessWidget {
                                           : Colors.grey.shade100,
                                     ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
                                       children: [
                                         Icon(
                                           Icons.done_rounded,
                                           size: 16,
-                                          color: controller.selectedIsActive.value
+                                          color:
+                                          controller.selectedIsActive.value
                                               ? Colors.green
                                               : Colors.black54,
                                         ),
@@ -282,7 +325,8 @@ class AddAdminServiceProvider extends StatelessWidget {
                                         Text(
                                           'Active',
                                           style: TextStyle(
-                                            color: controller.selectedIsActive.value
+                                            color: controller
+                                                .selectedIsActive.value
                                                 ? Colors.green
                                                 : Colors.black54,
                                           ),
@@ -296,7 +340,8 @@ class AddAdminServiceProvider extends StatelessWidget {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    if (controller.selectedIsActive.value == true) {
+                                    if (controller.selectedIsActive.value ==
+                                        true) {
                                       controller.selectedIsActive(
                                           !controller.selectedIsActive.value);
                                     }
@@ -311,12 +356,14 @@ class AddAdminServiceProvider extends StatelessWidget {
                                           : Colors.grey.shade100,
                                     ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
                                       children: [
                                         Icon(
                                           Icons.close,
                                           size: 16,
-                                          color: !controller.selectedIsActive.value
+                                          color:
+                                          !controller.selectedIsActive.value
                                               ? Colors.red
                                               : Colors.black54,
                                         ),
@@ -326,10 +373,10 @@ class AddAdminServiceProvider extends StatelessWidget {
                                         Text(
                                           'Inactive',
                                           style: TextStyle(
-                                            color:
-                                                !controller.selectedIsActive.value
-                                                    ? Colors.red
-                                                    : Colors.black54,
+                                            color: !controller
+                                                .selectedIsActive.value
+                                                ? Colors.red
+                                                : Colors.black54,
                                           ),
                                         )
                                       ],
@@ -339,7 +386,12 @@ class AddAdminServiceProvider extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const Spacer(),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          const Spacer(
+
+                          ),
                           Row(
                             children: [
                               Expanded(
@@ -352,51 +404,90 @@ class AddAdminServiceProvider extends StatelessWidget {
                               ),
                               Expanded(
                                 child: CustomButton(
-                                    text: adminData==null ? "Add" : "Update",
+                                    text: adminData == null ? "Add" : "Update",
                                     btnColor: primaryColor,
                                     onTap: () {
-                                      if (controller.adminCurrentAddressController.text.isEmpty) {
+                                      if (controller
+                                          .adminCurrentAddressController
+                                          .text
+                                          .isEmpty) {
                                         toast("Please Enter Current Address ");
-                                      } else if (controller.adminPermenantAddressController.text.isEmpty) {
-                                        toast("Please Enter Permanent Address ");
-                                      } else if (controller.adminDobController.text.isEmpty) {
+                                      } else if (controller
+                                          .adminPermenantAddressController
+                                          .text
+                                          .isEmpty) {
+                                        toast(
+                                            "Please Enter Permanent Address ");
+                                      } else if (controller
+                                          .adminDobController.text.isEmpty) {
                                         toast("Please Select Date of Birth");
-                                      } else if (controller.adminDojController.text.isEmpty) {
+                                      } else if (controller
+                                          .adminDojController.text.isEmpty) {
                                         toast("Please Select Date of Joining");
-                                      } else{
+                                      } else {
                                         var data = {
-                                          "ServiceProviderUserID":  adminData?.serviceProviderUserID ?? 0,
+                                          "ServiceProviderUserID": adminData
+                                              ?.serviceProviderUserID ??
+                                              0,
                                           "UserID": adminData?.userID ?? 0,
-                                          "ServiceProviderID": controller.serviceProviderId,
-                                          "FirstName":
-                                          controller.adminFirstNameController.text.trim(),
-                                          "LastName":
-                                          controller.adminLastNameController.text.trim(),
-                                          "MobileNumber":
-                                          controller.adminMobNoController.text.trim(),
-                                          "MailID": controller.adminEmailController.text.trim(),
-                                          "ContactAddress":
-                                          controller.adminCurrentAddressController.text.trim(),
+                                          "ServiceProviderID":
+                                          controller.serviceProviderId,
+                                          "FirstName": controller
+                                              .adminFirstNameController.text
+                                              .trim(),
+                                          "LastName": controller
+                                              .adminLastNameController.text
+                                              .trim(),
+                                          "MobileNumber": controller
+                                              .adminMobNoController.text
+                                              .trim(),
+                                          "MailID": controller
+                                              .adminEmailController.text
+                                              .trim(),
+                                          "ContactAddress": controller
+                                              .adminCurrentAddressController
+                                              .text
+                                              .trim(),
                                           "PermanentAddress": controller
-                                              .adminPermenantAddressController.text.trim(),
-                                          "DOB": toSendDateFormat(controller.adminDobController.text),
-                                          "DOJ": toSendDateFormat(controller.adminDojController.text),
-                                          "Username":
-                                          controller.adminUserNameController.text.trim(),
-                                          "Password":
-                                          controller.adminPasswordController.text.trim(),
-                                          "IsActive": controller.selectedIsActive.value,
-                                          "CUID": controller.box.read(Session.userId),
+                                              .adminPermenantAddressController
+                                              .text
+                                              .trim(),
+                                          "DOB": toSendDateFormat(controller
+                                              .adminDobController.text),
+                                          "DOJ": toSendDateFormat(controller
+                                              .adminDojController.text),
+                                          "Username": controller
+                                              .adminUserNameController.text
+                                              .trim(),
+                                          "Password": controller
+                                              .adminPasswordController.text
+                                              .trim(),
+                                          "IsActive":
+                                          controller.selectedIsActive.value,
+                                          "CUID": controller.box
+                                              .read(Session.userId),
                                         };
-                                        controller.insertUpdateServiceProviderAdmin(controller.selectedIsActive.value,data);
+                                        controller
+                                            .insertUpdateServiceProviderAdmin(
+                                            controller
+                                                .selectedIsActive.value,
+                                            data);
                                       }
-
                                     }),
+
                               ),
+
                             ],
+                          ),
+                          const SizedBox(
+                            height: 10,
                           ),
                         ],
                       ),
+                    )
+                  ],
+
+                    ),
               ),
             ),
             Obx(() => controller.isLoading.value

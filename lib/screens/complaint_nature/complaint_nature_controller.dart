@@ -73,9 +73,7 @@ class ComplaintNatureController extends GetxController {
       toast("Please select service");
     } else if (natureNameController.text.isEmpty) {
       toast("Please enter ComplaintNature");
-    } else if (remarkController.text.isEmpty) {
-      toast("Please enter Description");
-    } else {
+    }else {
       if (await isNetConnected()) {
         isLoading(true);
         if (data['ComplaintNatureImg'].isNotEmpty &&

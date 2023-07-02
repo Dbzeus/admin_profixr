@@ -73,7 +73,6 @@ class NewTicketScreen extends GetView<NewTicketController> {
                         ? CustomButton(
                             text: 'Next',
                             onTap: () {
-
                               controller.saveCustomer();
                             },
                           )

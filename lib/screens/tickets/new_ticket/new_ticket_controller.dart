@@ -214,8 +214,7 @@ class NewTicketController extends GetxController {
         selectedCNature.isEmpty &&
         selectedService.isEmpty&&
         serviceDateController.text.isEmpty &&
-        selectedTimeSlot.isEmpty &&
-        bookingRemarksController.text.isEmpty
+        selectedTimeSlot.isEmpty
     ){
       toast("Please fill all the fields");
     }else if(selectedService.isEmpty){
@@ -228,8 +227,6 @@ class NewTicketController extends GetxController {
       toast("Please select the service date");
     }else if(selectedTimeSlot.isEmpty){
       toast("Please select the TimeSlot");
-    }else if(bookingRemarksController.text.isEmpty){
-      toast("Please Enter Remarks");
     }else {
       if (await isNetConnected()) {
         try {
@@ -296,8 +293,8 @@ class NewTicketController extends GetxController {
         customerMobileNoController.text.isEmpty &&
         emailController.text.isEmpty&&
         customerMobileNoController.text.isEmpty &&
-        dobController.text.isEmpty &&
-        remarksController.text.isEmpty
+        dobController.text.isEmpty
+
     ){
       toast("Please fill all the fields");
     }else if(customerNameController.text.isEmpty){
@@ -310,8 +307,6 @@ class NewTicketController extends GetxController {
       toast("Please Enter Customer Mobile Number");
     }else if(dobController.text.isEmpty){
       toast("Please Enter date of birth");
-    }else if(remarksController.text.isEmpty){
-      toast("Please Enter Remarks field");
     }else{
       if (await isNetConnected()) {
         isLoading(true);

@@ -19,6 +19,7 @@ class CustomerController extends GetxController {
   TextEditingController dobController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController identityController = TextEditingController();
   TextEditingController permanentAddressController = TextEditingController();
 
   RxBool selectedIsActive = true.obs;
@@ -66,9 +67,7 @@ class CustomerController extends GetxController {
       toast("Please Enter Your Permanent Address");
     } else if (dobController.text.isEmpty) {
       toast("Please Enter Date of Birth");
-    } else if (remarkController.text.isEmpty) {
-      toast("Please Enter Remarks");
-    }else{
+    } else{
       var data = {
         "CustomerID": customerId,
         "UserID": userId,
@@ -79,6 +78,7 @@ class CustomerController extends GetxController {
         "EMailID": emailController.text.trim(),
         "CurrentAddress":
         permanentAddressController.text.trim(),
+        "NationalID": identityController.text.trim(),
         "DOB":
         toSendDateFormat(dobController.text),
         "Remarks": remarkController.text.trim(),

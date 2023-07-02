@@ -82,8 +82,6 @@ class HolidayController extends GetxController {
       toast("Please Enter Date");
     } else if (selectedTimeSlot.isEmpty) {
       toast("Please Enter TimeSlot");
-    } else if (remarkController.text.isEmpty) {
-      toast("Please Enter Remarks");
     } else {
       var data = {
         "HolidayID": holidayId,

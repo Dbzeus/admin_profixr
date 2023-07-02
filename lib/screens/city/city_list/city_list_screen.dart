@@ -150,8 +150,7 @@ class CityListScreen extends GetView<CityController> {
                     ),
                     child: Center(
                       child: Text(
-                        (city["CityName"]
-                            .split(" ") as List<String>).map((e) => e.trim().substring(0,1).toUpperCase()).join(""),
+                        city["CityName"].trim().substring(0,2).toUpperCase(),
                         style: const TextStyle(
                           color: primaryColor,
                           fontSize: 18,

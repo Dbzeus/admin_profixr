@@ -48,18 +48,15 @@ class ProfixerController extends GetxController {
   getProfixer() async {
     if (await isNetConnected()) {
       isLoading(true);
-      debugPrint("1");
+
       ProfixerResponse? response = await ApiCall().getProfixerUser();
       isLoading(false);
-      debugPrint("2");
+
       if (response != null) {
-        debugPrint("3");
         if (response.rtnStatus) {
-          debugPrint("4");
           profixers(response.rtnData);
           // searchList = response['RtnData'];
         } else {
-          debugPrint("5");
           toast(response.rtnMsg);
         }
       }

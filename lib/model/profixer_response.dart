@@ -9,8 +9,7 @@ class ProfixerResponse {
       this.rtnStatus, 
       this.rtnMsg, 
       this.rtnData, 
-      this.otherMsg, 
-      this.id,);
+      );
 
   ProfixerResponse.fromJson(dynamic json) {
     rtnStatus = json['RtnStatus'];
@@ -21,14 +20,11 @@ class ProfixerResponse {
         rtnData.add(ProfixerData.fromJson(v));
       });
     }
-    otherMsg = json['OtherMsg'];
-    id = json['ID'];
+
   }
  late bool rtnStatus;
  late String rtnMsg;
  late List<ProfixerData> rtnData;
- late dynamic otherMsg;
- late dynamic id;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -37,8 +33,7 @@ class ProfixerResponse {
     if (rtnData != null) {
       map['RtnData'] = rtnData.map((v) => v.toJson()).toList();
     }
-    map['OtherMsg'] = otherMsg;
-    map['ID'] = id;
+
     return map;
   }
 
@@ -86,7 +81,7 @@ class ProfixerData {
     userID = json['UserID'];
     firstName = json['FirstName'];
     lastName = json['LastName'];
-    desigination = json['Desigination'];
+    desigination = json['Designation'];
     dob = json['DOB'];
     doj = json['DOJ'];
     mobileNo = json['MobileNo'];
@@ -97,7 +92,7 @@ class ProfixerData {
     relivedDate = json['RelivedDate'];
     relivedReason = json['RelivedReason'];
     isActive = json['IsActive'];
-    userNAme = json['UserNAme'];
+    userNAme = json['UserName'];
     password = json['Password'];
   }
  late int adminID;
@@ -124,7 +119,7 @@ class ProfixerData {
     map['UserID'] = userID;
     map['FirstName'] = firstName;
     map['LastName'] = lastName;
-    map['Desigination'] = desigination;
+    map['Designation'] = desigination;
     map['DOB'] = dob;
     map['DOJ'] = doj;
     map['MobileNo'] = mobileNo;
@@ -135,7 +130,7 @@ class ProfixerData {
     map['RelivedDate'] = relivedDate;
     map['RelivedReason'] = relivedReason;
     map['IsActive'] = isActive;
-    map['UserNAme'] = userNAme;
+    map['UserName'] = userNAme;
     map['Password'] = password;
     return map;
   }

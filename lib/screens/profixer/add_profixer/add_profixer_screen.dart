@@ -71,7 +71,7 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
         Get.focusScope!.unfocus();
       },
       child: Scaffold(
-         resizeToAvoidBottomInset: false,
+         resizeToAvoidBottomInset: true,
         appBar: CustomAppBar(
           title: Get.arguments["title"].toString(),
         ),
@@ -89,7 +89,6 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                         slivers: [
                           SliverFillRemaining(
                             hasScrollBody: false,
-
                             child: Column(
                               children: [
                                 CustomEditText(
@@ -629,6 +628,7 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                               "PermanentAddress": controller
                                                   .permanentAddressController
                                                   .text,
+                                              "NationalID": controller.identityController.text,
                                               "IsRelived": controller
                                                   .selectedRelieveIsActive
                                                   .value,

@@ -38,6 +38,7 @@ class Customer {
     this.lastNAme,
     this.mobileNo,
     this.emailID,
+    this.nationalId,
     this.currentAddress,
     this.dob,
     this.remarks,
@@ -48,9 +49,10 @@ class Customer {
     customerID = json['CustomerID'];
     userID = json['UserID'];
     firstName = json['FirstName'];
-    lastNAme = json['LastNAme'];
-    mobileNo = json['MobileNo'];
+    lastNAme = json['LastName'];
+    mobileNo = json['MobileNumber'];
     emailID = json['EmailID'];
+    nationalId = json['NationalID'];
     currentAddress = json['CurrentAddress'];
     dob = json['DOB'];
     remarks = json['Remarks'];
@@ -63,6 +65,7 @@ class Customer {
   late String lastNAme;
   late String mobileNo;
   late String emailID;
+  late String nationalId;
   late String currentAddress;
   late String dob;
   late String remarks;
@@ -74,9 +77,10 @@ class Customer {
     map['CustomerID'] = customerID;
     map['UserID'] = userID;
     map['FirstName'] = firstName;
-    map['LastNAme'] = lastNAme;
-    map['MobileNo'] = mobileNo;
+    map['LastName'] = lastNAme;
+    map['MobileNumber'] = mobileNo;
     map['EmailID'] = emailID;
+    map['NationalID'] = nationalId;
     map['CurrentAddress'] = currentAddress;
     map['DOB'] = dob;
     map['Remarks'] = remarks;

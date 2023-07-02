@@ -9,8 +9,7 @@ class TechnicianResponse {
       this.rtnStatus, 
       this.rtnMsg, 
       this.rtnData, 
-      this.otherMsg, 
-      this.id,);
+     );
 
   TechnicianResponse.fromJson(dynamic json) {
     rtnStatus = json['RtnStatus'];
@@ -21,14 +20,12 @@ class TechnicianResponse {
         rtnData.add(TechnicainData.fromJson(v));
       });
     }
-    otherMsg = json['OtherMsg'];
-    id = json['ID'];
+
   }
  late  bool rtnStatus;
  late  String rtnMsg;
  late  List<TechnicainData> rtnData;
- late  dynamic otherMsg;
- late  dynamic id;
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -37,8 +34,7 @@ class TechnicianResponse {
     if (rtnData != null) {
       map['RtnData'] = rtnData.map((v) => v.toJson()).toList();
     }
-    map['OtherMsg'] = otherMsg;
-    map['ID'] = id;
+
     return map;
   }
 
@@ -75,7 +71,8 @@ class TechnicainData {
       this.mobileNumber, 
       this.mailID, 
       this.contactAddress, 
-      this.permanentAddress, 
+      this.permanentAddress,
+      this.nationalId,
       this.dob, 
       this.doj, 
       this.serviceIDs, 
@@ -97,6 +94,7 @@ class TechnicainData {
     mailID = json['MailID'];
     contactAddress = json['ContactAddress'];
     permanentAddress = json['PermanentAddress'];
+    nationalId = json['NationalID'];
     dob = json['DOB'];
     doj = json['DOJ'];
     serviceIDs = json['ServiceIDs'];
@@ -104,7 +102,7 @@ class TechnicainData {
     areaIDs = json['AreaIDs'];
     areaName = json['AreaName'];
     isActive = json['IsActive'];
-    userNAme = json['UserNAme'];
+    userNAme = json['UserName'];
     password = json['Password'];
   }
   late int technicianID;
@@ -117,6 +115,7 @@ class TechnicainData {
   late String mailID;
   late String contactAddress;
   late String permanentAddress;
+  late String nationalId;
   late String dob;
   late String doj;
   late String serviceIDs;
@@ -139,6 +138,7 @@ class TechnicainData {
     map['MailID'] = mailID;
     map['ContactAddress'] = contactAddress;
     map['PermanentAddress'] = permanentAddress;
+    map['NationalID'] = nationalId;
     map['DOB'] = dob;
     map['DOJ'] = doj;
     map['ServiceIDs'] = serviceIDs;
@@ -146,7 +146,7 @@ class TechnicainData {
     map['AreaIDs'] = areaIDs;
     map['AreaName'] = areaName;
     map['IsActive'] = isActive;
-    map['UserNAme'] = userNAme;
+    map['UserName'] = userNAme;
     map['Password'] = password;
     return map;
   }

@@ -149,12 +149,10 @@ class AreaListScreen extends GetView<AreaController> {
                     ),
                     child: Center(
                       child: Text(
-                        (area["AreaName"].trim().split(" ") as List<String>)
-                            .map((e) => e.trim().substring(0, 1).toUpperCase())
-                            .join(""),
-                        style: const TextStyle(
+                        area["AreaName"].trim().substring(0,2).toUpperCase(),
+                        style:  const TextStyle(
                           color: primaryColor,
-                          fontSize: 18,
+                          fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

@@ -50,8 +50,6 @@ class ServiceController extends GetxController{
     toast("Please Enter All Fields");
     }else if(serviceNameController.text.isEmpty){
       toast("Please Enter Service Name");
-    }else if(remarkController.text.isEmpty){
-      toast("Please Enter Description");
     }else{
       if (await isNetConnected()) {
         isLoading(true);

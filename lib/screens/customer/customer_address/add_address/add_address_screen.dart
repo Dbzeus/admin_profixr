@@ -51,6 +51,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       controller.doorNoController.clear();
       controller.streetNameController.clear();
       controller.landmarkController.clear();
+      controller.selectedCity("");
+      controller.selectedArea("");
       controller.selectedIsActive(true);
     }
 
@@ -58,12 +60,12 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       onTap: () {
         Get.focusScope!.unfocus();
       },
-      child: Stack(
-        children: [
-          Scaffold(
-            resizeToAvoidBottomInset: false,
-            appBar: CustomAppBar(title: Get.arguments['title']),
-            body: Padding(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: CustomAppBar(title: Get.arguments['title']),
+        body: Stack(
+          children: [
+            Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,6 +98,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                       onChanged: (val) {
                         if (val == null && val==controller.selectedCity.value) return;
                         controller.selectedCity(val);
+                        controller.getArea();
                       },
                       hint: 'City',
                     ),
@@ -258,11 +261,10 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                       }),
                 ],
               ),
-
             ),
-          ),
-          Obx(()=> controller.isLoading.value ? CustomLoader() : const SizedBox.shrink())
-        ],
+            Obx(()=> controller.isLoading.value ? CustomLoader() : const SizedBox.shrink())
+          ],
+        ),
       ),
     );
   }

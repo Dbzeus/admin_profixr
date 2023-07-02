@@ -1,4 +1,4 @@
-package com.dbzeus.profixadmin
+package com.profixer.business
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -18,6 +20,14 @@ class LoginController extends GetxController {
   RxBool isLoading = false.obs;
 
   final _box = GetStorage();
+  // String token="";
+
+  // @override
+  // void onInit() async {
+  //   super.onInit();
+  //   token = await FirebaseMessaging.instance.getToken() ?? '';
+  //   debugPrint("token $token");
+  // }
 
   logIn() async {
     if (mobNoController.text.isEmpty) {
@@ -30,7 +40,7 @@ class LoginController extends GetxController {
         await notificationPermission();
         isLoading(true);
         UserDataResponse? loginResponse = await ApiCall().checkLogin(
-            mobNoController.text, passwordController.text, " ", " ");
+            mobNoController.text, passwordController.text, await FirebaseMessaging.instance.getToken() ?? "", "");
         isLoading(false);
         debugPrint("1");
         if (loginResponse != null) {

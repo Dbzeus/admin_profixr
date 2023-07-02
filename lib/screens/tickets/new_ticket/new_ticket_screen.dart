@@ -27,14 +27,14 @@ class NewTicketScreen extends GetView<NewTicketController> {
           Step(
               title: const Text('Personal'),
               content: personalForm(),
-              isActive: controller.currentStep.value == 0,
+              isActive: controller.currentStep.value >= 0,
               state: controller.currentStep.value > 0
                   ? StepState.complete
                   : StepState.indexed),
           Step(
               title: const Text('Address'),
               content: addressForm(),
-              isActive: controller.currentStep.value == 1,
+              isActive: controller.currentStep.value >= 1,
               state: controller.currentStep.value > 1
                   ? StepState.complete
                   : StepState.indexed),
@@ -62,6 +62,12 @@ class NewTicketScreen extends GetView<NewTicketController> {
                   steps: stepList(),
                   currentStep: controller.currentStep.value,
                   type: StepperType.horizontal,
+                  onStepTapped: (index){
+                    debugPrint("$index ${controller.successCounter} ${controller.currentStep.value}");
+                    if(controller.successCounter>=index){
+                      controller.currentStep(index);
+                    }
+                  },
                   controlsBuilder: (_, __) {
                     return Obx(() => controller.currentStep.value == 0
                         ? CustomButton(

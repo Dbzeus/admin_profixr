@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -43,7 +44,7 @@ class VerificationController extends GetxController {
         if (await isNetConnected()) {
           isLoading(true);
           UserDataResponse? loginResponse =
-          await ApiCall().loginDetailsByMobile(mobileNo.value, "", "");
+          await ApiCall().loginDetailsByMobile(mobileNo.value, await FirebaseMessaging.instance.getToken() ?? "", "");
           if (loginResponse != null) {
             if (loginResponse.rtnStatus) {
               toast(loginResponse.rtnMsg);

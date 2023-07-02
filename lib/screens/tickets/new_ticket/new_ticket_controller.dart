@@ -14,6 +14,7 @@ class NewTicketController extends GetxController {
 
   final _box = GetStorage();
 
+  int successCounter = 0;
   int customerId = 0;
   int customerAddressId = 0;
 
@@ -315,7 +316,7 @@ class NewTicketController extends GetxController {
       if (await isNetConnected()) {
         isLoading(true);
         var data = {
-          "CustomerID": 0,
+          "CustomerID": customerId,
           "UserID": 0,
           "FirstName": customerNameController.text.trim(),
           "LastName": "",
@@ -335,6 +336,9 @@ class NewTicketController extends GetxController {
           if (response['RtnStatus']) {
             customerId = response['ID'];
             getCity();
+            if(successCounter==0){
+              successCounter=1;
+            }
             currentStep(1);
           } else {
             toast(response['RtnMsg']);
@@ -369,7 +373,7 @@ class NewTicketController extends GetxController {
       if (await isNetConnected()) {
         isLoading(true);
         var data = {
-          "AddressID": 0,
+          "AddressID": customerAddressId,
           "CustomerID": customerId,
           "AddressTitle": customerAddressTitleController.text.trim(),
           "DoorNo": doorNoController.text.trim(),
@@ -390,6 +394,9 @@ class NewTicketController extends GetxController {
             getServices();
             getServiceType();
             getTimeSlots();
+            if(successCounter==1){
+              successCounter=2;
+            }
             currentStep(2);
           } else {
             toast(response['RtnMsg']);

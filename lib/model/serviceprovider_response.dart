@@ -9,8 +9,7 @@ class ServiceproviderResponse {
       this.rtnStatus, 
       this.rtnMsg, 
       this.rtnData, 
-      this.otherMsg, 
-      this.id,);
+      );
 
   ServiceproviderResponse.fromJson(dynamic json) {
     rtnStatus = json['RtnStatus'];
@@ -21,14 +20,10 @@ class ServiceproviderResponse {
         rtnData.add(ServiceProviderData.fromJson(v));
       });
     }
-    otherMsg = json['OtherMsg'];
-    id = json['ID'];
   }
  late bool rtnStatus;
  late String rtnMsg;
  late List<ServiceProviderData> rtnData;
- late dynamic otherMsg;
- late dynamic id;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -37,8 +32,6 @@ class ServiceproviderResponse {
     if (rtnData != null) {
       map['RtnData'] = rtnData.map((v) => v.toJson()).toList();
     }
-    map['OtherMsg'] = otherMsg;
-    map['ID'] = id;
     return map;
   }
 

@@ -3,7 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
- AndroidNotificationChannel channel = AndroidNotificationChannel(
+ AndroidNotificationChannel channel = const AndroidNotificationChannel(
   'Profixer',
   'Profixer',
    'Profixer app notification',
@@ -30,7 +30,7 @@ class FirebaseNotification {
     var initializationsSettingsAndroid =
         const AndroidInitializationSettings('mipmap/ic_launcher');
 
-    IOSInitializationSettings  initializationSettingsIOS = IOSInitializationSettings(
+    IOSInitializationSettings  initializationSettingsIOS = const IOSInitializationSettings(
       requestSoundPermission: true,
       requestBadgePermission: true,
       requestAlertPermission: true,

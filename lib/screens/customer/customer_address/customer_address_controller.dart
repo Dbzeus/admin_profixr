@@ -130,9 +130,9 @@ class CustomerAddressController extends GetxController {
         "CityID": selectedCity.value,
         "AreaID": selectedArea.value,
         "LandMark": landmarkController.text.trim(),
-        "Latitude": "",
-        "Longitude": "",
-        "IsActive": true,
+        "Latitude": "0",
+        "Longitude": "0",
+        "IsActive": selectedIsActive.value,
         "CUID": box.read(Session.userId)
       };
       insertCustomerAddress(data, isUpdated);

@@ -376,8 +376,8 @@ class NewTicketController extends GetxController {
           "CityID": selectedCity.value,
           "AreaID": selectedArea.value,
           "LandMark": landmarkController.text.trim(),
-          "Latitude": "",
-          "Longitude": "",
+          "Latitude": "0",
+          "Longitude": "0",
           "IsActive": true,
           "CUID": _box.read(Session.userId)
         };

@@ -158,8 +158,8 @@ class _AddressListState extends State<AddressList> {
           child: Row(
             children: [
               Container(
-                width: 70,
-                height: 70,
+                width: 50,
+                height: 50,
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),

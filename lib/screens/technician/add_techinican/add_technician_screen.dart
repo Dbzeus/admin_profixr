@@ -111,7 +111,6 @@ class _AddTechnicianScreenState extends State<AddTechnicianScreen> {
                             child: CustomScrollView(
                               slivers: [
                                 SliverFillRemaining(
-
                                   hasScrollBody: false,
                                   child: Column(
                                     children: [

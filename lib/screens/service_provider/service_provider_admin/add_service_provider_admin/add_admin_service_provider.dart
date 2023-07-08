@@ -32,6 +32,7 @@ class AddAdminServiceProvider extends StatelessWidget {
       controller.adminMobNoController.text = adminData!.mobileNumber.toString();
       controller.adminPasswordController.text = adminData!.password.toString();
       controller.adminEmailController.text = adminData!.mailID.toString();
+      controller.identityController.text = adminData!.nationalId.toString();
       controller.adminCurrentAddressController.text =
           adminData!.contactAddress.toString();
       controller.adminPermenantAddressController.text =
@@ -148,7 +149,9 @@ class AddAdminServiceProvider extends StatelessWidget {
                                 CustomEditText(
                                     hintText: "User Name",
                                     controller:
-                                        controller.adminUserNameController),
+                                        controller.adminUserNameController,
+                                readOnly:  controller.adminUserNameController.text.isNotEmpty ? true :false,
+                                ),
                                 const SizedBox(
                                   height: 10,
                                 ),
@@ -162,6 +165,7 @@ class AddAdminServiceProvider extends StatelessWidget {
                                 CustomEditText(
                                   hintText: "National ID",
                                   controller: controller.identityController,
+                                  readOnly:  controller.identityController.text.isNotEmpty ? true : false,
                                 ),
                                 const SizedBox(
                                   height: 10,
@@ -189,7 +193,7 @@ class AddAdminServiceProvider extends StatelessWidget {
                                     } else if (controller
                                         .adminPasswordController.text.isEmpty) {
                                       toast("Please Enter Your Password");
-                                    } else if (controller
+                                    } else if (adminData != null && controller
                                         .identityController.text.isEmpty) {
                                       toast("Please Enter Your National ID");
                                     } else {

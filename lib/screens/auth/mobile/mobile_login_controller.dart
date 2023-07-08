@@ -10,15 +10,19 @@ class MobileLoginController extends GetxController {
 
   RxBool isVisible = true.obs;
   RxBool isLoading = false.obs;
-  RxString dropDownValue = "+966".obs;
+  RxString dropDownValue ="".obs;
   var items = [
-    '+966',
-    '+967',
     '+968',
-    '+969',
   ];
 
+  @override
+  void onInit(){
+    super.onInit();
+    dropDownValue(items.first);
+  }
+
   sendOTP() async {
+
     if (mobNoController.text.isEmpty) {
       toast("Enter Your Mobile Number");
     } else {

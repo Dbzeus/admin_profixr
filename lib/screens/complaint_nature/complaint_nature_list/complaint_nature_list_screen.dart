@@ -65,10 +65,6 @@ class ComplaintNatureListScreen extends GetView<ComplaintNatureController> {
                             Icons.search,
                             color: textColor,
                           ),
-                          suffixIcon: const Icon(
-                            Icons.filter_alt_rounded,
-                            color: textColor,
-                          ),
 
                         ),
                       ),

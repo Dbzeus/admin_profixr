@@ -31,11 +31,12 @@ class ProfixerController extends GetxController {
   RxBool selectedRelieveIsActive = true.obs;
 
   RxList<ProfixerData> profixers = RxList();
+  List<ProfixerData> searchList = [];
 
   String dateFormat = "MM/dd/yyyy";
 
-  RxString mobileNoDropDownValue = "+966".obs;
-  List<String> mobileItems = ["+966", "+967", "+968"];
+  RxString mobileNoDropDownValue = "".obs;
+  List<String> mobileItems = ["+968"];
 
   final box = GetStorage();
 
@@ -43,6 +44,7 @@ class ProfixerController extends GetxController {
   void onInit() {
     super.onInit();
     getProfixer();
+    mobileNoDropDownValue(mobileItems.first);
   }
 
   getProfixer() async {
@@ -55,7 +57,7 @@ class ProfixerController extends GetxController {
       if (response != null) {
         if (response.rtnStatus) {
           profixers(response.rtnData);
-          // searchList = response['RtnData'];
+          searchList = response.rtnData;
         } else {
           toast(response.rtnMsg);
         }
@@ -95,6 +97,27 @@ class ProfixerController extends GetxController {
           toast(response['RtnMsg']);
         }
       }
+    }
+  }
+
+  onSearchChanged(String text) {
+    if (text.isEmpty) {
+      profixers(searchList);
+    } else {
+      profixers(searchList
+          .where((element) =>
+      element.firstName
+          .toString()
+          .toLowerCase()
+          .contains(text.toLowerCase()) ||
+          element.mobileNo
+              .toString()
+              .toLowerCase()
+              .contains(text.toLowerCase()) || element.desigination
+          .toString()
+          .toLowerCase()
+          .contains(text.toLowerCase()))
+          .toList());
     }
   }
 }

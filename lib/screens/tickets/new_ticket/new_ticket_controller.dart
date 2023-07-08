@@ -64,14 +64,18 @@ class NewTicketController extends GetxController {
     'VAR',
   ];
 
-  RxString mobileNoDropDownValue = "+966".obs;
+  RxString mobileNoDropDownValue = "".obs;
   var mobileItems = [
-    '+966',
-    '+967',
+
     '+968',
-    '+969',
+
   ];
 
+  @override
+  void onInit(){
+    super.onInit();
+    mobileNoDropDownValue(mobileItems.first);
+  }
   getArea() async {
     if (await isNetConnected()) {
       isLoading(true);

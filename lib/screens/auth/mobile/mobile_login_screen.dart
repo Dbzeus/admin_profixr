@@ -36,6 +36,7 @@ class MobileLoginScreen extends GetView<MobileLoginController> {
                   GestureDetector(
                     onTap: () {
                       Get.back();
+
                     },
                     child: Align(
                         alignment: Alignment.centerLeft,

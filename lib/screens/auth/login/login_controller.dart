@@ -37,29 +37,23 @@ class LoginController extends GetxController {
     } else {
       Get.focusScope?.unfocus();
       if (await isNetConnected()) {
-        await notificationPermission();
+        //await notificationPermission();
         isLoading(true);
         UserDataResponse? loginResponse = await ApiCall().checkLogin(
             mobNoController.text, passwordController.text, await FirebaseMessaging.instance.getToken() ?? "", "");
         isLoading(false);
-        debugPrint("1");
+
         if (loginResponse != null) {
-          debugPrint("2");
           if (loginResponse.rtnStatus) {
-            debugPrint("3");
             toast(loginResponse.rtnMsg);
             storeSessions(loginResponse.rtnData!);
             Get.offAllNamed(
               Routes.main,
             );
           } else {
-
             toast(loginResponse.rtnMsg);
           }
-        }else{
-          debugPrint("5");
         }
-        debugPrint("6");
       }
     }
   }

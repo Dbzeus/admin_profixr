@@ -32,11 +32,12 @@ class ServiceProviderController extends GetxController {
 
 
   RxList<ServiceProviderData> serviceProviders = RxList();
+  List<ServiceProviderData> searchList =[];
   RxList<AdminData> serviceProviderAdmin = RxList();
   String dateFormat = "MM/dd/yyyy";
 
-  RxString mobileNoDropDownValue = "+966".obs;
-  List<String> mobileItems = ["+966", "+967", "+968"];
+  RxString mobileNoDropDownValue = "".obs;
+  List<String> mobileItems = ["+968"];
 
   RxList<Map<String, String>> areaList = RxList();
   String selectedArea = "";
@@ -53,6 +54,7 @@ class ServiceProviderController extends GetxController {
   void onInit() {
     super.onInit();
     getServiceProvider();
+    mobileNoDropDownValue(mobileItems.first);
   }
 
   getServiceProvider() async {
@@ -63,7 +65,7 @@ class ServiceProviderController extends GetxController {
       if (response != null) {
         if (response.rtnStatus) {
           serviceProviders(response.rtnData);
-          // searchList = response['RtnData'];
+           searchList = response.rtnData;
         } else {
           toast(response.rtnMsg);
         }
@@ -178,6 +180,25 @@ class ServiceProviderController extends GetxController {
     }).toList().obs;
   }
 
-
+  onSearchChanged(String text) {
+    if (text.isEmpty) {
+      serviceProviders(searchList);
+    } else {
+      serviceProviders(searchList
+          .where((element) =>
+      element.serviceProviderName
+          .toString()
+          .toLowerCase()
+          .contains(text.toLowerCase()) ||
+          element.contactNumber
+              .toString()
+              .toLowerCase()
+              .contains(text.toLowerCase()) || element.contactPerson
+          .toString()
+          .toLowerCase()
+          .contains(text.toLowerCase()))
+          .toList());
+    }
+  }
 
 }

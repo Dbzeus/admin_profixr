@@ -3,10 +3,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
- AndroidNotificationChannel channel = const AndroidNotificationChannel(
+AndroidNotificationChannel channel = const AndroidNotificationChannel(
   'Profixer',
   'Profixer',
-   'Profixer app notification',
+  description: 'Profixer app notification',
   importance: Importance.max,
   playSound: true,
   enableLights: true,
@@ -24,13 +24,15 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 class FirebaseNotification {
   initialize() async {
     await Firebase.initializeApp();
+
     // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     // debugPrint(await FirebaseMessaging.instance.getToken());
 
     var initializationsSettingsAndroid =
         const AndroidInitializationSettings('mipmap/ic_launcher');
 
-    IOSInitializationSettings  initializationSettingsIOS = const IOSInitializationSettings(
+    DarwinInitializationSettings  initializationSettingsIOS =
+        const DarwinInitializationSettings (
       requestSoundPermission: true,
       requestBadgePermission: true,
       requestAlertPermission: true,
@@ -52,6 +54,10 @@ class FirebaseNotification {
             AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
+
+    flutterLocalNotificationPlugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>()?.requestPermission();
+
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       debugPrint(message.data.toString());
       notify(message);
@@ -70,8 +76,8 @@ class FirebaseNotification {
     AndroidNotification? android = message.notification?.android;
     if (notification != null && android != null) {
       AndroidNotificationDetails notificationDetails =
-          AndroidNotificationDetails(channel.id, channel.name,
-               channel.description,
+          AndroidNotificationDetails(
+              channel.id, channel.name, channelDescription: channel.description,
               styleInformation:
                   BigTextStyleInformation(notification.body ?? ''),
               importance: Importance.max,
@@ -100,8 +106,8 @@ class FirebaseNotification {
           contentTitle: "${activeNotifications.length - 1} messages",
           summaryText: "${activeNotifications.length - 1} messages");
       AndroidNotificationDetails groupNotificationDetails =
-          AndroidNotificationDetails(channel.id, channel.name,
-               channel.description,
+          AndroidNotificationDetails(
+              channel.id, channel.name,channelDescription: channel.description,
               styleInformation: inboxStyleInformation,
               setAsGroupSummary: true,
               groupKey: channel.id);

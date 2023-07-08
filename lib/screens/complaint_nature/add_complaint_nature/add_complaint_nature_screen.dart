@@ -27,7 +27,7 @@ class AddComplaintNatureScreen extends StatelessWidget {
     debugPrint(Get.arguments['complaintNature'].toString());
     if (Get.arguments['complaintNature'] != null) {
       natureId = Get.arguments['complaintNature']['ComplaintNatureID'];
-
+    controller.selectedService(Get.arguments['complaintNature']['ServiceID'].toString());
       controller.natureNameController.text =
           Get.arguments['complaintNature']['ComplaintNatureName'];
       controller.remarkController.text =

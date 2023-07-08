@@ -315,6 +315,7 @@ class _AddServiceScreenState extends State<AddServiceScreen> {
                         controller.createService(
                             service, Get.arguments['service'] != null);
                       }),
+
                 ],
               ),
             ),

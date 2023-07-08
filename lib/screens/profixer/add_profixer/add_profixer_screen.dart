@@ -31,6 +31,7 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
       controller.lastNameController.text = profixerData!.lastName.toString();
       controller.userNameController.text = profixerData!.userNAme.toString();
       controller.mobileController.text = profixerData!.mobileNo.toString();
+      controller.identityController.text = profixerData!.nationalId.toString();
       controller.permanentAddressController.text =
           profixerData!.permanentAddress.toString();
       controller.passwordController.text = profixerData!.password.toString();
@@ -53,6 +54,8 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
       controller.userNameController.clear();
       controller.mobileController.clear();
       controller.dobController.clear();
+      controller.identityController.clear();
+      controller.designationController.clear();
       controller.permanentAddressController.clear();
       controller.passwordController.clear();
       controller.dojController.clear();
@@ -177,7 +180,9 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                 ),
                                 CustomEditText(
                                     hintText: "User Name",
-                                    controller: controller.userNameController),
+                                    controller: controller.userNameController,
+                                readOnly:  controller.userNameController.text.isNotEmpty ?true :false ,
+                                ),
                                 const SizedBox(
                                   height: 10,
                                 ),
@@ -285,6 +290,7 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                 CustomEditText(
                                   hintText: "National ID",
                                   controller: controller.identityController,
+                                  readOnly:  controller.identityController.text.isNotEmpty ? true :false,
                                 ),
                                 const SizedBox(
                                   height: 8,
@@ -584,6 +590,7 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                             : "Update",
                                         btnColor: primaryColor,
                                         onTap: () {
+
                                           if (controller
                                               .dojController.text.isEmpty) {
                                             toast(
@@ -600,12 +607,11 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                               .isEmpty) {
                                             toast(
                                                 "Please Enter Permanent Address");
-                                          } else if (controller
-                                              .identityController
-                                              .text
-                                              .isEmpty) {
+                                          } else if (profixerData != null && controller.identityController.text.isEmpty) {
+
                                             toast("Please Enter National ID");
                                           } else {
+                                            debugPrint("button");
                                             var params = {
                                               "UserID":
                                                   profixerData?.userID ?? 0,
@@ -664,12 +670,14 @@ class _AddProfixerScreenState extends State<AddProfixerScreen> {
                                           }
                                         },
                                       ),
+
                                     ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
+
                                   ],
-                                )
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
                               ],
                             ),
                           )

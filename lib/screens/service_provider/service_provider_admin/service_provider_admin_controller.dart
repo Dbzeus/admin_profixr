@@ -39,19 +39,25 @@ class ServiceProviderAdminController extends GetxController {
 
   //RxBool selectedTag = false.obs;
 
-  RxList<ServiceProviderData> serviceProviders = RxList();
+
   RxList<AdminData> serviceProviderAdmin = RxList();
+  List<AdminData> searchList = [];
   String dateFormat = "MM/dd/yyyy";
 
-  RxString mobileNoDropDownValue = "+966".obs;
-  List<String> mobileItems = ["+966", "+967", "+968"];
+  RxString mobileNoDropDownValue = "".obs;
+  List<String> mobileItems = ["+968"];
 
 
   final box = GetStorage();
 
   var serviceProviderId=0;
 
+  @override
+  void onInit(){
+    super.onInit();
+    mobileNoDropDownValue(mobileItems.first);
 
+  }
   //for admin
   getServiceProviderAdmin(int serviceProviderId) async {
     this.serviceProviderId=serviceProviderId;
@@ -63,7 +69,7 @@ class ServiceProviderAdminController extends GetxController {
       if (response != null) {
         if (response.rtnStatus) {
           serviceProviderAdmin(response.rtnData);
-          // searchList = response['RtnData'];
+          searchList = response.rtnData;
         } else {
           toast(response.rtnMsg);
         }
@@ -107,6 +113,26 @@ class ServiceProviderAdminController extends GetxController {
         }
         toast(response['RtnMsg']);
       }
+    }
+  }
+  onSearchChanged(String text) {
+    if (text.isEmpty) {
+      serviceProviderAdmin(searchList);
+    } else {
+      serviceProviderAdmin(searchList
+          .where((element) =>
+      element.serviceProviderName
+          .toString()
+          .toLowerCase()
+          .contains(text.toLowerCase()) ||
+          element.firstName
+              .toString()
+              .toLowerCase()
+              .contains(text.toLowerCase()) || element.mobileNumber
+          .toString()
+          .toLowerCase()
+          .contains(text.toLowerCase()))
+          .toList());
     }
   }
 }

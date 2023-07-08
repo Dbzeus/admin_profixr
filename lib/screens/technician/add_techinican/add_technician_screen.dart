@@ -43,6 +43,7 @@ class _AddTechnicianScreenState extends State<AddTechnicianScreen> {
           technicianData!.serviceProviderID.toString());
       controller.dojController.text =
           toShowDateFormat(technicianData!.doj).toString();
+      controller.identityController.text=technicianData!.nationalId.toString();
       controller.selectedService = technicianData!.serviceIDs.toString();
       controller.selectedServiceName(technicianData!.serviceName);
       controller.selectedArea = technicianData!.areaIDs.toString();
@@ -191,6 +192,7 @@ class _AddTechnicianScreenState extends State<AddTechnicianScreen> {
                                       CustomEditText(
                                         hintText: "Username",
                                         controller: controller.userNameController,
+                                        readOnly: controller.userNameController.text.isNotEmpty ?true:false,
                                       ),
                                       const SizedBox(
                                         height: 10,
@@ -478,6 +480,7 @@ class _AddTechnicianScreenState extends State<AddTechnicianScreen> {
                                       CustomEditText(
                                         hintText: "National ID",
                                         controller: controller.identityController,
+                                        readOnly: controller.identityController.text.isNotEmpty ? true :false,
                                       ),
                                       const SizedBox(
                                         height: 10,
@@ -636,7 +639,7 @@ class _AddTechnicianScreenState extends State<AddTechnicianScreen> {
                                                 }else if (controller.selectedAreaNames.isEmpty) {
                                                   toast("Please Select your prefered Area");
                                                 }
-                                                else if (controller.identityController.text.isEmpty) {
+                                                else if (technicianData != null && controller.identityController.text.isEmpty) {
                                                   toast("Please Enter National ID");
                                                 } else if (controller.currentAddressController.text.isEmpty) {
                                                   toast("Please Enter Current Address Number");

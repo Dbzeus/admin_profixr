@@ -44,6 +44,7 @@ class _AddServiceProviderScreenState extends State<AddServiceProviderScreen> {
           serviceProviderData!.contactPerson.toString();
       controller.mobileController.text =
           serviceProviderData!.contactNumber.toString();
+
       controller.emailController.text =
           serviceProviderData!.contactMailID.toString();
       controller.permanentAddressController.text =
@@ -57,7 +58,6 @@ class _AddServiceProviderScreenState extends State<AddServiceProviderScreen> {
       controller.contractEndController.text =
           toShowDateFormat(serviceProviderData!.contractEndDate).toString();
       controller.selectedIsActive(serviceProviderData!.isActive);
-
       controller.getServiceProviderArea(canClear: false);
       controller.getServiceProviderService(canClear: false);
       controller.selectedService = serviceProviderData!.serviceIDs.toString();
@@ -80,7 +80,6 @@ class _AddServiceProviderScreenState extends State<AddServiceProviderScreen> {
       controller.selectedServiceName("");
       controller.selectedArea="";
       controller.selectedAreaNames("");
-      controller.identityController.clear();
       controller.getServiceProviderArea();
       controller.getServiceProviderService();
     }
@@ -173,7 +172,9 @@ class _AddServiceProviderScreenState extends State<AddServiceProviderScreen> {
                                   ),
                                   CustomEditText(
                                       hintText: "User Name",
-                                      controller: controller.userNameController),
+                                      controller: controller.userNameController,
+                                  readOnly:controller.userNameController.text.isNotEmpty ? true :false ,
+                                  ),
                                   const SizedBox(
                                     height: 10,
                                   ),
@@ -223,13 +224,8 @@ class _AddServiceProviderScreenState extends State<AddServiceProviderScreen> {
                                     controller:
                                     controller.permanentAddressController,
                                   ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  CustomEditText(
-                                    hintText: "National ID",
-                                    controller: controller.identityController,
-                                  ),
+
+
                                   const SizedBox(
                                     height: 20,
                                   ),
@@ -250,8 +246,6 @@ class _AddServiceProviderScreenState extends State<AddServiceProviderScreen> {
                                         toast("Please Enter Email ID");
                                       } else if (controller.permanentAddressController.text.isEmpty) {
                                         toast("Please Enter Permanent Address");
-                                      }else if (controller.identityController.text.isEmpty) {
-                                        toast("Please Enter National Id");
                                       }else{
                                         controller
                                             .isConfirm(!controller.isConfirm.value);
@@ -499,7 +493,7 @@ class _AddServiceProviderScreenState extends State<AddServiceProviderScreen> {
                                               var date = await showDatePicker(
                                                   context: Get.context!,
                                                   initialDate: DateTime.now(),
-                                                  firstDate: DateTime.now(),
+                                                  firstDate: DateTime(DateTime.now().year -3 , 12,31),
                                                   lastDate: DateTime(
                                                       DateTime.now().year + 1, 12, 31));
                                               if (date != null) {

@@ -45,7 +45,9 @@ class TechnicianListScreen extends GetView<TechnicianController> {
                       style: const TextStyle(
                         fontSize: 16,
                         color: textColor,
-                      ),
+                      ), onChanged: (text){
+                      controller.onSearchChanged(text);
+                    },
                       decoration: const InputDecoration(
                         hintText: 'Search',
                         border: InputBorder.none,

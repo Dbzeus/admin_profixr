@@ -11,12 +11,9 @@ class ChangeDetailsController extends GetxController{
 
   final box=GetStorage();
 
-  RxString mobileNoDropDownValue = "+966".obs;
+  RxString mobileNoDropDownValue = "".obs;
   var mobileItems = [
-    '+966',
-    '+967',
     '+968',
-    '+969',
   ];
 
   RxString designationDropDownValue = "Admin".obs;
@@ -25,4 +22,11 @@ class ChangeDetailsController extends GetxController{
     'Techinician',
     'Customer',
   ];
+  @override
+  void onInit(){
+    super.onInit();
+    mobileNoDropDownValue(mobileItems.first);
+  }
 }
+
+

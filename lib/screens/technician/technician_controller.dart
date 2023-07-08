@@ -31,8 +31,9 @@ class TechnicianController extends GetxController {
   RxBool isLoading = false.obs;
   String dateFormat = "MM/dd/yyyy";
   RxList<TechnicainData> technicianList = RxList();
-  RxString mobileNoDropDownValue = "+966".obs;
-  List<String> mobileItems = ["+966", "+967", "+968"];
+  List<TechnicainData> searchList = [];
+  RxString mobileNoDropDownValue = "".obs;
+  List<String> mobileItems = ["+968"];
 
   /*RxString serviceProviderDropDownValue = "Plumbing".obs;
   List<Map<String, String>> serviceProviderDropDownItems = [
@@ -62,6 +63,7 @@ class TechnicianController extends GetxController {
 
   @override
   void onInit() {
+    mobileNoDropDownValue(mobileItems.first);
     super.onInit();
     getTechnician();
   }
@@ -165,7 +167,7 @@ class TechnicianController extends GetxController {
       if (response != null) {
         if (response.rtnStatus) {
           technicianList(response.rtnData);
-          //searchList = response['RtnData'];
+          searchList = response.rtnData;
         } else {
           toast(response.rtnMsg);
         }
@@ -222,5 +224,24 @@ class TechnicianController extends GetxController {
       'isSelected': selectedAreaNames.split(",").firstWhereOrNull((e) => e==element['value'])!=null
     }).toList().obs;
   }
-
+  onSearchChanged(String text) {
+    if (text.isEmpty) {
+      technicianList(searchList);
+    } else {
+      technicianList(searchList
+          .where((element) =>
+      element.firstName
+          .toString()
+          .toLowerCase()
+          .contains(text.toLowerCase()) ||
+          element.mobileNumber
+              .toString()
+              .toLowerCase()
+              .contains(text.toLowerCase()) || element.userNAme
+          .toString()
+          .toLowerCase()
+          .contains(text.toLowerCase()))
+          .toList());
+    }
+  }
 }

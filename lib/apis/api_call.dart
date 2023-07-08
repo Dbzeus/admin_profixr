@@ -52,7 +52,7 @@ class ApiCall {
 
       log('response code ${response.requestOptions.path} ${response.statusCode} $params ${response.data}');
             return UserDataResponse.fromJson(response.data);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       debugPrint(e.message);
       toast(e.message);
     } catch (e) {
@@ -78,7 +78,7 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} $params ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       debugPrint(e.message);
       toast(e.message);
     } catch (e) {
@@ -105,7 +105,7 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} $params ${response.data}');
 
       return UserDataResponse.fromJson(response.data);
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       debugPrint(e.message);
       toast(e.message);
     } catch (e) {
@@ -124,8 +124,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return MenuResponse.fromJson(response.data);
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -146,8 +146,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -166,8 +166,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -192,8 +192,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -212,8 +212,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -239,8 +239,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -259,8 +259,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -278,8 +278,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -306,8 +306,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -328,8 +328,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -357,8 +357,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -377,8 +377,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return ProfixerResponse.fromJson(response.data);
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -415,8 +415,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -436,8 +436,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return ServiceproviderResponse.fromJson(response.data);
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -472,8 +472,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -492,8 +492,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -510,8 +510,8 @@ class ApiCall {
           await _dio.get(getServiceProviderAdminUrl, queryParameters: params);
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
       return AdminResponse.fromJson(response.data);
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -547,8 +547,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -567,8 +567,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -594,7 +594,7 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} $params ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       debugPrint(e.message);
       toast(e.message);
     } catch (e) {
@@ -622,7 +622,7 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} $params ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       debugPrint(e.message);
       toast(e.message);
     } catch (e) {
@@ -661,8 +661,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -680,8 +680,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return CustomerResponse.fromJson(response.data);
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -715,8 +715,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${body.toString()} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -736,8 +736,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path}  ${response.statusCode} ${response.data}');
 
       return CustomerAddressResponse.fromJson(response.data);
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -770,8 +770,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${body.toString()} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -800,8 +800,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -820,8 +820,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -840,8 +840,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -870,8 +870,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -889,8 +889,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -912,8 +912,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return TechnicianResponse.fromJson(response.data);
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -939,8 +939,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return TicketCountResponse.fromJson(response.data);
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -976,8 +976,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -1013,8 +1013,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return response.data;
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -1036,8 +1036,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return TicketListResponse.fromJson(response.data);
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());
@@ -1060,8 +1060,8 @@ class ApiCall {
       log('response code ${response.requestOptions.path} ${response.statusCode} ${response.data}');
 
       return TicketHistoryResponse.fromJson(response.data);
-    } on DioError catch (e) {
-      log(e.message);
+    } on DioException catch (e) {
+      log(e.message.toString());
       toast(e.message);
     } catch (e) {
       log(e.toString());

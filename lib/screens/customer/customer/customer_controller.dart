@@ -29,8 +29,8 @@ class CustomerController extends GetxController {
   int customerId = 0;
   int userId = 0;
 
-  RxString mobileNoDropDownValue = "+966".obs;
-  List<String> mobileItems = ["+966", "+967", "+968"];
+  RxString mobileNoDropDownValue = "".obs;
+  List<String> mobileItems = ["+968"];
 
   RxInt isSelectedTag = 0.obs;
 
@@ -38,6 +38,7 @@ class CustomerController extends GetxController {
   void onInit() {
     super.onInit();
     getCustomers();
+    mobileNoDropDownValue(mobileItems.first);
   }
 
   getCustomers() async {
@@ -56,7 +57,7 @@ class CustomerController extends GetxController {
     }
   }
 
-  validation(bool isUpdated){
+  /*validation(bool isUpdated){
      if (nameController.text.isEmpty) {
       toast("Please Enter Customer Name");
     } else if (mobileController.text.isEmpty) {
@@ -66,6 +67,8 @@ class CustomerController extends GetxController {
     } else if (permanentAddressController.text.isEmpty) {
       toast("Please Enter Your Permanent Address");
     } else if (dobController.text.isEmpty) {
+      toast("Please Enter Date of Birth");
+    }else if (identityController.text.isEmpty) {
       toast("Please Enter Date of Birth");
     } else{
       var data = {
@@ -90,7 +93,7 @@ class CustomerController extends GetxController {
       createCustomer(
           data, isUpdated);
     }
-  }
+  }*/
 
   createCustomer(data, bool isUpdated) async {
 

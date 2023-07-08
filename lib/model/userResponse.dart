@@ -9,21 +9,18 @@ class UserDataResponse {
       this.rtnStatus, 
       this.rtnMsg, 
       this.rtnData, 
-      this.otherMsg, 
-      this.id,);
+      );
 
   UserDataResponse.fromJson(dynamic json) {
     rtnStatus = json['RtnStatus'];
     rtnMsg = json['RtnMsg'];
-    rtnData = (json['RtnData'] != null ? UserData.fromJson(json['RtnData']) : null)!;
-    otherMsg = json['OtherMsg'];
-    id = json['ID'];
+    rtnData = json['RtnData'] != null ? UserData.fromJson(json['RtnData']) : null;
+
   }
   late bool rtnStatus;
   late String rtnMsg;
   late UserData? rtnData;
-  late dynamic otherMsg;
-  late dynamic id;
+
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -32,8 +29,7 @@ class UserDataResponse {
     if (rtnData != null) {
       map['RtnData'] = rtnData!.toJson();
     }
-    map['OtherMsg'] = otherMsg;
-    map['ID'] = id;
+
     return map;
   }
 

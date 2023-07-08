@@ -27,8 +27,8 @@ class CustomerAddressController extends GetxController {
 
   final box = GetStorage();
 
-  RxString mobileNoDropDownValue = "+966".obs;
-  List<String> mobileItems = ["+966", "+967", "+968"];
+  RxString mobileNoDropDownValue = "".obs;
+  List<String> mobileItems = ["+968"];
 
   RxList<Map<String, String>> cities = RxList();
   RxString selectedCity = "".obs;
@@ -39,6 +39,7 @@ class CustomerAddressController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    mobileNoDropDownValue(mobileItems.first);
   }
 
   getArea() async {

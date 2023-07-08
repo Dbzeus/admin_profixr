@@ -34,6 +34,7 @@ class AddCustomerScreen extends StatelessWidget {
       controller.permanentAddressController.text =
           customerData!.currentAddress.toString();
       controller.identityController.text = customerData!.nationalId.toString();
+      controller.identityController.text = customerData!.nationalId.toString();
     } else {
       controller.nameController.clear();
       controller.remarkController.clear();
@@ -169,6 +170,7 @@ class AddCustomerScreen extends StatelessWidget {
                                         hintText: "National ID",
                                         controller:
                                             controller.identityController,
+                                        readOnly:  controller.identityController.text.isNotEmpty ? true :false,
                                       ),
                                       const SizedBox(
                                         height: 10,
@@ -217,9 +219,44 @@ class AddCustomerScreen extends StatelessWidget {
                                       CustomButton(
                                           text: Get.arguments['buttonTitle'],
                                           onTap: () {
-                                            controller.validation(
-                                                Get.arguments['customer'] !=
-                                                    null);
+                                            debugPrint("ID: ${controller.identityController.text}");
+                                            if (controller.nameController.text.isEmpty) {
+                                              toast("Please Enter Customer Name");
+                                            } else if (controller.mobileController.text.isEmpty) {
+                                              toast("Please Enter Mobile Number");
+                                            } else if (controller.emailController.text.isEmpty) {
+                                              toast("Please Enter Email ID");
+                                            } else if (controller.permanentAddressController.text.isEmpty) {
+                                              toast("Please Enter Your Permanent Address");
+                                            } else if (controller.dobController.text.isEmpty) {
+                                              toast("Please Enter Date of Birth");
+                                            }else if (customerData != null && controller.identityController.text.isEmpty) {
+                                              toast("Please Enter National ID");
+                                            } else{
+                                              var data = {
+                                                "CustomerID": controller.customerId,
+                                                "UserID": controller.userId,
+                                                "FirstName":controller.nameController.text.trim(),
+                                                "LastName": "",
+                                                "MobileNumber":
+                                                controller.mobileController.text.trim(),
+                                                "EMailID": controller.emailController.text.trim(),
+                                                "CurrentAddress":
+                                                controller.permanentAddressController.text.trim(),
+                                                "NationalID": controller.identityController.text.trim(),
+                                                "DOB":
+                                                toSendDateFormat(controller.dobController.text),
+                                                "Remarks": controller.remarkController.text.trim(),
+                                                "Username": controller.mobileController.text.trim(),
+                                                "Password": "1234",
+                                                "IsActive": true,
+                                                "CUID": controller.box.read(Session.userId)
+                                              };
+                                              controller.createCustomer(
+                                                  data,Get.arguments['customer'] !=
+                                                  null );
+                                            }
+
                                           }),
                                       const SizedBox(
                                         height: 10,

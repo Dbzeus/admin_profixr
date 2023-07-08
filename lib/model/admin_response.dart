@@ -71,7 +71,8 @@ class AdminData {
       this.mobileNumber, 
       this.mailID, 
       this.contactAddress, 
-      this.permanentAddress, 
+      this.permanentAddress,
+      this.nationalId,
       this.dob, 
       this.doj, 
       this.isActive, 
@@ -89,6 +90,7 @@ class AdminData {
     mailID = json['MailID'];
     contactAddress = json['ContactAddress'];
     permanentAddress = json['PermanentAddress'];
+    nationalId = json['NationalID'];
     dob = json['DOB'];
     doj = json['DOJ'];
     isActive = json['IsActive'];
@@ -105,6 +107,7 @@ late  String mobileNumber;
 late  String mailID;
 late  String contactAddress;
 late  String permanentAddress;
+late String nationalId;
 late  String dob;
 late  String doj;
 late  bool isActive;
@@ -123,6 +126,7 @@ late  String password;
     map['MailID'] = mailID;
     map['ContactAddress'] = contactAddress;
     map['PermanentAddress'] = permanentAddress;
+    map['NationalID'] = nationalId;
     map['DOB'] = dob;
     map['DOJ'] = doj;
     map['IsActive'] = isActive;
